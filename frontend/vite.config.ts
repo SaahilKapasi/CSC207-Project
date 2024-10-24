@@ -1,5 +1,5 @@
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,10 +9,10 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/hifive/api": {
-        target: "http://cashapp-dashboard-f15aa2695eea.herokuapp.com/",
-      },
+      "/api": {
+        target: "https://cashapp-dashboard-f15aa2695eea.herokuapp.com/"
+      }
     },
   },
   plugins: [react()],
-});
+})
