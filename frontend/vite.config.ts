@@ -6,8 +6,8 @@ export default defineConfig({
   base: "/hifive/",
   server: {
     proxy: {
-      "/api": {
-        target: "https://cashapp-dashboard-f15aa2695eea.herokuapp.com/",
+      "/hifive/api": {
+        target: "http://cashapp-dashboard-f15aa2695eea.herokuapp.com/",
       },
     },
   },
