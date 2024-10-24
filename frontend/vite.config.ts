@@ -6,7 +6,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://cashapp-dashboard-f15aa2695eea.herokuapp.com/"
+        target: "http://localhost:8000"
       }
     },
   },
