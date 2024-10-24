@@ -7,7 +7,7 @@ export default function Navbar({}: NavbarProps): ReactElement {
 
   useEffect(() => {
     const URL = `/hifive/api/hello/${
-      window.location.pathname.split("/hifive/")[1] || "Unknown User"
+      window.location.pathname.split("/hifive/user/")[1] || "Nobody"
     }`;
 
     fetch(URL)
