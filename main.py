@@ -11,3 +11,10 @@ async def root():
 @app.get("/api/hello/{name}")
 async def say_hello(name: str, amount: int = 1):
     return {"message": f"Hello {name}" * amount}
+
+def calculation_1():
+    return 5 + 5
+
+
+def calculation_2():
+    return 5 * 5
