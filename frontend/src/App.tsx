@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Bar,
   BarChart,
@@ -65,11 +65,11 @@ function App() {
   const [content, setContent] = useState<string>("");
 
   useEffect(() => {
-    const URL = "/api/hello/Cash App";
+    const URL = "/hifive/api/hello/Cash App";
 
     fetch(URL)
-    .then((res) => res.json())
-    .then((data) => setContent(data.message));
+      .then((res) => res.json())
+      .then((data) => setContent(data.message));
   }, []);
 
   return (
