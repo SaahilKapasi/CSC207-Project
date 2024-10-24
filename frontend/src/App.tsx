@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Bar,
   BarChart,
@@ -62,15 +62,6 @@ function CustomizedAxisTick({ x, y, stroke, payload }: any) {
 function App() {
   const [settingModal, setSettingModal] = useState(false);
   const [xAxis, setXAxis] = useState<string>("Race");
-  const [content, setContent] = useState<string>("");
-
-  useEffect(() => {
-    const URL = "/api/hello/Cash App";
-
-    fetch(URL)
-    .then((res) => res.json())
-    .then((data) => setContent(data.message));
-  }, []);
 
   return (
     <div className="">
@@ -128,8 +119,6 @@ function App() {
       {settingModal && (
         <Modal onClose={() => setSettingModal(false)} onSelect={setXAxis} />
       )}
-
-      <h1>{content}</h1>
     </div>
   );
 }
