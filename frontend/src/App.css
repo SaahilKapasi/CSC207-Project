@@ -1,42 +1,107 @@
+/* General Styles */
+body {
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f8f9fa; /* Light background color */
+}
+
 #root {
-  max-width: 1280px;
+  max-width: 1280px; /* Centered content with a max width */
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
 }
 
 .logo {
-  height: 20em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #00FF00);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  height: 3em; /* Adjusted logo size for header */
+  padding-right: 1rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Two-column layout */
+  gap: 2rem; /* Space between columns */
+}
+
+/* Left Section (File Upload) */
+.left-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.file-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.file-upload p {
+  margin-top: 1rem;
+}
+
+/* Right Section (Score and Stats) */
+.right-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.score-display h3 {
+  font-size: 1.5rem;
+}
+
+.score-box {
+  background-color: #f0f0f0; /* Light background for score box */
+  border-radius: .5rem;
+  padding: .5rem;
+}
+
+.score-box span {
+  font-size: 3rem; /* Large font for score */
+}
+
+.chatgpt-info p {
+  margin-top: .5rem;
+}
+
+/* Stats Display */
+.stats-display h4 {
+  margin-top: .5rem;
+}
+
+.stats-display ul {
+  list-style-type:none;
+  padding-left:.5rem;
+}
+
+/* Button Hover Effect */
+.start-button:hover {
+  background-color: #218838; /* Darker green on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    grid-template-columns: 1fr; /* Stack sections vertically on smaller screens */
   }
-  to {
-    transform: rotate(360deg);
+
+  .left-section, .right-section {
+    padding: 1rem; /* Reduce padding on smaller screens */
   }
-}
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+  .score-box span {
+    font-size: 2rem; /* Adjust score font size for smaller screens */
   }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
