@@ -1,107 +1,57 @@
-/* General Styles */
-body {
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f8f9fa; /* Light background color */
-}
+/* App.css */
 
-#root {
-  max-width: 1280px; /* Centered content with a max width */
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-.logo {
-  height: 3em; /* Adjusted logo size for header */
-  padding-right: 1rem;
+.app-container {
+  font-family: 'Roboto', sans-serif; /* Use a font similar to what's used in Figma */
+  padding: 20px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ccc;
 }
 
-.header h1 {
-  font-size: 1.5rem;
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 50px;
+  margin-right: 10px;
 }
 
 .main-content {
-  display: grid;
-  grid-template-columns: 2fr 1fr; /* Two-column layout */
-  gap: 2rem; /* Space between columns */
+  display: flex;
+  justify-content: space-between;
 }
 
-/* Left Section (File Upload) */
-.left-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.left-section,
+.right-section {
+  width: 48%;
 }
 
 .file-upload {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  text-align: center;
 }
 
-.file-upload p {
-  margin-top: 1rem;
+.file-upload input[type='file'] {
+  margin-top: 10px;
 }
 
-/* Right Section (Score and Stats) */
-.right-section {
-  display: flex;
-  flex-direction: column;
-}
-
-.score-display h3 {
-  font-size: 1.5rem;
+.score-display {
+  background-color: #f8f9fa; /* Light background */
+  padding: 20px;
+  border-radius: 8px;
 }
 
 .score-box {
-  background-color: #f0f0f0; /* Light background for score box */
-  border-radius: .5rem;
-  padding: .5rem;
+  font-size: 2rem; /* Large score font */
 }
 
-.score-box span {
-  font-size: 3rem; /* Large font for score */
-}
-
-.chatgpt-info p {
-  margin-top: .5rem;
-}
-
-/* Stats Display */
+.chart-container h3,
 .stats-display h4 {
-  margin-top: .5rem;
-}
-
-.stats-display ul {
-  list-style-type:none;
-  padding-left:.5rem;
-}
-
-/* Button Hover Effect */
-.start-button:hover {
-  background-color: #218838; /* Darker green on hover */
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .main-content {
-    grid-template-columns: 1fr; /* Stack sections vertically on smaller screens */
-  }
-
-  .left-section, .right-section {
-    padding: 1rem; /* Reduce padding on smaller screens */
-  }
-
-  .score-box span {
-    font-size: 2rem; /* Adjust score font size for smaller screens */
-  }
+  margin-bottom: 10px;
 }
