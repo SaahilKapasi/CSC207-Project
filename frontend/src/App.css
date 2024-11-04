@@ -1,57 +1,31 @@
-/* App.css */
+/* General Styles */
+body {
+  font-family: 'Inter', sans-serif;
+}
 
 .app-container {
-  font-family: 'Roboto', sans-serif; /* Use a font similar to what's used in Figma */
-  padding: 20px;
+  max-width: 1280px;
 }
 
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #ccc;
+.header h1,
+.header h2{
+  font-weight :bold ;
 }
 
-.logo-container {
-  display: flex;
-  align-items: center;
-}
-
-.logo {
-  width: 50px;
-  margin-right: 10px;
-}
-
-.main-content {
-  display: flex;
-  justify-content: space-between;
+/* Main Content Layout */
+.main-content{
+  display :flex ;
 }
 
 .left-section,
-.right-section {
-  width: 48%;
+.right-section{
+  padding-top :20px ;
 }
 
-.file-upload {
-  text-align: center;
+.left-section{
+  width :60% ;
 }
 
-.file-upload input[type='file'] {
-  margin-top: 10px;
-}
-
-.score-display {
-  background-color: #f8f9fa; /* Light background */
-  padding: 20px;
-  border-radius: 8px;
-}
-
-.score-box {
-  font-size: 2rem; /* Large score font */
-}
-
-.chart-container h3,
-.stats-display h4 {
-  margin-bottom: 10px;
+.right-section{
+  width :40% ;
 }

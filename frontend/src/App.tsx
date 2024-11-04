@@ -1,132 +1,120 @@
 import React, { useState } from 'react';
-import './App.css'; // Make sure this file contains styles matching the Figma design
-import cashAppLogo from '/cash_app.svg'; // Adjust path if necessary
-import { AiOutlineUpload } from 'react-icons/ai'; // For upload icon
-import { Chart } from 'react-chartjs-2'; // Use Chart.js for graph rendering
+import { Container, Grid, Button, Select, MenuItem } from '@mui/material';
+import Papa from 'papaparse';
+import axios from 'axios';
+import Header from './components/Header'; // Header Component
+import FileUpload from './components/FileUpload'; // File Upload Component
+import ScoreDisplay from './components/ScoreDisplay'; // Score Display Component
+import ChartSection from './components/ChartSection'; // Chart Section Component
+import StatsDisplay from './components/StatsDisplay'; // Stats Display Component
 
 const App: React.FC = () => {
-    const [fileUploaded, setFileUploaded] = useState(false); // State to track if a file is uploaded
+    const [screen, setScreen] = useState<'landing' | 'upload' | 'graph'>('landing'); // State to track current screen
     const [score, setScore] = useState(0.0); // State to track score
+    const [dataset, setDataset] = useState<any[]>([]); // State to store uploaded data
+    const [xAxis, setXAxis] = useState('Race'); // Default X-axis parameter
+    const [yAxis, setYAxis] = useState('FPR'); // Default Y-axis parameter
+    const [aiResponse, setAiResponse] = useState(''); // State for AI response
 
     const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
-            // Simulate file upload and transition to second screen
-            setFileUploaded(true);
-            setScore(7.8); // Example score after file upload
+            const file = event.target.files[0];
+            Papa.parse(file, {
+                header: true,
+                complete: (result) => {
+                    setDataset(result.data); // Store parsed dataset
+                    setScreen('graph'); // Transition to graph screen after upload
+                    setScore(7.8); // Example score after file upload
+
+                    // Fetch insights from Hugging Face based on uploaded data
+                    fetchAiInsights(result.data);
+                },
+            });
         }
     };
 
+    const fetchAiInsights = async (data: any[]) => {
+        try {
+            const response = await axios.post(
+                'https://api-inference.huggingface.co/models/gpt2',
+                { inputs: `Analyze this dataset:\n${JSON.stringify(data)}\nProvide insights.` },
+                {
+                    headers: {
+                        Authorization: `Bearer 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`, // Your Hugging Face API token
+                    },
+                });
+            setAiResponse(response.data[0].generated_text.trim());
+        } catch (error) {
+            console.error('Error fetching AI response:', error);
+        }
+    };
+
+    const handleXAxisChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        setXAxis(event.target.value as string);
+    };
+
+    const handleYAxisChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+        setYAxis(event.target.value as string);
+    };
+
     return (
-        <div className="app-container">
-            <header className="header">
-                <div className="logo-container">
-                    <a href="https://cash.app/" target="_blank" rel="noopener noreferrer">
-                        <img src={cashAppLogo} className="logo" alt="Cash App logo" />
-                    </a>
-                    <h1>Cash App</h1>
-                </div>
-                <h2>Bias Visualizer</h2>
-            </header>
-
-            {/* Conditional rendering based on whether a file is uploaded */}
-            {fileUploaded ? (
-                // Second screen with chart and updated score
-                <main className="main-content">
-                    <section className="left-section">
-                        {/* Chart Section */}
-                        <div className="chart-container">
-                            <h3>&lt;File 1.0&gt;</h3>
-                            {/* Chart.js example */}
-                            <Chart
-                                type="bar"
-                                data={{
-                                    labels: ['White', 'Black', 'Hispanic', 'Asian', 'Indigenous'],
-                                    datasets: [
-                                        {
-                                            label: 'FPR vs Race',
-                                            data: [7, 6, 5, 4, 3], // Example data for FPR
-                                            backgroundColor: '#007bff',
-                                        },
-                                    ],
-                                }}
-                                options={{
-                                    scales: {
-                                        x: { title: { display: true, text: 'Race' } },
-                                        y: { title: { display: true, text: 'False Positive Rate (FPR)' } },
-                                    },
-                                }}
-                            />
-                        </div>
-                    </section>
-
-                    <section className="right-section">
-                        {/* Score Display */}
-                        <div className="score-display">
-                            <h3>Score:</h3>
-                            <div className="score-box">
-                                <span>{score.toFixed(1)}</span>
+        <Container maxWidth="lg">
+            <Header />
+            <Grid container spacing={3}>
+                {screen === 'landing' ? (
+                    // Landing Page
+                    <Grid item xs={12} textAlign="center">
+                        <h1>Welcome to Bias Visualizer</h1>
+                        <p>Analyze your data for bias using our visualizer tool.</p>
+                        <Button variant="contained" color="primary" onClick={() => setScreen('upload')}>
+                            Get Started
+                        </Button>
+                    </Grid>
+                ) : screen === 'upload' ? (
+                    <>
+                        {/* File Upload Screen */}
+                        <Grid item xs={12} md={8}>
+                            <FileUpload handleFileUpload={handleFileUpload} />
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <ScoreDisplay score={score} />
+                            <StatsDisplay />
+                        </Grid>
+                    </>
+                ) : (
+                    <>
+                        {/* Graph Display Screen */}
+                        <Grid item xs={12} md={8}>
+                            <ChartSection dataset={dataset} xAxis={xAxis} yAxis={yAxis} />
+                            {/* Toggle for X and Y axes */}
+                            <div style={{ marginTop: '20px' }}>
+                                <Select value={xAxis} onChange={handleXAxisChange}>
+                                    <MenuItem value="Race">Race</MenuItem>
+                                    <MenuItem value="Age">Age</MenuItem>
+                                    {/* Add more options as needed */}
+                                </Select>
+                                <Select value={yAxis} onChange={handleYAxisChange}>
+                                    <MenuItem value="FPR">False Positive Rate</MenuItem>
+                                    <MenuItem value="TPR">True Positive Rate</MenuItem>
+                                    {/* Add more options as needed */}
+                                </Select>
                             </div>
-                            {/* ChatGPT Response */}
-                            <div className="chatgpt-info">
-                                <p>ChatGPT:</p>
-                                <p>It seems like you have a few false positive rates that show an increasing trend...</p>
-                            </div>
-                        </div>
-
-                        {/* Stats Display */}
-                        <div className="stats-display">
-                            <h4>Stats for &lt;File 1.0&gt;</h4>
-                            <ul>
-                                <li>Population: race</li>
-                                <li>GAP: 53%</li>
-                                <li>Mean: 23%</li>
-                                {/* Add more stats as needed */}
-                            </ul>
-                        </div>
-                    </section>
-                </main>
-            ) : (
-                // First screen with file upload prompt
-                <main className="main-content">
-                    <section className="left-section">
-                        {/* File Upload Section */}
-                        <div className="file-upload">
-                            {/* Add styling here to match Figma - larger icon size and spacing */}
-                            <AiOutlineUpload size={80} color="#28a745" />
-                            {/* Add styles for input button */}
-                            <input type="file" onChange={handleFileUpload} />
-                            <p>Please upload your files</p>
-                        </div>
-                    </section>
-
-                    <section className="right-section">
-                        {/* Score Display */}
-                        <div className="score-display">
-                            <h3>Score:</h3>
-                            <div className="score-box">
-                                {/* Add styles here for better alignment and font size */}
-                                <span>{score.toFixed(1)}</span>
-                            </div>
-
-                            {/* Placeholder for ChatGPT */}
-                            <div className="chatgpt-info">
-                                ..............
-                                ..............
-                                ..............
-                            </div>
-
-                            {/* Stats Display Placeholder */}
-                            <div className="stats-display">
-                                Stats for &lt;File 1.0&gt;
-                                Population:
-                                GAP:
-                                Mean:
-                            </div>
-                        </div> {/* Correctly closing the div here */}
-                    </section>
-                </main>
-            )}
-        </div>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <ScoreDisplay score={score} />
+                            {/* AI Response */}
+                            {aiResponse && (
+                                <>
+                                    <h3>AI Insights:</h3>
+                                    <p>{aiResponse}</p>
+                                </>
+                            )}
+                            <StatsDisplay />
+                        </Grid>
+                    </>
+                )}
+            </Grid>
+        </Container>
     );
 };
 
