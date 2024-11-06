@@ -1,7 +1,7 @@
 import itertools
 import pandas as pd
-from statics import *
-from statistics import *
+import constants
+import statistics as st
 
 
 # Function to generate filter criteria based on unique values of input columns
@@ -58,8 +58,8 @@ def identify_outliers(df, column):
     Returns:
     pd.Series: A series containing the outlier values.
     """
-    lower_bound = get_col_lower_bound(df, column)
-    upper_bound = get_col_upper_bound(df, column)
+    lower_bound = st.get_col_lower_bound(df, column)
+    upper_bound = st.get_col_upper_bound(df, column)
 
     outliers = df[(df[column] < lower_bound) | (df[column] > upper_bound)]
     return outliers[column]
@@ -94,9 +94,9 @@ def calculate_summary_statistics(df, column):
     pd.Series: A series containing the mean, median, and standard deviation.
     """
     summary = pd.Series({
-        'Mean': get_col_mean(df, column),
-        'Median': get_col_median(df, column),
-        'Standard Deviation': get_col_std(df, column)
+        'Mean': st.get_col_mean(df, column),
+        'Median': st.get_col_median(df, column),
+        'Standard Deviation': st.get_col_std(df, column)
     })
     return summary
 
@@ -104,7 +104,7 @@ def calculate_summary_statistics(df, column):
 def get_categories_exist(df):  # return categories exist in this data frame.
     cats_exist = set()
     for i in df.columns:
-        if i.lower() in protected_classes:
+        if i.lower() in constants.protected_classes:
             cats_exist.add(i)
     return cats_exist
 
@@ -112,3 +112,9 @@ def get_categories_exist(df):  # return categories exist in this data frame.
 def get_cat_kinds(df, column) -> set:
     set_of_kinds = set(df[column])
     return set_of_kinds
+
+
+# def find_protected_categories'_names: return set of names (potentially using ai tools to identify this?
+
+
+# def convert_crt_names_to_protected_cat_format: void

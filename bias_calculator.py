@@ -114,7 +114,7 @@ def calculate_score_by_variance(df, category):
     return score
 
 
-def calculate_score_by_accuracy(df, category): # based on sample size
+def calculate_score_by_accuracy(df, category):  # based on sample size
     # TODO: calculate accuracy score for each category
     return
 
