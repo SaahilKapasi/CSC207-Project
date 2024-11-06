@@ -101,7 +101,20 @@ def calculate_summary_statistics(df, column):
     return summary
 
 
-def get_categories_exist(df):  # return categories exist in this data frame.
+def get_categories_exist(df):
+    """
+    Identify protected categories that exist as columns in the provided DataFrame.
+
+    This function checks if each column in the DataFrame matches a protected class
+    listed in `constants.protected_classes`. If a match is found, the column name is
+    added to the resulting set of existing protected categories.
+
+    Parameters:
+    df (pd.DataFrame): The DataFrame to check for protected category columns.
+
+    Returns:
+    set: A set of column names in the DataFrame that match protected classes.
+    """
     cats_exist = set()
     for i in df.columns:
         if i.lower() in constants.protected_classes:
@@ -110,6 +123,19 @@ def get_categories_exist(df):  # return categories exist in this data frame.
 
 
 def get_cat_kinds(df, column) -> set:
+    """
+    Get the unique values (kinds) for a specified column in the DataFrame.
+
+    This function extracts all unique values in the specified column, which represent
+    different categories or kinds within that column.
+
+    Parameters:
+    df (pd.DataFrame): The DataFrame containing the data.
+    column (str): The name of the column to retrieve unique values from.
+
+    Returns:
+    set: A set of unique values found in the specified column.
+    """
     set_of_kinds = set(df[column])
     return set_of_kinds
 
