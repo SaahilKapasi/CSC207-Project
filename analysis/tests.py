@@ -1,5 +1,5 @@
 import unittest
-from analysis.helpers import *
+from helpers import *
 
 
 class TestFPRAnalysis(unittest.TestCase):

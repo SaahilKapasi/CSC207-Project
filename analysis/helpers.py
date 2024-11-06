@@ -1,5 +1,7 @@
 import itertools
 import pandas as pd
+from statics import *
+from statistics import *
 
 
 # Function to generate filter criteria based on unique values of input columns
@@ -27,6 +29,7 @@ def generate_filter_criteria(df, columns):
 
     return filter_criterias
 
+
 def filter_dataframe(df, filter_criteria):
     """
     Filter the DataFrame based on a dictionary of attribute criteria.
@@ -43,6 +46,7 @@ def filter_dataframe(df, filter_criteria):
         filtered_df = filtered_df[filtered_df[column] == value]
     return filtered_df
 
+
 def identify_outliers(df, column):
     """
     Identify potential outliers in a specified column using the IQR method.
@@ -54,14 +58,12 @@ def identify_outliers(df, column):
     Returns:
     pd.Series: A series containing the outlier values.
     """
-    Q1 = df[column].quantile(0.25)
-    Q3 = df[column].quantile(0.75)
-    IQR = Q3 - Q1
-    lower_bound = Q1 - 1.5 * IQR
-    upper_bound = Q3 + 1.5 * IQR
+    lower_bound = get_col_lower_bound(df, column)
+    upper_bound = get_col_upper_bound(df, column)
 
     outliers = df[(df[column] < lower_bound) | (df[column] > upper_bound)]
     return outliers[column]
+
 
 def remove_outliers(df, column):
     """
@@ -79,6 +81,7 @@ def remove_outliers(df, column):
     df_no_outliers = df[~df[column].isin(outliers)]
     return df_no_outliers
 
+
 def calculate_summary_statistics(df, column):
     """
     Calculate key summary statistics for a specified column in a DataFrame.
@@ -91,10 +94,21 @@ def calculate_summary_statistics(df, column):
     pd.Series: A series containing the mean, median, and standard deviation.
     """
     summary = pd.Series({
-        'Mean': df[column].mean(),
-        'Median': df[column].median(),
-        'Standard Deviation': df[column].std()
+        'Mean': get_col_mean(df, column),
+        'Median': get_col_median(df, column),
+        'Standard Deviation': get_col_std(df, column)
     })
     return summary
 
 
+def get_categories_exist(df):  # return categories exist in this data frame.
+    cats_exist = set()
+    for i in df.columns:
+        if i.lower() in protected_classes:
+            cats_exist.add(i)
+    return cats_exist
+
+
+def get_cat_kinds(df, column) -> set:
+    set_of_kinds = set(df[column])
+    return set_of_kinds
