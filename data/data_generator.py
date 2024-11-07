@@ -37,7 +37,7 @@ def mock_data_with_all_protected_classes_not_null(n) -> pd.DataFrame:
          "US"})
     citizenship = np.random.choice(countries, arr_len)
     sex = np.random.choice(["Female", "Male"], arr_len)
-    pregnancy = np.random.choice([0, 1], arr_len)
+    pregnancy = np.random.choice(["Yes", "No"], arr_len)
     race = np.random.choice(["White", "Black", "Asian", "Hispanic", "Arab"], arr_len)
     family_status = np.random.choice(["Single", "Married", "Divorced"], arr_len)
     place_of_origin = np.random.choice(["Canada", "US", "China", "South Korea", "Mexico"], arr_len)
@@ -48,10 +48,10 @@ def mock_data_with_all_protected_classes_not_null(n) -> pd.DataFrame:
     gender_identity = sex  # assuming gender identity matches sex for simplicity
     ancestry = np.random.choice(["Western", "African", "Asian", "Latin", "Middle Eastern"], arr_len)
     gender_expression = np.random.choice(["Feminine", "Masculine"], arr_len)
-    disability = np.random.choice([0, 1], arr_len)
-    public_assistance = np.random.choice([0, 1], arr_len)
-    age = np.random.randint(20, 70, size=arr_len)
-    record_of_offenses = np.random.choice([0, 1], arr_len)
+    disability = np.random.choice(["Yes", "No"], arr_len)
+    public_assistance = np.random.choice(["Yes", "No"], arr_len)
+    age = np.random.randint(18, 70, size=arr_len)
+    record_of_offenses = np.random.choice(["Yes", "No"], arr_len)
     creed = np.random.choice(["Christian", "Muslim", "Buddhist", "Hindu", "Jewish", "Atheist"], arr_len)
     marked = np.random.choice([1, 0], arr_len)
     actual = np.random.choice([0, 1], arr_len)
@@ -116,7 +116,7 @@ def fake_real_data_not_null(n) -> pd.DataFrame:
     place_of_origin = np.random.choice(["Canada", "US", "China", "South Korea", "Mexico"], arr_len)
     ethnic_origin = np.random.choice(["European", "African", "Asian", "Hispanic", "Middle Eastern"], arr_len)
     color = np.random.choice(["White", "Black", "Yellow", "Brown"], arr_len)
-    age = np.random.randint(18, 65, size=arr_len)
+    age = np.random.randint(18, 80, size=arr_len)
     location_info = [f"{np.random.uniform(-90, 90):.4f}, {np.random.uniform(-180, 180):.4f}" for _ in range(arr_len)]
     device_info = [f"Device_{np.random.randint(1, 10)}" for _ in range(arr_len)]  # Mock device model info
     marked = np.random.choice([1, 0], arr_len)
@@ -185,7 +185,7 @@ def fake_real_data_has_null(n) -> pd.DataFrame:
                      range(arr_len)]
     color = [np.random.choice(["White", "Black", "Yellow", "Brown"]) if random.random() > 0.05 else np.nan for _ in
              range(arr_len)]
-    age = [np.random.randint(18, 65) if random.random() > 0.05 else np.nan for _ in range(arr_len)]
+    age = [np.random.randint(18, 80) if random.random() > 0.05 else np.nan for _ in range(arr_len)]
     location_info = [
         f"{np.random.uniform(-90, 90):.4f}, {np.random.uniform(-180, 180):.4f}" if random.random() > 0.1 else np.nan for
         _ in range(arr_len)]

@@ -1,7 +1,49 @@
+"""
+helpers.py
+
+This module provides utility functions for analyzing data related to protected classes.
+Functions include generating filter criteria, filtering DataFrames based on criteria, identifying and
+removing outliers, calculating summary statistics, and categorizing numerical data based on the Interquartile Range.
+"""
+
 import itertools
 import pandas as pd
-import constants
-import statistics as st
+from . import statistics as st
+import numpy as np
+
+
+def get_protected_classes():
+    """
+    Retrieve a set of protected classes as defined in regulatory or policy contexts.
+
+    This function returns a set containing names of protected classes, which are categories
+    often used to ensure non-discriminatory practices in areas such as employment, housing,
+    and public accommodations.
+
+    Returns:
+        set: A set of strings, each representing a protected class (e.g., 'citizenship', 'race').
+    """
+    protected_classes = {
+        "citizenship",
+        "sex",
+        "pregnancy",
+        "race",
+        "family status",
+        "place of origin",
+        "marital status",
+        "ethnic origin",
+        "sexual orientation",
+        "color",
+        "gender identity",
+        "ancestry",
+        "gender expression",
+        "disability",
+        "receipt of public assistance (in housing)",
+        "age",
+        "record of offenses (in employment)",
+        "creed"
+    }
+    return protected_classes
 
 
 # Function to generate filter criteria based on unique values of input columns
@@ -117,12 +159,12 @@ def get_categories_exist(df):
     """
     cats_exist = set()
     for i in df.columns:
-        if i.lower() in constants.protected_classes:
+        if i.lower() in get_protected_classes():
             cats_exist.add(i)
     return cats_exist
 
 
-def get_cat_kinds(df, column) -> set:
+def get_kinds(df, column) -> set:
     """
     Get the unique values (kinds) for a specified column in the DataFrame.
 
@@ -140,7 +182,42 @@ def get_cat_kinds(df, column) -> set:
     return set_of_kinds
 
 
-# def find_protected_categories'_names: return set of names (potentially using ai tools to identify this?
+def update_number_kinds_by_irq(df, column) -> pd.DataFrame:
+    """
+    Categorize numerical values in a column based on Interquartile Range (IQR) and add them as a new column.
+
+    This function divides the values in the specified numerical column into distinct categories based on
+    IQR thresholds (Q1, mean as Q2, and Q3). It labels values as follows:
+      - Below Q1: "below_<Q1>"
+      - Between Q1 and Q2: "below_<Q2>"
+      - Between Q2 and Q3: "below_<Q3>"
+      - Above Q3: "above_<Q3>"
+
+    The categorized values are assigned to a new column in the DataFrame with the suffix "_categorized_by_iqr".
+
+    Parameters:
+    df (pd.DataFrame): The DataFrame containing the data.
+    column (str): The name of the numerical column to categorize based on IQR.
+
+    Returns:
+    pd.DataFrame: The DataFrame with an added column for categorized IQR values.
+    """
+    q1 = st.get_col_q1(df, column)
+    q2 = st.get_col_mean(df, column)
+    q3 = st.get_col_q3(df, column)
+    conditions = [
+        (df["age"] < q1),
+        (df["age"] >= q1) & (df["age"] < q2),
+        (df["age"] >= q2) & (df["age"] < q3)
+    ]
+
+    choices = ["below_" + str(q1), "below_" + str(q2), "below_" + str(q3)]
+
+    # Use np.select to assign the labels based on conditions
+    new_col_name = column + "_categorized_by_iqr"
+    df[new_col_name] = np.select(conditions, choices, default="above_" + str(q3))
+    return df
 
 
-# def convert_crt_names_to_protected_cat_format: void
+# TODO: def find_protected_categories'_names: return set of names (potentially using ai tools to identify this?
+# TODO: def convert_crt_names_to_protected_cat_format: void

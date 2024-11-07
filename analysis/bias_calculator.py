@@ -42,7 +42,7 @@ Dependencies:
 - Uses numpy (`np`) for mean and variance calculations.
 """
 
-from analysis import helpers
+from . import helpers
 import numpy as np
 
 
@@ -101,8 +101,8 @@ def calculate_score_by_variance(df, category):
     - Assumes that FPR values range between 0 and 1, which limits the maximum possible variance to 0.25.
     """
     # Step 1: Calculate the variance of FPRs
-    cat_kind_fprs = obtain_fpr_set(df, category)
-    fpr_variance = np.var(list(cat_kind_fprs))
+    kind_fprs = obtain_fpr_set(df, category)
+    fpr_variance = np.var(kind_fprs)
 
     # Step 2: Define the max variance threshold you want to scale within
     max_variance = 0.25  # since FPRs range between 0 and 1, max spread variance is 0.25
@@ -138,8 +138,8 @@ def calculate_score_by_fpr_mean(df, category):
     - Assumes FPR values range between 0 and 1, with a maximum threshold of 1.
     """
     # Step 1: Calculate the mean of FPRs
-    cat_kind_fprs = obtain_fpr_set(df, category)
-    ave_fpr = np.mean(list(cat_kind_fprs))
+    kind_fprs = obtain_fpr_set(df, category)
+    ave_fpr = np.mean(kind_fprs)
 
     # Step 2: Define a maximum threshold for average FPRs
     max_fpr_threshold = 1.0  # As FPRs range between 0 and 1
@@ -167,31 +167,39 @@ def calculate_fpr(df):
     - The DataFrame `df` contains the columns 'marked' and 'actual'.
     - 'marked' indicates whether the model marked a transaction as fraud (1 for fraud, 0 for not fraud).
     - 'actual' indicates whether the transaction is actually fraud (1 for fraud, 0 for not fraud).
-    - The DataFrame only contains data for one unique kind within the relevant category.
+    - The DataFrame only contains data for *one unique kind* within the relevant category.
 
     Notes:
     - The false positive rate is calculated as the sum of absolute differences between 'marked' and 'actual'
       divided by the total number of rows in the DataFrame.
     - Assumes no null values are present in the 'marked' or 'actual' columns.
     """
-    false_positive_col = abs(df["marked"] - df["acutal"])
-    return false_positive_col.sum() / len(df)
+    false_positive_col = abs(df["marked"] - df["actual"])
+    return int(false_positive_col.sum()) / len(df)
 
 
-def obtain_fpr_set(df, category) -> set:
+def obtain_fpr_set(df, category) -> list:
     """
-    Calculate the false positive rates (FPRs) for each unique category (column).
+    Calculate the false positive rates (FPRs) for each unique value in the specified category column.
+
+    This function evaluates the false positive rate for each unique value (or "kind") in the specified category
+    column of the DataFrame. If the category column is numerical, it groups values based on IQR-defined ranges;
+    otherwise, it calculates FPR for each distinct value in the categorical column.
 
     Parameters:
     df (pd.DataFrame): The DataFrame containing the data.
-    category (str): The column name representing the category by which to calculate FPRs.
+    category (str): The column name in the DataFrame representing the category by which to calculate FPRs.
 
     Returns:
     set: A set of FPRs, where each FPR corresponds to a unique value in the specified category column.
+          Each entry represents the FPR for one unique kind within the category.
     """
-    cat_kinds = helpers.get_cat_kinds(df, category)
-    cat_kind_fprs = set()
-    for kind in cat_kinds:
+    if np.issubdtype(df[category].dtype, np.number):
+        df = helpers.update_number_kinds_by_irq(df, category)
+
+    kinds = helpers.get_kinds(df, category)
+    kind_fprs = list()
+    for kind in kinds:
         kind_fpr = calculate_fpr(df[(df[category] == kind)])
-        cat_kind_fprs.add(kind_fpr)
-    return cat_kind_fprs
+        kind_fprs.append(kind_fpr)
+    return kind_fprs

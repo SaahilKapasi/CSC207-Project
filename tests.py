@@ -1,5 +1,6 @@
 import unittest
 import main
+import file_handler
 
 
 class TestAPIMethods(unittest.TestCase):
@@ -8,6 +9,14 @@ class TestAPIMethods(unittest.TestCase):
 
     def test_calculation_2(self):
         self.assertEqual(25, main.calculation_2())
+
+
+class TestFileHandler(unittest.TestCase):
+    def test_score(self):
+        file_address = "data/small_data_wonull_has_all_classes.csv"
+        file = file_handler.File(file_address)
+        print(file.score)
+        self.assertTrue(1)
 
 
 if __name__ == '__main__':

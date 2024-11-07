@@ -1,5 +1,6 @@
 import helpers
 import unittest
+import pandas as pd
 
 
 class TestHelperFunctions (unittest.TestCase):
@@ -77,3 +78,7 @@ class TestHelperFunctions (unittest.TestCase):
         outliers = helpers.identify_outliers(self.df, 'False Positive Rate (FPR) over transactions')
         for _, row in df_no_outliers.iterrows():
             self.assertNotIn(row['False Positive Rate (FPR) over transactions'], outliers.values)
+
+
+if __name__ == '__main__':
+    unittest.main()
