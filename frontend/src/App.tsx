@@ -1,129 +1,62 @@
-import { Button, Container, Grid, MenuItem, Select } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
-import FileUpload from "./components/FileUpload";
-import Header from "./components/Header";
-import ScoreDisplay from "./components/ScoreDisplay";
-import StatsDisplay from "./components/StatsDisplay";
+import { useEffect, useState } from "react";
+import Navbar from "./components/Navbar";
+import GraphPage from "./pages/GraphPage";
+import WelcomePage from "./pages/WelcomePage";
+import { Dataset } from "./types/types";
 
-const App: React.FC = () => {
-  const [screen, setScreen] = useState<"landing" | "upload" | "graph">(
-    "landing"
-  ); // State to track current screen
-  const [score, setScore] = useState(0.0); // State to track score
-  const [dataset, setDataset] = useState<any[]>([]); // State to store uploaded data
-  const [xAxis, setXAxis] = useState("Race"); // Default X-axis parameter
-  const [yAxis, setYAxis] = useState("FPR"); // Default Y-axis parameter
-  const [aiResponse, setAiResponse] = useState(""); // State for AI response
+function App() {
+  const [page, setPage] = useState<"welcome" | "graph">("welcome");
+  const [datasets, setDatasets] = useState<Dataset[]>([]);
+  const [selectedDataset, setSelectedDataset] = useState<Dataset>();
+  const [loading, setLoading] = useState(true);
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files && event.target.files.length > 0) {
-      const file = event.target.files[0];
-      // Papa.parse(file, {
-      //     header: true,
-      //     complete: (result) => {
-      //         setDataset(result.data); // Store parsed dataset
-      //         setScreen('graph'); // Transition to graph screen after upload
-      //         setScore(7.8); // Example score after file upload
-
-      //         // Fetch insights from Hugging Face based on uploaded data
-      //         fetchAiInsights(result.data);
-      //     },
-      // });
-    }
-  };
-
-  const fetchAiInsights = async (data: any[]) => {
-    try {
-      const response = await axios.post(
-        "https://api-inference.huggingface.co/models/gpt2",
-        {
-          inputs: `Analyze this dataset:\n${JSON.stringify(
-            data
-          )}\nProvide insights.`,
-        },
-        {
-          headers: {
-            Authorization: `Bearer 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`, // Your Hugging Face API token
-          },
+  useEffect(() => {
+    axios
+      .get(`/api/getDataset?id=${window.location.pathname.slice(1)}`)
+      .then((response) => {
+        if (response.data) {
+          handleReceiveDataset(response.data);
         }
-      );
-      setAiResponse(response.data[0].generated_text.trim());
-    } catch (error) {
-      console.error("Error fetching AI response:", error);
-    }
-  };
+        setLoading(false);
+      });
+  }, []);
 
-  const handleXAxisChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setXAxis(event.target.value as string);
-  };
+  function handleReceiveDataset(newDataset: Dataset) {
+    setSelectedDataset(newDataset);
+    setDatasets([...datasets, newDataset]);
+    setPage("graph");
+  }
 
-  const handleYAxisChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setYAxis(event.target.value as string);
-  };
+  function handleNewDataset() {
+    setPage("welcome");
+    setSelectedDataset(undefined);
+  }
+
+  function handleSelectDataset(dataset: Dataset) {
+    setSelectedDataset(dataset);
+    setPage("graph");
+  }
 
   return (
-    <Container maxWidth="lg">
-      <Header />
-      <Grid container spacing={3}>
-        {screen === "landing" ? (
-          // Landing Page
-          <Grid item xs={12} textAlign="center">
-            <h1>Welcome to Bias Visualizer</h1>
-            <p>Analyze your data for bias using our visualizer tool.</p>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => setScreen("upload")}
-            >
-              Get Started
-            </Button>
-          </Grid>
-        ) : screen === "upload" ? (
-          <>
-            {/* File Upload Screen */}
-            <Grid item xs={12} md={8}>
-              <FileUpload handleFileUpload={handleFileUpload} />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <ScoreDisplay score={score} />
-              <StatsDisplay />
-            </Grid>
-          </>
-        ) : (
-          <>
-            {/* Graph Display Screen */}
-            <Grid item xs={12} md={8}>
-              {/* Toggle for X and Y axes */}
-              <div style={{ marginTop: "20px" }}>
-                <Select value={xAxis} onChange={handleXAxisChange as any}>
-                  <MenuItem value="Race">Race</MenuItem>
-                  <MenuItem value="Age">Age</MenuItem>
-                  {/* Add more options as needed */}
-                </Select>
-                <Select value={yAxis} onChange={handleYAxisChange as any}>
-                  <MenuItem value="FPR">False Positive Rate</MenuItem>
-                  <MenuItem value="TPR">True Positive Rate</MenuItem>
-                  {/* Add more options as needed */}
-                </Select>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={4}>
-              <ScoreDisplay score={score} />
-              {/* AI Response */}
-              {aiResponse && (
-                <>
-                  <h3>AI Insights:</h3>
-                  <p>{aiResponse}</p>
-                </>
-              )}
-              <StatsDisplay />
-            </Grid>
-          </>
-        )}
-      </Grid>
-    </Container>
+    <div className="">
+      <Navbar
+        datasets={datasets}
+        selectedDataset={selectedDataset}
+        onSelectDataset={handleSelectDataset}
+        onNewDataset={handleNewDataset}
+      />
+      {loading ? (
+        <></>
+      ) : page === "welcome" ? (
+        <WelcomePage onDataset={handleReceiveDataset} />
+      ) : page === "graph" && selectedDataset ? (
+        <GraphPage dataset={selectedDataset} />
+      ) : (
+        <></>
+      )}
+    </div>
   );
-};
+}
 
 export default App;

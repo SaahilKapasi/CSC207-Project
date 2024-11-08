@@ -203,3 +203,29 @@ def obtain_fpr_set(df, category) -> list:
         kind_fpr = calculate_fpr(df[(df[category] == kind)])
         kind_fprs.append(kind_fpr)
     return kind_fprs
+
+
+def obtain_fpr_map(df, category) -> dict[str, float]:
+    """
+    Calculate the false positive rates (FPRs) for each unique value in the specified category column.
+
+    This function evaluates the false positive rate for each unique value (or "kind") in the specified category
+    column of the DataFrame. If the category column is numerical, it groups values based on IQR-defined ranges;
+    otherwise, it calculates FPR for each distinct value in the categorical column.
+
+    Parameters:
+    df (pd.DataFrame): The DataFrame containing the data.
+    category (str): The column name in the DataFrame representing the category by which to calculate FPRs.
+
+    Returns:
+    dict: A map of kinds to FPRs {kind: FPR of kind}
+    """
+    if np.issubdtype(df[category].dtype, np.number):
+        df = helpers.update_number_kinds_by_irq(df, category)
+
+    kinds = helpers.get_kinds(df, category)
+    result = {}
+    for kind in kinds:
+        kind_fpr = calculate_fpr(df[(df[category] == kind)])
+        result[kind] = kind_fpr
+    return result
