@@ -45,6 +45,49 @@ class File:
         self.categories = helpers.get_categories_exist(self.df)
         self.score = bias_calculator.calculate_overall_score(self.df, self.categories)
 
+
+    def get_category_traits(self, category: str):
+        """
+        Ex. for race, it would return white, black, etc
+
+        Args:
+            category: The name of the category
+
+        Returns:
+            set: Ex. for race, it would return white, black, etc
+        """
+        return set(self.df[category])
+
+    def get_category_trait_counts(self, category: str):
+        """
+        Ex. for race, it would return number of people that are white, black, etc
+
+        Args:
+            category: The name of the category
+
+        Returns:
+            dict: {trait: count} Ex. for race, it would return number of people that are white, black, etc
+        """
+        result = {}
+        traits = set(self.df[category])  # ex. White, black
+        for trait in traits:
+            count = self.df[self.df[category] == trait].shape[0]
+            result[trait] = count
+        return result
+
+
+    def get_category_trait_fprs(self, category: str):
+        """
+        Ex. for race, it would return mean fprs of people that are white, black, etc
+
+        Args:
+            category: The name of the category
+
+        Returns:
+            dict: {trait: mean fpr}
+        """
+        return bias_calculator.obtain_fpr_map(self.df, category)
+
     def get_category_var_score(self, category):
         """
         Calculate and return the variance-based bias score for a specific category.
