@@ -1,8 +1,9 @@
+import helpers
 import unittest
-from analysis.helpers import *
+import pandas as pd
 
 
-class TestFPRAnalysis(unittest.TestCase):
+class TestHelperFunctions (unittest.TestCase):
     def setUp(self):
         """
         Create a sample DataFrame and other setup necessary for the tests.
@@ -18,7 +19,7 @@ class TestFPRAnalysis(unittest.TestCase):
 
     def test_generate_filter_criteria(self):
         columns = ['Race', 'Gender']
-        filter_criteria_list = generate_filter_criteria(self.df, columns)
+        filter_criteria_list = helpers.generate_filter_criteria(self.df, columns)
 
         # Expected number of filter criteria combinations
         expected_count = len(self.df['Race'].unique()) * len(self.df['Gender'].unique())
@@ -30,7 +31,7 @@ class TestFPRAnalysis(unittest.TestCase):
 
     def test_filter_dataframe(self):
         filter_criteria = {'Race': 'White', 'Gender': 'Female'}
-        filtered_df = filter_dataframe(self.df, filter_criteria)
+        filtered_df = helpers.filter_dataframe(self.df, filter_criteria)
 
         # Check that the filtered DataFrame has the correct number of rows
         expected_rows = len(self.df[(self.df['Race'] == 'White') & (self.df['Gender'] == 'Female')])
@@ -42,7 +43,7 @@ class TestFPRAnalysis(unittest.TestCase):
             self.assertEqual(row['Gender'], 'Female')
 
     def test_calculate_summary_statistics(self):
-        summary = calculate_summary_statistics(self.df, 'False Positive Rate (FPR) over transactions')
+        summary = helpers.calculate_summary_statistics(self.df, 'False Positive Rate (FPR) over transactions')
 
         # Calculate expected statistics manually for comparison
         expected_mean = self.df['False Positive Rate (FPR) over transactions'].mean()
@@ -55,7 +56,7 @@ class TestFPRAnalysis(unittest.TestCase):
 
     def test_identify_outliers(self):
         filter_criteria = {'Race': 'White'}
-        outliers = identify_outliers(self.df, 'False Positive Rate (FPR) over transactions')
+        outliers = helpers.identify_outliers(self.df, 'False Positive Rate (FPR) over transactions')
 
         # Calculate expected outliers manually
         filtered_df = self.df[self.df['Race'] == 'White']
@@ -71,10 +72,10 @@ class TestFPRAnalysis(unittest.TestCase):
 
     def test_remove_outliers_using_identified(self):
         filter_criteria = {'Race': 'White'}
-        df_no_outliers = remove_outliers(self.df, 'False Positive Rate (FPR) over transactions')
+        df_no_outliers = helpers.remove_outliers(self.df, 'False Positive Rate (FPR) over transactions')
 
         # Check that the returned DataFrame has no outliers
-        outliers = identify_outliers(self.df, 'False Positive Rate (FPR) over transactions')
+        outliers = helpers.identify_outliers(self.df, 'False Positive Rate (FPR) over transactions')
         for _, row in df_no_outliers.iterrows():
             self.assertNotIn(row['False Positive Rate (FPR) over transactions'], outliers.values)
 
