@@ -1,121 +1,137 @@
-import React, { useState } from 'react';
-import { Container, Grid, Button, Select, MenuItem } from '@mui/material';
-import Papa from 'papaparse';
-import axios from 'axios';
-import Header from './components/Header'; // Header Component
-import FileUpload from './components/FileUpload'; // File Upload Component
-import ScoreDisplay from './components/ScoreDisplay'; // Score Display Component
-import ChartSection from './components/ChartSection'; // Chart Section Component
-import StatsDisplay from './components/StatsDisplay'; // Stats Display Component
+import { useState, useEffect } from "react";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  Rectangle,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import Modal from "./Modal";
+import Navbar from "./Navbar";
 
-const App: React.FC = () => {
-    const [screen, setScreen] = useState<'landing' | 'upload' | 'graph'>('landing'); // State to track current screen
-    const [score, setScore] = useState(0.0); // State to track score
-    const [dataset, setDataset] = useState<any[]>([]); // State to store uploaded data
-    const [xAxis, setXAxis] = useState('Race'); // Default X-axis parameter
-    const [yAxis, setYAxis] = useState('FPR'); // Default Y-axis parameter
-    const [aiResponse, setAiResponse] = useState(''); // State for AI response
+const raceData = [
+  {
+    name: "White",
+    falsePositiveRate: 0.31,
+  },
+  {
+    name: "Black",
+    falsePositiveRate: 0.53,
+  },
+  {
+    name: "Asian",
+    falsePositiveRate: 0.45,
+  },
+  {
+    name: "Hispanic",
+    falsePositiveRate: 0.91,
+  },
+];
 
-    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files.length > 0) {
-            const file = event.target.files[0];
-            Papa.parse(file, {
-                header: true,
-                complete: (result) => {
-                    setDataset(result.data); // Store parsed dataset
-                    setScreen('graph'); // Transition to graph screen after upload
-                    setScore(7.8); // Example score after file upload
+const genderData = [
+  {
+    name: "Male",
+    falsePositiveRate: 0.45,
+  },
+  {
+    name: "Female",
+    falsePositiveRate: 0.55,
+  },
+];
 
-                    // Fetch insights from Hugging Face based on uploaded data
-                    fetchAiInsights(result.data);
-                },
-            });
-        }
-    };
+function CustomizedAxisTick({ x, y, stroke, payload }: any) {
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <text
+        x={0}
+        y={0}
+        dy={16}
+        textAnchor="end"
+        fill="#666"
+        transform="rotate(-35)"
+      >
+        {payload.value}
+      </text>
+    </g>
+  );
+}
 
-    const fetchAiInsights = async (data: any[]) => {
-        try {
-            const response = await axios.post(
-                'https://api-inference.huggingface.co/models/gpt2',
-                { inputs: `Analyze this dataset:\n${JSON.stringify(data)}\nProvide insights.` },
-                {
-                    headers: {
-                        Authorization: `Bearer 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`, // Your Hugging Face API token
-                    },
-                });
-            setAiResponse(response.data[0].generated_text.trim());
-        } catch (error) {
-            console.error('Error fetching AI response:', error);
-        }
-    };
+function App() {
+  const [settingModal, setSettingModal] = useState(false);
+  const [xAxis, setXAxis] = useState<string>("Race");
+  const [content, setContent] = useState<string>("");
 
-    const handleXAxisChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        setXAxis(event.target.value as string);
-    };
+  useEffect(() => {
+    const URL = "/api/hello/Cash App";
 
-    const handleYAxisChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        setYAxis(event.target.value as string);
-    };
+    fetch(URL)
+    .then((res) => res.json())
+    .then((data) => setContent(data.message));
+  }, []);
 
-    return (
-        <Container maxWidth="lg">
-            <Header />
-            <Grid container spacing={3}>
-                {screen === 'landing' ? (
-                    // Landing Page
-                    <Grid item xs={12} textAlign="center">
-                        <h1>Welcome to Bias Visualizer</h1>
-                        <p>Analyze your data for bias using our visualizer tool.</p>
-                        <Button variant="contained" color="primary" onClick={() => setScreen('upload')}>
-                            Get Started
-                        </Button>
-                    </Grid>
-                ) : screen === 'upload' ? (
-                    <>
-                        {/* File Upload Screen */}
-                        <Grid item xs={12} md={8}>
-                            <FileUpload handleFileUpload={handleFileUpload} />
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <ScoreDisplay score={score} />
-                            <StatsDisplay />
-                        </Grid>
-                    </>
-                ) : (
-                    <>
-                        {/* Graph Display Screen */}
-                        <Grid item xs={12} md={8}>
-                            <ChartSection dataset={dataset} xAxis={xAxis} yAxis={yAxis} />
-                            {/* Toggle for X and Y axes */}
-                            <div style={{ marginTop: '20px' }}>
-                                <Select value={xAxis} onChange={handleXAxisChange}>
-                                    <MenuItem value="Race">Race</MenuItem>
-                                    <MenuItem value="Age">Age</MenuItem>
-                                    {/* Add more options as needed */}
-                                </Select>
-                                <Select value={yAxis} onChange={handleYAxisChange}>
-                                    <MenuItem value="FPR">False Positive Rate</MenuItem>
-                                    <MenuItem value="TPR">True Positive Rate</MenuItem>
-                                    {/* Add more options as needed */}
-                                </Select>
-                            </div>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <ScoreDisplay score={score} />
-                            {/* AI Response */}
-                            {aiResponse && (
-                                <>
-                                    <h3>AI Insights:</h3>
-                                    <p>{aiResponse}</p>
-                                </>
-                            )}
-                            <StatsDisplay />
-                        </Grid>
-                    </>
-                )}
-            </Grid>
-        </Container>
-    );
-};
+  return (
+    <div className="">
+      <Navbar />
+      <div className="flex w-screen justify-center gap-20">
+        <div className="w-[30rem] flex flex-col items-center">
+          <p className="text-lg text-gray-700 mb-3">
+            Race VS Declined Transaction False Positive Rate
+          </p>
+          <div className="w-full h-96">
+            <ResponsiveContainer height="100%" width="100%">
+              <BarChart
+                data={raceData}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" minTickGap={0} fontSize={14} />
+                <YAxis />
+                <Tooltip />
+                {/* <Legend /> */}
+                <Bar
+                  dataKey="falsePositiveRate"
+                  fill="#8884d8"
+                  name="Declined Transaction False Positive Rate"
+                  activeBar={<Rectangle stroke="black" />}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="flex items-center gap-1">
+            <p className="text-gray-700">Race</p>
+            <button className="" onClick={() => setSettingModal(true)}>
+              ⚙️
+            </button>
+          </div>
+        </div>
+        <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center">
+            <p className="text-xl">Bias Score</p>
+            <p className="text-6xl text-red-700">7.8</p>
+          </div>
+          <div className="mt-5">
+            <p className="text-xl">Statistics</p>
+            <p>Min: 31% (White)</p>
+            <p>Max: 91% (Hispanic)</p>
+            <p>Gap: 70% (White VS Hispanic)</p>
+          </div>
+        </div>
+      </div>
+      {settingModal && (
+        <Modal onClose={() => setSettingModal(false)} onSelect={setXAxis} />
+      )}
+
+      <h1>{content}</h1>
+    </div>
+  );
+}
 
 export default App;
