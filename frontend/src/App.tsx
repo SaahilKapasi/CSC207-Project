@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
+import { API_BASE_URL } from "./consts/consts";
 import GraphPage from "./pages/GraphPage";
 import WelcomePage from "./pages/WelcomePage";
 import { Dataset } from "./types/types";
@@ -8,23 +9,31 @@ import { Dataset } from "./types/types";
 function App() {
   const [page, setPage] = useState<"welcome" | "graph">("welcome");
   const [datasets, setDatasets] = useState<Dataset[]>([]);
-  const [selectedDataset, setSelectedDataset] = useState<Dataset>();
+  const [selectedDataset, setSelectedDataset] = useState<Dataset | undefined>(
+    undefined
+  );
   const [loading, setLoading] = useState(true);
-  const [loadingDataset, setLoadingDataset] = useState(false)
+  const [loadingDataset, setLoadingDataset] = useState(true);
 
   useEffect(() => {
     axios
-      .get(`/api/getDataset?id=${window.location.pathname.slice(1)}`)
+      .get(
+        `${API_BASE_URL}/api/getDataset?id=${window.location.pathname.slice(1)}`
+      )
       .then((response) => {
         if (response.data) {
           handleReceiveDataset(response.data);
         }
         setLoading(false);
-      });
+        setLoadingDataset(false);
+      })
+      .catch(console.error)
+      .finally(() => {});
   }, []);
 
   useEffect(() => {
-    document.title = page === "welcome" ? "Upload Dataset" : "Data Visualization";
+    document.title =
+      page === "welcome" ? "Upload Dataset" : "Data Visualization";
   }, [page]);
 
   function handleReceiveDataset(newDataset: Dataset) {
@@ -46,7 +55,9 @@ function App() {
 
   return (
     <div className="">
-      <a href="#main-content" className="skip-link">Skip to main content</a>
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <Navbar
         datasets={datasets}
         selectedDataset={selectedDataset}
@@ -61,7 +72,10 @@ function App() {
             <span className="loading loading-spinner text-success w-16 h-16"></span>
           </div>
         ) : page === "welcome" ? (
-          <WelcomePage onDataset={handleReceiveDataset} onSubmit={() => setLoadingDataset(true)}/>
+          <WelcomePage
+            onDataset={handleReceiveDataset}
+            onSubmit={() => setLoadingDataset(true)}
+          />
         ) : page === "graph" && selectedDataset ? (
           <GraphPage dataset={selectedDataset} />
         ) : (

@@ -1,4 +1,4 @@
-import { useEffect, useRef, ReactElement } from "react";
+import { ReactElement, useEffect, useRef } from "react";
 import { Dataset } from "../types/types";
 
 interface ModalProps {
@@ -19,7 +19,9 @@ export default function DatasetModal({
   // Set initial focus on the first button when the modal opens
   useEffect(() => {
     if (modalRef.current) {
-      const firstFocusableElement = modalRef.current.querySelector("button") as HTMLElement;
+      const firstFocusableElement = modalRef.current.querySelector(
+        "button"
+      ) as HTMLElement;
       firstFocusableElement?.focus();
     }
   }, []);
@@ -28,9 +30,10 @@ export default function DatasetModal({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Tab") {
-        const focusableElements = modalRef.current?.querySelectorAll<HTMLElement>(
-          "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"
-        );
+        const focusableElements =
+          modalRef.current?.querySelectorAll<HTMLElement>(
+            "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"
+          );
         if (focusableElements) {
           const firstElement = focusableElements[0];
           const lastElement = focusableElements[focusableElements.length - 1];
@@ -64,10 +67,12 @@ export default function DatasetModal({
         aria-label="Close modal"
       />
       <div className="absolute min-w-96 bg-white rounded-md flex items-center flex-col p-8 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
-        <p id="dataset-model-title" className="text-xl">Choose Dataset</p>
+        <p id="dataset-model-title" className="text-xl">
+          Choose Dataset
+        </p>
         <div className="flex-col gap-3 flex mt-5">
           {datasets.map((dataset) => (
-            <div className="flex gap-3 justify-between">
+            <div key={dataset.id} className="flex gap-3 justify-between">
               <button
                 className="p-1 px-3 bg-gray-100 min-w-32 hover:bg-gray-200"
                 onClick={() => {
@@ -80,30 +85,30 @@ export default function DatasetModal({
               </button>
 
               <button
-                  className="p-1 px-3 bg-gray-100 min-w-32 hover:bg-gray-200"
-                  onClick={() => {
+                className="p-1 px-3 bg-gray-100 min-w-32 hover:bg-gray-200"
+                onClick={() => {
                   navigator.clipboard.writeText(
-                      `${window.location.origin}/${dataset.id}`
+                    `${window.location.origin}/${dataset.id}`
                   );
                   onClose();
-              }}
-                  aria-label={`Copy link for dataset ${dataset.name}`}
-                  >
-                  Copy Link
+                }}
+                aria-label={`Copy link for dataset ${dataset.name}`}
+              >
+                Copy Link
               </button>
             </div>
           ))}
           <div className="flex gap-3 justify-between">
-              <button
-                  className="p-1 px-3 bg-gray-100 min-w-32 hover:bg-gray-200"
-                  onClick={() => {
-                      onNewDataset();
-                      onClose();
-                  }}
-                  aria-label="Create new dataset"
-              >
-                  New Dataset
-              </button>
+            <button
+              className="p-1 px-3 bg-gray-100 min-w-32 hover:bg-gray-200"
+              onClick={() => {
+                onNewDataset();
+                onClose();
+              }}
+              aria-label="Create new dataset"
+            >
+              New Dataset
+            </button>
           </div>
         </div>
       </div>
