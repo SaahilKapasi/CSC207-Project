@@ -4,11 +4,10 @@ import { Dataset } from "../types/types";
 
 interface WelcomePageProps {
   onDataset: (dataset: Dataset) => void;
+  onSubmit: () => void;
 }
 
-export default function WelcomePage({
-  onDataset,
-}: WelcomePageProps): ReactElement {
+export default function WelcomePage({ onDataset, onSubmit }: WelcomePageProps): ReactElement {
   const [file, setFile] = useState<File>();
   const [uploadStatus, setUploadStatus] = useState<string>("");
 
@@ -25,6 +24,8 @@ export default function WelcomePage({
       setUploadStatus("No file selected. Please choose a file to upload.")
       return;
     }
+
+    onSubmit();
 
     const formData = new FormData();
     formData.append("file", file);
@@ -51,24 +52,24 @@ export default function WelcomePage({
             <label className="relative cursor-pointer bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-all">
               CHOOSE FILE
               <input
-                  type="file"
-                  className="absolute inset-0 opacity-0 cursor-pointer"
-                  onChange={handleFile}
+                type="file"
+                className="absolute inset-0 opacity-0 cursor-pointer"
+                onChange={handleFile}
                 aria-label="Upload dataset file"
-            />
+              />
             </label>
             {/* Display selected file name */}
             <span className="text-gray-500">
-            {file ? file.name : "No file selected"}
-          </span>
+              {file ? file.name : "No file selected"}
+            </span>
 
             {/* Submit Button */}
             <button
-                type="submit"
-                className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-all"
-           >
-            Submit
-          </button>
+              type="submit"
+              className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-all"
+            >
+              Submit
+            </button>
         </form>
 
         {/* ARIA live region for status updates */}
