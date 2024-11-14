@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { useEffect, useRef, ReactElement } from "react";
 import { Dataset } from "../types/types";
 
 interface ModalProps {
@@ -14,14 +14,57 @@ export default function DatasetModal({
   onSelect,
   onNewDataset,
 }: ModalProps): ReactElement {
+  const modalRef = useRef<HTMLDivElement>(null);
+
+  // Set initial focus on the first button when the modal opens
+  useEffect(() => {
+    if (modalRef.current) {
+      const firstFocusableElement = modalRef.current.querySelector("button") as HTMLElement;
+      firstFocusableElement?.focus();
+    }
+  }, []);
+
+  // Trap focus within the modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Tab") {
+        const focusableElements = modalRef.current?.querySelectorAll<HTMLElement>(
+          "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"
+        );
+        if (focusableElements) {
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+          if (e.shiftKey && document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          } else if (!e.shiftKey && document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
+      } else if (e.key === "Escape") {
+        onClose(); // Close modal on 'Escape' key press
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
+
   return (
-    <div className="fixed z-50 w-screen h-screen top-0 left-0">
+    <div 
+      ref={modalRef}
+      className="fixed z-50 w-screen h-screen top-0 left-0" 
+      role="dialog" 
+      aria-labelledby="dataset-modal-title"
+    >
       <div
         className="bg-black opacity-50 h-full w-full absolute"
         onClick={onClose}
+        aria-label="Close modal"
       />
       <div className="absolute min-w-96 bg-white rounded-md flex items-center flex-col p-8 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
-        <p className="text-xl">Choose Dataset</p>
+        <p id="dataset-model-title" className="text-xl">Choose Dataset</p>
         <div className="flex-col gap-3 flex mt-5">
           {datasets.map((dataset) => (
             <div className="flex gap-3 justify-between">
