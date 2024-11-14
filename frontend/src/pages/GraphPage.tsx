@@ -97,9 +97,17 @@ export default function GraphPage({ dataset }: GraphPageProps) {
           <p className="text-lg text-gray-700 mb-3">
             {xAxis} VS Declined Transaction False Positive Rate
           </p>
-          <div className="w-full h-96" role="img" aria-labelledby="chart-description" aria-label={`Bar chart showing ${xAxis} versus False Positive Rate`}>
+          <div
+            className="w-full h-96"
+            role="img"
+            aria-labelledby="chart-description"
+            aria-label={`Bar chart showing ${xAxis} versus False Positive Rate`}
+          >
             <p id="chart-description" className="sr-only">
-            This chart shows the relationship between {xAxis} categories and the False Positive Rate in declined transactions. Values are between 0 and 1, where higher values indicate a higher rate of false positives.
+              This chart shows the relationship between {xAxis} categories and
+              the False Positive Rate in declined transactions. Values are
+              between 0 and 1, where higher values indicate a higher rate of
+              false positives.
             </p>
             <ResponsiveContainer height="100%" width="100%">
               <BarChart
@@ -117,8 +125,16 @@ export default function GraphPage({ dataset }: GraphPageProps) {
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" minTickGap={0} fontSize={14} aria-label="Categories on X-axis" />
-                <YAxis domain={[0, 1]} aria-label="False Positive Rate on Y-axis" />
+                <XAxis
+                  dataKey="name"
+                  minTickGap={0}
+                  fontSize={14}
+                  aria-label="Categories on X-axis"
+                />
+                <YAxis
+                  domain={[0, 1]}
+                  aria-label="False Positive Rate on Y-axis"
+                />
                 <Tooltip />
                 {/* <Legend /> */}
                 <Bar
@@ -132,15 +148,26 @@ export default function GraphPage({ dataset }: GraphPageProps) {
           </div>
           <div className="flex items-center gap-1">
             <p className="text-gray-700">{xAxis}</p>
-            <button className="" onClick={() => setSettingModal(true)} aria-label="Open settings modal">
+            <button
+              className=""
+              onClick={() => setSettingModal(true)}
+              aria-label="Open settings modal"
+            >
               ⚙️
             </button>
           </div>
         </div>
         <div className="flex flex-col items-center">
-          <div className="flex flex-col items-center" role="status" aria-live="polite" aria-label="Current bias score">
-
-            <div className="tooltip tooltip-right" data-tip="The bias score is calculated using the variance of all the false positive rates!">
+          <div
+            className="flex flex-col items-center"
+            role="status"
+            aria-live="polite"
+            aria-label="Current bias score"
+          >
+            <div
+              className="tooltip tooltip-right"
+              data-tip="The bias score is calculated using the variance of all the false positive rates!"
+            >
               <p className="text-xl">Overall Bias Score</p>
               <p className={`text-6xl text-${scoreToColor(dataset.score)}`}>
                 {dataset.score.toFixed(1)}
@@ -149,7 +176,6 @@ export default function GraphPage({ dataset }: GraphPageProps) {
                 {scoreToText(dataset.score)}
               </p>
             </div>
-
           </div>
           <div className="mt-5">
             <p className="text-xl">{xAxis} scores</p>
@@ -164,7 +190,10 @@ export default function GraphPage({ dataset }: GraphPageProps) {
                 {scoreToText(selectedCategory!.fprVarianceScore)})
               </span>
             </p>
-            <p className="tooltip tooltip-right" data-tip="The model accuracy score is determined by the mean FPR rate.">
+            <p
+              className="tooltip tooltip-right"
+              data-tip="The model accuracy score is determined by the mean FPR rate."
+            >
               Model accuracy score:{" "}
               <span
                 className={`text-${scoreToColor(

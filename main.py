@@ -1,8 +1,21 @@
 from fastapi import FastAPI, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 from file_handler import File
 import uuid
 
 app = FastAPI()
+
+origins = [
+    "*",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 past_datasets = {}
 
@@ -33,7 +46,7 @@ async def generate_dataset(file: UploadFile):
             )
         }, file_stats.categories)
     )
-
+    
     dataset = {
         "id": str(uuid.uuid4()),
         "name": file.filename,
