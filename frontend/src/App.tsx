@@ -13,7 +13,6 @@ function App() {
     undefined
   );
   const [loading, setLoading] = useState(true);
-  const [loadingDataset, setLoadingDataset] = useState(true);
 
   useEffect(() => {
     axios
@@ -25,10 +24,8 @@ function App() {
           handleReceiveDataset(response.data);
         }
         setLoading(false);
-        setLoadingDataset(false);
       })
-      .catch(console.error)
-      .finally(() => {});
+      .catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -40,7 +37,7 @@ function App() {
     setSelectedDataset(newDataset);
     setDatasets([...datasets, newDataset]);
     setPage("graph");
-    setLoadingDataset(false);
+    setLoading(false);
   }
 
   function handleNewDataset() {
@@ -67,14 +64,14 @@ function App() {
 
       {/* Main Content Area */}
       <main id="main-content" role="main">
-        {loading || loadingDataset ? (
+        {loading ? (
           <div className="w-screen flex justify-center">
             <span className="loading loading-spinner text-success w-16 h-16"></span>
           </div>
         ) : page === "welcome" ? (
           <WelcomePage
             onDataset={handleReceiveDataset}
-            onSubmit={() => setLoadingDataset(true)}
+            onSubmit={() => setLoading(true)}
           />
         ) : page === "graph" && selectedDataset ? (
           <GraphPage dataset={selectedDataset} />
