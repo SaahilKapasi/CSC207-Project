@@ -139,13 +139,17 @@ export default function GraphPage({ dataset }: GraphPageProps) {
         </div>
         <div className="flex flex-col items-center">
           <div className="flex flex-col items-center" role="status" aria-live="polite" aria-label="Current bias score">
-            <p className="text-xl">Overall Bias Score</p>
-            <p className={`text-6xl text-${scoreToColor(dataset.score)}`}>
-              {dataset.score.toFixed(1)}
-            </p>
-            <p className={`mt-1 text-${scoreToColor(dataset.score)}`}>
-              {scoreToText(dataset.score)}
-            </p>
+
+            <div className="tooltip tooltip-right" data-tip="The bias score is calculated using the variance of all the false positive rates!">
+              <p className="text-xl">Overall Bias Score</p>
+              <p className={`text-6xl text-${scoreToColor(dataset.score)}`}>
+                {dataset.score.toFixed(1)}
+              </p>
+              <p className={`mt-1 text-${scoreToColor(dataset.score)}`}>
+                {scoreToText(dataset.score)}
+              </p>
+            </div>
+
           </div>
           <div className="mt-5">
             <p className="text-xl">{xAxis} scores</p>
@@ -160,7 +164,7 @@ export default function GraphPage({ dataset }: GraphPageProps) {
                 {scoreToText(selectedCategory!.fprVarianceScore)})
               </span>
             </p>
-            <p className="">
+            <p className="tooltip tooltip-right" data-tip="The model accuracy score is determined by the mean FPR rate.">
               Model accuracy score:{" "}
               <span
                 className={`text-${scoreToColor(

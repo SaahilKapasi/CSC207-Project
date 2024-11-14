@@ -28,14 +28,14 @@ export default function Navbar({
 
         {/* Center Section: Dataset Information */}
         <div className="flex gap-2 items-center">
-      <p tabIndex={0} className="text-gray-600">Data Set:</p>
-      <p tabIndex={0} className="text-gray-800 font-semibold underline">
+          <p tabIndex={0} className="text-gray-600">Data Set:</p>
+          <p tabIndex={0} className="text-gray-800 font-semibold underline">
             {selectedDataset?.name || "N/A"}
           </p>
           <button
-               onClick={() => setModalOpen(true)}
-        aria-label="Open dataset modal"
-        className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition-all"
+            onClick={() => setModalOpen(true)}
+            aria-label="Open dataset modal"
+            className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition-all"
           >
             Select Dataset
           </button>
