@@ -35,20 +35,38 @@ export default function WelcomePage({
   }
 
   return (
-    <div className="w-screen">
-      <div className="flex flex-col mx-auto items-center">
-        <p className="text-xl mb-5">Import data set</p>
-        <form onSubmit={handleFileSubmit} className="flex gap-3">
-          <input
-            type="file"
-            className="file-input file-input-bordered"
-            onChange={handleFile}
-          />
-          <button className="btn" type="submit">
-            Submit
-          </button>
-        </form>
+      <div className="w-screen h-screen flex items-center justify-center bg-white">
+        <div className="flex flex-col items-center p-6 bg-gray-100 shadow-lg rounded-lg">
+          {/* Header */}
+          <p className="text-2xl font-semibold mb-6 text-gray-700">
+            Import Data Set
+          </p>
+
+          {/* Form */}
+          <form onSubmit={handleFileSubmit} className="flex gap-4 items-center">
+            {/* File Input */}
+            <label className="relative cursor-pointer bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-all">
+              CHOOSE FILE
+              <input
+                  type="file"
+                  className="absolute inset-0 opacity-0 cursor-pointer"
+                  onChange={handleFile}
+              />
+            </label>
+            {/* Display selected file name */}
+            <span className="text-gray-500">
+            {file ? file.name : "No file selected"}
+          </span>
+
+            {/* Submit Button */}
+            <button
+                type="submit"
+                className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-all"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
   );
 }
