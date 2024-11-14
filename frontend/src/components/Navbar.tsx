@@ -20,9 +20,12 @@ export default function Navbar({
   return (
     <div className="fixed top-0 left-0 w-screen z-50 flex justify-center p-3 border-gray-200 border-b-2 bg-gray-100">
       <div className="flex gap-1">
-        <p className="">Data Set:</p>
-        <p className="underline">{selectedDataset?.name || "N/A"}</p>
-        <button onClick={() => setModalOpen(true)}>📝</button>
+        <p tabIndex={0} className="">Data Set:</p>
+        <p tabIndex={0} className="underline">{selectedDataset?.name || "N/A"}</p>
+        <button 
+          onClick={() => setModalOpen(true)} 
+          aria-label="Open dataset modal"
+        >📝</button>
         {modalOpen && (
           <DatasetModal
             onClose={() => setModalOpen(false)}
