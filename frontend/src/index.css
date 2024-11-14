@@ -41,7 +41,8 @@ button {
   cursor: pointer;
 }
 
-button:focus, [tabindex="0"]:focus {
+button:focus,
+[tabindex="0"]:focus {
   outline: 2px solid blue;
   outline-offset: 2px;
 }
