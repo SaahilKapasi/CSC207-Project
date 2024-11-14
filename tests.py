@@ -1,17 +1,5 @@
 import unittest
-import main
 import file_handler
-
-
-class TestAPIMethods(unittest.TestCase):
-    def test_calculation_1(self):
-        # self.assertEqual(10, main.calculation_1())
-        pass
-
-    def test_calculation_2(self):
-        # self.assertEqual(25, main.calculation_2())
-        pass
-
 
 class TestFileHandler(unittest.TestCase):
     def test_score(self):
