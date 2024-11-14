@@ -10,6 +10,7 @@ export default function WelcomePage({
   onDataset,
 }: WelcomePageProps): ReactElement {
   const [file, setFile] = useState<File>();
+  const [uploadStatus, setUploadStatus] = useState<string>("");
 
   function handleFile(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -21,6 +22,7 @@ export default function WelcomePage({
   async function handleFileSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!file) {
+      setUploadStatus("No file selected. Please choose a file to upload.")
       return;
     }
 
@@ -31,6 +33,7 @@ export default function WelcomePage({
       onDataset(response.data);
     } catch (error) {
       console.error(error);
+      setUploadStatus("File upload failed. Please try again.")
     }
   }
 
@@ -51,7 +54,8 @@ export default function WelcomePage({
                   type="file"
                   className="absolute inset-0 opacity-0 cursor-pointer"
                   onChange={handleFile}
-              />
+                aria-label="Upload dataset file"
+            />
             </label>
             {/* Display selected file name */}
             <span className="text-gray-500">
@@ -62,11 +66,18 @@ export default function WelcomePage({
             <button
                 type="submit"
                 className="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 transition-all"
-            >
-              Submit
-            </button>
-          </form>
-        </div>
+           >
+            Submit
+          </button>
+        </form>
+
+        {/* ARIA live region for status updates */}
+        <p aria-live="polite" className="sr-only">
+          {uploadStatus}
+        </p>
       </div>
+    </div>
   );
 }
+
+          
