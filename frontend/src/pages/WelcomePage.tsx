@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ReactElement, useState } from "react";
+import { API_BASE_URL } from "../consts/consts";
 import { Dataset } from "../types/types";
 
 interface WelcomePageProps {
@@ -30,7 +31,10 @@ export default function WelcomePage({ onDataset, onSubmit }: WelcomePageProps): 
     const formData = new FormData();
     formData.append("file", file);
     try {
-      const response = await axios.post("/api/generateDataset", formData);
+      const response = await axios.post(
+        `${API_BASE_URL}/api/generateDataset`,
+        formData
+      );
       onDataset(response.data);
     } catch (error) {
       console.error(error);
