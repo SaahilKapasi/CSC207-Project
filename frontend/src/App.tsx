@@ -10,6 +10,7 @@ function App() {
   const [datasets, setDatasets] = useState<Dataset[]>([]);
   const [selectedDataset, setSelectedDataset] = useState<Dataset>();
   const [loading, setLoading] = useState(true);
+  const [loadingDataset, setLoadingDataset] = useState(false)
 
   useEffect(() => {
     axios
@@ -30,6 +31,7 @@ function App() {
     setSelectedDataset(newDataset);
     setDatasets([...datasets, newDataset]);
     setPage("graph");
+    setLoadingDataset(false);
   }
 
   function handleNewDataset() {
@@ -54,10 +56,12 @@ function App() {
 
       {/* Main Content Area */}
       <main id="main-content" role="main">
-        {loading ? (
-          <></>
+        {loading || loadingDataset ? (
+          <div className="w-screen flex justify-center">
+            <span className="loading loading-spinner text-success w-16 h-16"></span>
+          </div>
         ) : page === "welcome" ? (
-          <WelcomePage onDataset={handleReceiveDataset} />
+          <WelcomePage onDataset={handleReceiveDataset} onSubmit={() => setLoadingDataset(true)}/>
         ) : page === "graph" && selectedDataset ? (
           <GraphPage dataset={selectedDataset} />
         ) : (
