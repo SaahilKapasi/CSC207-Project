@@ -3,6 +3,10 @@ import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "/hifive/",
+  build: {
+    outDir: "./dist/hifive",
+  },
   server: {
     proxy: {
       "/api": {

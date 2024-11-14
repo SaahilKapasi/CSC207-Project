@@ -52,10 +52,10 @@ export default function DatasetModal({
   }, [onClose]);
 
   return (
-    <div 
+    <div
       ref={modalRef}
-      className="fixed z-50 w-screen h-screen top-0 left-0" 
-      role="dialog" 
+      className="fixed z-50 w-screen h-screen top-0 left-0"
+      role="dialog"
       aria-labelledby="dataset-modal-title"
     >
       <div
@@ -74,33 +74,36 @@ export default function DatasetModal({
                   onSelect(dataset);
                   onClose();
                 }}
+                aria-label={`Select dataset ${dataset.name}`}
               >
                 {dataset.name}
               </button>
 
               <button
-                className="p-1 px-3 bg-gray-100 min-w-32 hover:bg-gray-200"
-                onClick={() => {
+                  className="p-1 px-3 bg-gray-100 min-w-32 hover:bg-gray-200"
+                  onClick={() => {
                   navigator.clipboard.writeText(
-                    `${window.location.origin}/${dataset.id}`
+                      `${window.location.origin}/${dataset.id}`
                   );
                   onClose();
-                }}
-              >
-                Copy Link
+              }}
+                  aria-label={`Copy link for dataset ${dataset.name}`}
+                  >
+                  Copy Link
               </button>
             </div>
           ))}
           <div className="flex gap-3 justify-between">
-            <button
-              className="p-1 px-3 bg-gray-100 min-w-32 hover:bg-gray-200"
-              onClick={() => {
-                onNewDataset();
-                onClose();
-              }}
-            >
-              New Dataset
-            </button>
+              <button
+                  className="p-1 px-3 bg-gray-100 min-w-32 hover:bg-gray-200"
+                  onClick={() => {
+                      onNewDataset();
+                      onClose();
+                  }}
+                  aria-label="Create new dataset"
+              >
+                  New Dataset
+              </button>
           </div>
         </div>
       </div>
