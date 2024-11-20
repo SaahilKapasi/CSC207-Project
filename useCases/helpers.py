@@ -1,49 +1,18 @@
 """
 helpers.py
 
-This module provides utility functions for analyzing data related to protected classes.
+This module provides utility functions for analyzing infrastructure related to protected classes.
 Functions include generating filter criteria, filtering DataFrames based on criteria, identifying and
-removing outliers, calculating summary statistics, and categorizing numerical data based on the Interquartile Range.
+removing outliers, calculating summary statistics, and categorizing numerical infrastructure based on the Interquartile Range.
 """
 
 import itertools
 import pandas as pd
-from . import statistics as st
+
+from entites.protected_classes import get_protected_classes
+from useCases import statistics_calculator as st
 import numpy as np
 
-
-def get_protected_classes():
-    """
-    Retrieve a set of protected classes as defined in regulatory or policy contexts.
-
-    This function returns a set containing names of protected classes, which are categories
-    often used to ensure non-discriminatory practices in areas such as employment, housing,
-    and public accommodations.
-
-    Returns:
-        set: A set of strings, each representing a protected class (e.g., 'citizenship', 'race').
-    """
-    protected_classes = {
-        "citizenship",
-        "sex",
-        "pregnancy",
-        "race",
-        "family status",
-        "place of origin",
-        "marital status",
-        "ethnic origin",
-        "sexual orientation",
-        "color",
-        "gender identity",
-        "ancestry",
-        "gender expression",
-        "disability",
-        "receipt of public assistance (in housing)",
-        "age",
-        "record of offenses (in employment)",
-        "creed"
-    }
-    return protected_classes
 
 
 # Function to generate filter criteria based on unique values of input columns
@@ -52,7 +21,7 @@ def generate_filter_criteria(df, columns):
     Generate all possible combinations of filter criteria based on unique values in the specified columns.
 
     Parameters:
-    df (pd.DataFrame): The DataFrame containing the data.
+    df (pd.DataFrame): The DataFrame containing the infrastructure.
     columns (list): A list of column names to generate filter criteria from.
 
     Returns:
@@ -77,7 +46,7 @@ def filter_dataframe(df, filter_criteria):
     Filter the DataFrame based on a dictionary of attribute criteria.
 
     Parameters:
-    df (pd.DataFrame): The DataFrame containing the data.
+    df (pd.DataFrame): The DataFrame containing the infrastructure.
     filter_criteria (dict): A dictionary where keys are column names and values are the values to match.
 
     Returns:
@@ -89,47 +58,12 @@ def filter_dataframe(df, filter_criteria):
     return filtered_df
 
 
-def identify_outliers(df, column):
-    """
-    Identify potential outliers in a specified column using the IQR method.
-
-    Parameters:
-    df (pd.DataFrame): The DataFrame containing the data.
-    column (str): The column name for which to identify outliers.
-
-    Returns:
-    pd.Series: A series containing the outlier values.
-    """
-    lower_bound = st.get_col_lower_bound(df, column)
-    upper_bound = st.get_col_upper_bound(df, column)
-
-    outliers = df[(df[column] < lower_bound) | (df[column] > upper_bound)]
-    return outliers[column]
-
-
-def remove_outliers(df, column):
-    """
-    Remove outliers from the DataFrame based on the output of the identify_outliers function.
-
-    Parameters:
-    df (pd.DataFrame): The DataFrame containing the data.
-    column (str): The column name from which to remove outliers.
-
-    Returns:
-    pd.DataFrame: A new DataFrame with the identified outliers removed.
-    """
-    outliers = identify_outliers(df, column)
-    # Filter the DataFrame to exclude the identified outliers
-    df_no_outliers = df[~df[column].isin(outliers)]
-    return df_no_outliers
-
-
 def calculate_summary_statistics(df, column):
     """
     Calculate key summary statistics for a specified column in a DataFrame.
 
     Parameters:
-    df (pd.DataFrame): The DataFrame containing the data.
+    df (pd.DataFrame): The DataFrame containing the infrastructure.
     column (str): The column name for which to calculate the statistics.
 
     Returns:
@@ -172,7 +106,7 @@ def get_kinds(df, column) -> set:
     different categories or kinds within that column.
 
     Parameters:
-    df (pd.DataFrame): The DataFrame containing the data.
+    df (pd.DataFrame): The DataFrame containing the infrastructure.
     column (str): The name of the column to retrieve unique values from.
 
     Returns:
@@ -196,7 +130,7 @@ def update_number_kinds_by_irq(df, column) -> pd.DataFrame:
     The categorized values are assigned to a new column in the DataFrame with the suffix "_categorized_by_iqr".
 
     Parameters:
-    df (pd.DataFrame): The DataFrame containing the data.
+    df (pd.DataFrame): The DataFrame containing the infrastructure.
     column (str): The name of the numerical column to categorize based on IQR.
 
     Returns:
