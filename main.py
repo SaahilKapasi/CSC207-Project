@@ -1,6 +1,6 @@
 from fastapi import FastAPI, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from file_handler import File
+from interface_adapters.file_controller import (File)
 import uuid
 
 app = FastAPI()
