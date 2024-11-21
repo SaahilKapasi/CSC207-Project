@@ -1,5 +1,5 @@
 """
-statistics_calculator.py
+statistics.py
 
 This module provides functions for calculating basic statistical metrics on columns
 in a pandas DataFrame. Each function takes a DataFrame and a column name as input and
@@ -31,7 +31,7 @@ def get_col_mean(df, column):
         Calculate the mean of a specified column in a DataFrame.
 
         Parameters:
-        df (pd.DataFrame): The DataFrame containing the infrastructure.
+        df (pd.DataFrame): The DataFrame containing the data.
         column (str): The name of the column for which to calculate the mean.
 
         Returns:
@@ -45,7 +45,7 @@ def get_col_median(df, column):
         Calculate the median of a specified column in a DataFrame.
 
         Parameters:
-        df (pd.DataFrame): The DataFrame containing the infrastructure.
+        df (pd.DataFrame): The DataFrame containing the data.
         column (str): The name of the column for which to calculate the median.
 
         Returns:
@@ -59,7 +59,7 @@ def get_col_std(df, column):
         Calculate the standard deviation of a specified column in a DataFrame.
 
         Parameters:
-        df (pd.DataFrame): The DataFrame containing the infrastructure.
+        df (pd.DataFrame): The DataFrame containing the data.
         column (str): The name of the column for which to calculate the standard deviation.
 
         Returns:
@@ -73,7 +73,7 @@ def get_col_q1(df, column):
     Calculate the first quartile (Q1) of a specified column in a DataFrame.
 
     Parameters:
-    df (pd.DataFrame): The DataFrame containing the infrastructure.
+    df (pd.DataFrame): The DataFrame containing the data.
     column (str): The name of the column for which to calculate Q1.
 
     Returns:
@@ -87,7 +87,7 @@ def get_col_q3(df, column):
         Calculate the third quartile (Q3) of a specified column in a DataFrame.
 
         Parameters:
-        df (pd.DataFrame): The DataFrame containing the infrastructure.
+        df (pd.DataFrame): The DataFrame containing the data.
         column (str): The name of the column for which to calculate Q3.
 
         Returns:
@@ -101,7 +101,7 @@ def get_col_iqr(df, column):
         Calculate the Interquartile Range (IQR) of a specified column in a DataFrame.
 
         Parameters:
-        df (pd.DataFrame): The DataFrame containing the infrastructure.
+        df (pd.DataFrame): The DataFrame containing the data.
         column (str): The name of the column for which to calculate the IQR.
 
         Returns:
@@ -115,11 +115,11 @@ def get_col_lower_bound(df, column):
         Calculate the lower bound for outliers in a specified column using the IQR method.
 
         Parameters:
-        df (pd.DataFrame): The DataFrame containing the infrastructure.
+        df (pd.DataFrame): The DataFrame containing the data.
         column (str): The name of the column for which to calculate the lower bound.
 
         Returns:
-        float: The lower bound value, below which infrastructure points are considered potential outliers.
+        float: The lower bound value, below which data points are considered potential outliers.
     """
     return get_col_q1(df, column) - 1.5 * get_col_iqr(df, column)
 
@@ -129,10 +129,10 @@ def get_col_upper_bound(df, column):
         Calculate the upper bound for outliers in a specified column using the IQR method.
 
         Parameters:
-        df (pd.DataFrame): The DataFrame containing the infrastructure.
+        df (pd.DataFrame): The DataFrame containing the data.
         column (str): The name of the column for which to calculate the upper bound.
 
         Returns:
-        float: The upper bound value, above which infrastructure points are considered potential outliers.
+        float: The upper bound value, above which data points are considered potential outliers.
     """
     return get_col_q3(df, column) + 1.5 * get_col_iqr(df, column)

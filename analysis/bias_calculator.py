@@ -18,7 +18,7 @@ Functions:
 - calculate_score_by_accuracy(df, category): Placeholder function for calculating a score based on accuracy.
   Currently not implemented.
 
-- calculate_fpr(df): Calculate the false positive rate (FPR) for a subset of infrastructure within a specific category kind.
+- calculate_fpr(df): Calculate the false positive rate (FPR) for a subset of data within a specific category kind.
   This function assumes a DataFrame with 'marked' and 'actual' columns, indicating model prediction and true
   fraud status, respectively.
 
@@ -42,7 +42,7 @@ Dependencies:
 - Uses numpy (`np`) for mean and variance calculations.
 """
 
-from useCases import helpers
+from . import helpers
 import numpy as np
 
 
@@ -52,7 +52,7 @@ def calculate_overall_score(df, categories: set, method: str = "variance"):
     The score is calculated by averaging scores for each category based on the specified method.
 
     Parameters:
-    df (pd.DataFrame): The DataFrame containing the infrastructure.
+    df (pd.DataFrame): The DataFrame containing the data.
     categories (set): A set of column names representing the categories to calculate scores for.
     method (str): The method used to calculate individual category scores. Options are:
                   - "variance": Uses variance of FPRs for each category.
@@ -88,7 +88,7 @@ def calculate_score_by_variance(df, category):
     The score ranges from 0 to 10, with a lower FPR variance resulting in a higher score.
 
     Parameters:
-    df (pd.DataFrame): The DataFrame containing the infrastructure.
+    df (pd.DataFrame): The DataFrame containing the data.
     category (str): The column name representing the category by which to calculate FPR variance.
 
     Returns:
@@ -125,7 +125,7 @@ def calculate_score_by_fpr_mean(df, category):
     The score ranges from 0 to 10, where a lower mean FPR results in a higher score.
 
     Parameters:
-    df (pd.DataFrame): The DataFrame containing the infrastructure.
+    df (pd.DataFrame): The DataFrame containing the data.
     category (str): The column name representing the category by which to calculate FPRs.
 
     Returns:
@@ -152,10 +152,10 @@ def calculate_score_by_fpr_mean(df, category):
 
 def calculate_fpr(df):
     """
-    Calculate the false positive rate (FPR) for a given subset of infrastructure.
+    Calculate the false positive rate (FPR) for a given subset of data.
 
     Parameters:
-    df (pd.DataFrame): The DataFrame containing infrastructure for a single category kind. The DataFrame must include
+    df (pd.DataFrame): The DataFrame containing data for a single category kind. The DataFrame must include
                        two columns: 'marked' (indicating if a machine learning model marked it as fraud)
                        and 'actual' (indicating if it actually is fraud).
 
@@ -167,7 +167,7 @@ def calculate_fpr(df):
     - The DataFrame `df` contains the columns 'marked' and 'actual'.
     - 'marked' indicates whether the model marked a transaction as fraud (1 for fraud, 0 for not fraud).
     - 'actual' indicates whether the transaction is actually fraud (1 for fraud, 0 for not fraud).
-    - The DataFrame only contains infrastructure for *one unique kind* within the relevant category.
+    - The DataFrame only contains data for *one unique kind* within the relevant category.
 
     Notes:
     - The false positive rate is calculated as the sum of absolute differences between 'marked' and 'actual'
@@ -187,7 +187,7 @@ def obtain_fpr_set(df, category) -> list:
     otherwise, it calculates FPR for each distinct value in the categorical column.
 
     Parameters:
-    df (pd.DataFrame): The DataFrame containing the infrastructure.
+    df (pd.DataFrame): The DataFrame containing the data.
     category (str): The column name in the DataFrame representing the category by which to calculate FPRs.
 
     Returns:
@@ -214,7 +214,7 @@ def obtain_fpr_map(df, category) -> dict[str, float]:
     otherwise, it calculates FPR for each distinct value in the categorical column.
 
     Parameters:
-    df (pd.DataFrame): The DataFrame containing the infrastructure.
+    df (pd.DataFrame): The DataFrame containing the data.
     category (str): The column name in the DataFrame representing the category by which to calculate FPRs.
 
     Returns:

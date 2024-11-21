@@ -1,14 +1,13 @@
+import helpers
 import unittest
 import pandas as pd
-
-from useCases import helpers
 
 
 class TestHelperFunctions (unittest.TestCase):
     def setUp(self):
         """
         Create a sample DataFrame and other setup necessary for the tests.
-        This method is called before each tests method runs.
+        This method is called before each test method runs.
         """
         self.data = {
             'Race': ['White', 'White', 'Black', 'White', 'Asian', 'White', 'Black', 'Asian'],

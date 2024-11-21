@@ -1,19 +1,27 @@
-import unittest
 import pandas as pd
 import numpy as np
 import random
-from infrastructure.csv_io import fetch_all_countries
+
+
+def fetch_all_countries():
+    """
+    Loads a CSV file containing all country names.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing country names.
+    """
+    return pd.read_csv("all_countries.csv")
 
 
 def mock_data_with_all_protected_classes_not_null(n) -> pd.DataFrame:
     """
-    Generates a DataFrame with mock infrastructure, ensuring all protected class columns are populated (not null).
+    Generates a DataFrame with mock data, ensuring all protected class columns are populated (not null).
 
     Args:
         n (int): The number of rows to generate.
 
     Returns:
-        pd.DataFrame: A DataFrame containing mock infrastructure with fields representing protected classes.
+        pd.DataFrame: A DataFrame containing mock data with fields representing protected classes.
     """
 
     # Define length of the array
@@ -80,13 +88,13 @@ def mock_data_with_all_protected_classes_not_null(n) -> pd.DataFrame:
 
 def fake_real_data_not_null(n) -> pd.DataFrame:
     """
-    Generates a realistic DataFrame of mock infrastructure for Cash App with no missing values.
+    Generates a realistic DataFrame of mock data for Cash App with no missing values.
 
     Args:
         n (int): The number of rows to generate.
 
     Returns:
-        pd.DataFrame: A DataFrame with mock infrastructure representing user transaction information without nulls.
+        pd.DataFrame: A DataFrame with mock data representing user transaction information without nulls.
     """
 
     # Define length of the array
@@ -142,13 +150,13 @@ def fake_real_data_not_null(n) -> pd.DataFrame:
 
 def fake_real_data_has_null(n) -> pd.DataFrame:
     """
-    Generates a realistic DataFrame of mock infrastructure for Cash App with some missing values in optional fields.
+    Generates a realistic DataFrame of mock data for Cash App with some missing values in optional fields.
 
     Args:
         n (int): The number of rows to generate.
 
     Returns:
-        pd.DataFrame: A DataFrame with mock infrastructure representing user transaction information, with some null values.
+        pd.DataFrame: A DataFrame with mock data representing user transaction information, with some null values.
     """
 
     # Define length of the array
@@ -211,16 +219,13 @@ def fake_real_data_has_null(n) -> pd.DataFrame:
     return df
 
 
-class TestGenerateDate(unittest.TestCase):
-    def test_data_with_intended_nulls(self):
-        sample_size = 1000
-        mock_no_null = mock_data_with_all_protected_classes_not_null(sample_size)
-        real_no_null = fake_real_data_not_null(sample_size)
-        real_has_null = fake_real_data_has_null(sample_size)
-        self.assertTrue(not any(list(mock_no_null.isnull().sum())))
-        self.assertTrue(not any(list(real_no_null.isnull().sum())))
-        self.assertTrue(any(list(real_has_null.isnull().sum())))
+def convert_to_file(df: pd.DataFrame):
+    """
+    Prompts the user to specify a filename, then saves the provided DataFrame to a CSV file.
 
-
-if __name__ == '__main__':
-    unittest.main()
+    Args:
+        df (pd.DataFrame): The DataFrame to save to a CSV file.
+    """
+    csv_name = input("what csv name you want? (with suffix): ")
+    # Display or save the DataFrame
+    df.to_csv(csv_name, index=False)  # Uncomment to save as CSV
