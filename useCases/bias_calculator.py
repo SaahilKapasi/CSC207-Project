@@ -41,8 +41,9 @@ Dependencies:
 - Relies on the `helpers.get_cat_kinds` function from the `analysis.helpers` module to retrieve unique kinds.
 - Uses numpy (`np`) for mean and variance calculations.
 """
-
-from useCases import helpers
+from infrastructure.data_filters import filter_dataframe
+from useCases.statistics_calculator import update_number_kinds_by_irq
+from interface_adapters.category_utils import get_kinds
 import numpy as np
 
 
@@ -73,13 +74,10 @@ def calculate_overall_score(df, categories: set, method: str = "variance"):
     for category in categories:
         if method == "variance":
             ave_score += calculate_score_by_variance(df, category)
-        elif method == "accuracy":
-            # TODO: ave_score += calculate_score_by_accuracy(df, category)
-            pass
         elif method == "fpr_mean":
             ave_score += calculate_score_by_fpr_mean(df, category)
-    ave_score /= len(categories)
-    return ave_score
+    return ave_score / len(categories)
+
 
 
 def calculate_score_by_variance(df, category):
@@ -195,13 +193,17 @@ def obtain_fpr_set(df, category) -> list:
           Each entry represents the FPR for one unique kind within the category.
     """
     if np.issubdtype(df[category].dtype, np.number):
-        df = helpers.update_number_kinds_by_irq(df, category)
+        # Replace helpers reference with direct import
+        df = update_number_kinds_by_irq(df, category)
 
-    kinds = helpers.get_kinds(df, category)
-    kind_fprs = list()
+    # Replace helpers reference with direct import
+    kinds = get_kinds(df, category)
+    kind_fprs = []
+
     for kind in kinds:
-        kind_fpr = calculate_fpr(df[(df[category] == kind)])
+        kind_fpr = calculate_fpr(df[df[category] == kind])
         kind_fprs.append(kind_fpr)
+
     return kind_fprs
 
 
@@ -221,11 +223,15 @@ def obtain_fpr_map(df, category) -> dict[str, float]:
     dict: A map of kinds to FPRs {kind: FPR of kind}
     """
     if np.issubdtype(df[category].dtype, np.number):
-        df = helpers.update_number_kinds_by_irq(df, category)
+        # Replace helpers reference with direct import
+        df = update_number_kinds_by_irq(df, category)
 
-    kinds = helpers.get_kinds(df, category)
+    # Replace helpers reference with direct import
+    kinds = get_kinds(df, category)
     result = {}
+
     for kind in kinds:
-        kind_fpr = calculate_fpr(df[(df[category] == kind)])
+        kind_fpr = calculate_fpr(df[df[category] == kind])
         result[kind] = kind_fpr
+
     return result

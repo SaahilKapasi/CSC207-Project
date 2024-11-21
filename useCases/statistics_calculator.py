@@ -136,3 +136,62 @@ def get_col_upper_bound(df, column):
         float: The upper bound value, above which infrastructure points are considered potential outliers.
     """
     return get_col_q3(df, column) + 1.5 * get_col_iqr(df, column)
+
+def identify_outliers(df, column):
+    """
+    Identify outliers in a DataFrame column using IQR method.
+
+    Parameters:
+        df (pd.DataFrame): The DataFrame containing the data
+        column (str): Name of the column to check for outliers
+
+    Returns:
+        pd.Series: Series containing the outlier values
+    """
+    lower_bound = get_col_lower_bound(df, column)
+    upper_bound = get_col_upper_bound(df, column)
+    outliers = df[(df[column] < lower_bound) | (df[column] > upper_bound)]
+    return outliers[column]
+
+def remove_outliers(df, column):
+    """
+    Remove outliers from a DataFrame column.
+
+    Parameters:
+        df (pd.DataFrame): The DataFrame containing the data
+        column (str): Name of the column to remove outliers from
+
+    Returns:
+        pd.DataFrame: DataFrame with outliers removed
+    """
+    outliers = identify_outliers(df, column)
+    df_no_outliers = df[~df[column].isin(outliers)]
+    return df_no_outliers
+
+def update_number_kinds_by_irq(df, column):
+    """
+    Categorize numerical values based on IQR ranges.
+
+    Parameters:
+        df (pd.DataFrame): The DataFrame containing the data
+        column (str): Name of the column to categorize
+
+    Returns:
+        pd.DataFrame: DataFrame with new column containing IQR-based categories
+    """
+    q1 = get_col_q1(df, column)
+    q2 = get_col_mean(df, column)
+    q3 = get_col_q3(df, column)
+
+    conditions = [
+        (df[column] < q1),
+        (df[column] >= q1) & (df[column] < q2),
+        (df[column] >= q2) & (df[column] < q3),
+        ]
+
+    choices = [f"below_{q1}", f"below_{q2}", f"below_{q3}"]
+
+    new_col_name = f"{column}_categorized_by_iqr"
+    df[new_col_name] = np.select(conditions, choices, default=f"above_{q3}")
+
+    return df
