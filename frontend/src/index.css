@@ -49,14 +49,14 @@ button:focus,
 
 .skip-link {
   position: absolute;
-  top: -40px; /* Moves it off-screen */
-  left: 0;
-  background: #000;
-  color: #fff;
-  padding: 8px;
-  z-index: 100;
+  left: -999px;
+  top: -999px;
 }
-
 .skip-link:focus {
-  top: 0; /* Brings it back on-screen when focused */
+  left: 0;
+  top: 0;
+  background-color: #000;
+  color: #fff;
+  padding: 10px;
+  z-index: 1000; /* Ensures it appears on top of other elements */
 }
