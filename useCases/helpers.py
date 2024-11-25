@@ -154,20 +154,19 @@ def update_number_kinds_by_irq(df, column) -> pd.DataFrame:
 
 
 def find_protected_categories_names(df):
+    """
+    Identify column names in the DataFrame that pertain to protected classes.
 
-        """
-        Identify column names in the DataFrame that pertain to protected classes.
+    df(pd.DataFrame) : The DataFrame to analyze
 
-        df(pd.DataFrame) : The DataFrame to analyze
+     Returns :
+     set : A set containing names of columns that match proetected classes.
+    """
 
-         Returns :
-         set : A set containing names of columns that match proetected classes.
-        """
+    protected_classes = get_protected_classes()
+    cats_exist = {col for col in df.columns if col.lower() in protected_classes}
 
-        protected_classes = get_protected_classes()
-        cats_exist = {col for col in df.columns if col.lower() in protected_classes}
-
-        return cats_exist
+    return cats_exist
 
 
 def convert_crt_names_to_protected_cat_format(names):
