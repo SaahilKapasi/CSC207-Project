@@ -8,10 +8,10 @@ removing outliers, calculating summary statistics, and categorizing numerical in
 
 import itertools
 import pandas as pd
-
+import numpy as np
 from entites.protected_classes import get_protected_classes
 from useCases import statistics_calculator as st
-import numpy as np
+
 
 
 
@@ -112,8 +112,8 @@ def get_kinds(df, column) -> set:
     Returns:
     set: A set of unique values found in the specified column.
     """
-    set_of_kinds = set(df[column])
-    return set_of_kinds
+
+    return set(df[column])
 
 
 def update_number_kinds_by_irq(df, column) -> pd.DataFrame:
@@ -153,5 +153,44 @@ def update_number_kinds_by_irq(df, column) -> pd.DataFrame:
     return df
 
 
+def find_protected_categories_names(df):
+    """
+    Identify column names in the DataFrame that pertain to protected classes.
+
+    df(pd.DataFrame) : The DataFrame to analyze
+
+     Returns :
+     set : A set containing names of columns that match proetected classes.
+    """
+
+    protected_classes = get_protected_classes()
+    cats_exist = {col for col in df.columns if col.lower() in protected_classes}
+
+    return cats_exist
+
+
+def convert_crt_names_to_protected_cat_format(names):
+    """
+    Convert custom criterion names to a format conforming to protected category norms.
+
+    Parameters:
+    names (set): The set of criterion names to convert.
+
+    Returns:
+    set: A set of names formatted according to protected category standards.
+    """
+
+    protected_classes = get_protected_classes()
+
+    # Convert each name: lowercase and replace spaces with underscores
+    formatted_names = {name.lower().replace(" ", "_") for name in names}
+
+    # Optionally, filter out any names that do not match the defined protected classes
+    valid_formatted_names = {name for name in formatted_names if name in protected_classes}
+
+    return valid_formatted_names
+
+
 # TODO: def find_protected_categories'_names: return set of names (potentially using ai tools to identify this?
 # TODO: def convert_crt_names_to_protected_cat_format: void
+
