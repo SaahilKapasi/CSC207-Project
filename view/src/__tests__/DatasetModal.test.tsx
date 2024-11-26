@@ -12,8 +12,7 @@ const mockDatasets: Dataset[] = [
       categories: [
         {
           name: "Fraud",
-          fprMeanScore: 0.85,
-          fprVarianceScore: 0.02,
+          fprScore: 0.02,
           traits: [
             { name: "High Risk", fprMean: 0.9, count: 120 },
             { name: "Verified", fprMean: 0.8, count: 80 },
@@ -21,8 +20,7 @@ const mockDatasets: Dataset[] = [
         },
         {
           name: "Non-Fraud",
-          fprMeanScore: 0.15,
-          fprVarianceScore: 0.01,
+          fprScore: 0.01,
           traits: [
             { name: "Low Risk", fprMean: 0.1, count: 200 },
           ],
@@ -36,8 +34,7 @@ const mockDatasets: Dataset[] = [
       categories: [
         {
           name: "Fraud",
-          fprMeanScore: 0.9,
-          fprVarianceScore: 0.03,
+          fprScore: 0.03,
           traits: [
             { name: "High Risk", fprMean: 0.95, count: 150 },
             { name: "Unverified", fprMean: 0.85, count: 50 },
@@ -52,8 +49,7 @@ const mockDatasets: Dataset[] = [
       categories: [
         {
           name: "Non-Fraud",
-          fprMeanScore: 0.1,
-          fprVarianceScore: 0.005,
+          fprScore: 0.005,
           traits: [
             { name: "Verified", fprMean: 0.05, count: 300 },
           ],

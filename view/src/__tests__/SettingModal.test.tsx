@@ -7,20 +7,17 @@ import { Category } from "../types/types";
 const mockCategories: Category[] = [
   {
     name: "Category 1",
-    fprMeanScore: 2.5,
-    fprVarianceScore: 1.2,
+    fprScore: 1.2,
     traits: [],
   },
   {
     name: "Category 2",
-    fprMeanScore: 5.0,
-    fprVarianceScore: 4.0,
+    fprScore: 4.0,
     traits: [],
   },
   {
     name: "Category 3",
-    fprMeanScore: 8.5,
-    fprVarianceScore: 7.0,
+    fprScore: 7.0,
     traits: [],
   },
 ];
