@@ -1,5 +1,6 @@
 import React from "react";
 import "./LandingPage.css";
+import logo from "./logo.svg"
 
 const LandingPage: React.FC = () => {
     return (
@@ -31,7 +32,7 @@ const LandingPage: React.FC = () => {
 
                 {/* Image with Fade-In Animation */}
                 <img
-                    src="/path-to-hero-image.jpg" // Replace with your hero image path
+                    src={logo} // Replace with your hero image path
                     alt="Illustration"
                     className="hero-image fade-in"
                 />
