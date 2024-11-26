@@ -1,7 +1,6 @@
 export interface Category {
   name: string;
-  fprMeanScore: number;
-  fprVarianceScore: number;
+  fprScore: number;
   traits: Trait[];
 }
 

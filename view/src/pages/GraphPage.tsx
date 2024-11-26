@@ -183,11 +183,11 @@ export default function GraphPage({ dataset }: GraphPageProps) {
               Bias score:{" "}
               <span
                 className={`text-${scoreToColor(
-                  selectedCategory!.fprVarianceScore
+                  selectedCategory!.fprScore
                 )}`}
               >
-                {selectedCategory?.fprVarianceScore.toFixed(1)}/10 (
-                {scoreToText(selectedCategory!.fprVarianceScore)})
+                {selectedCategory?.fprScore.toFixed(1)}/10 (
+                {scoreToText(selectedCategory!.fprScore)})
               </span>
             </p>
             <p
@@ -197,11 +197,11 @@ export default function GraphPage({ dataset }: GraphPageProps) {
               Model accuracy score:{" "}
               <span
                 className={`text-${scoreToColor(
-                  selectedCategory!.fprMeanScore
+                  selectedCategory!.fprScore
                 )}`}
               >
-                {selectedCategory?.fprMeanScore.toFixed(1)}/10 (
-                {scoreToText(selectedCategory!.fprMeanScore)})
+                {selectedCategory?.fprScore.toFixed(1)}/10 (
+                {scoreToText(selectedCategory!.fprScore)})
               </span>
             </p>
             <p>
