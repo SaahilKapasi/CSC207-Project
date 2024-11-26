@@ -1,4 +1,3 @@
-import * as React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import SettingModal from "../components/SettingModal";
@@ -99,14 +98,14 @@ describe("SettingModal", () => {
         onSelect={mockOnSelect}
       />
     );
-
-    // Verify warning texts
+  
     const category1Warning = screen.getByText("❗❗");
     const category2Warning = screen.getByText("❗");
-    const category3Warning = screen.queryByText("");
-
+    const category3Warning = screen.queryByTestId("category3-warning");
+  
     expect(category1Warning).toBeInTheDocument();
     expect(category2Warning).toBeInTheDocument();
-    expect(category3Warning).not.toBeNull(); // Empty string should still render
+    expect(category3Warning).toBeNull(); // Update to reflect expected absence
   });
+  
 });

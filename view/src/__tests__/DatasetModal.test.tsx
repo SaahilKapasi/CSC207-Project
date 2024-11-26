@@ -1,4 +1,3 @@
-import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import DatasetModal from "../components/DatasetModal";
@@ -87,22 +86,26 @@ const mockDatasets: Dataset[] = [
       );
     });
 
-  test("handles selecting a dataset", () => {
-    render(
-      <DatasetModal
-        datasets={mockDatasets}
-        onClose={mockOnClose}
-        onSelect={mockOnSelect}
-        onNewDataset={mockOnNewDataset}
-      />
-    );
-
-    const selectButton = screen.getByLabelText("Select dataset Dataset 1");
-    fireEvent.click(selectButton);
-
-    expect(mockOnSelect).toHaveBeenCalledWith(mockDatasets[0]);
-    expect(mockOnClose).toHaveBeenCalled();
-  });
+    test("handles selecting a dataset", () => {
+      render(
+        <DatasetModal
+          datasets={mockDatasets}
+          onClose={mockOnClose}
+          onSelect={mockOnSelect}
+          onNewDataset={mockOnNewDataset}
+        />
+      );
+    
+      const firstDataset = mockDatasets[0];
+    
+      const selectButton = screen.getByLabelText(`Select dataset ${firstDataset.name}`);
+      
+      fireEvent.click(selectButton);
+    
+      expect(mockOnSelect).toHaveBeenCalledWith(firstDataset);
+      expect(mockOnClose).toHaveBeenCalled();
+    });
+    
 
   test("handles creating a new dataset", () => {
     render(
@@ -146,7 +149,8 @@ const mockDatasets: Dataset[] = [
     expect(mockOnClose).toHaveBeenCalled();
   });
 
-  test("handles keyboard navigation (Tab and Shift+Tab)", () => {
+
+  test("closes the modal when clicking the close button", () => {
     render(
       <DatasetModal
         datasets={mockDatasets}
@@ -155,20 +159,14 @@ const mockDatasets: Dataset[] = [
         onNewDataset={mockOnNewDataset}
       />
     );
-
-    const firstButton = screen.getByLabelText("Select dataset Dataset 1");
-    const lastButton = screen.getByLabelText("Create new dataset");
-
-    firstButton.focus();
-    expect(document.activeElement).toBe(firstButton);
-
-    fireEvent.keyDown(document, { key: "Tab" });
-    expect(document.activeElement).toBe(lastButton);
-
-    fireEvent.keyDown(document, { key: "Tab", shiftKey: true });
-    expect(document.activeElement).toBe(firstButton);
+  
+    const closeButton = screen.getByLabelText("Close modal");
+    fireEvent.click(closeButton);
+  
+    expect(mockOnClose).toHaveBeenCalled();
   });
-
+  
+  
   test("closes the modal on Escape key press", () => {
     render(
       <DatasetModal

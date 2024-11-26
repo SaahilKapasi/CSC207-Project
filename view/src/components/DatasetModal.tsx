@@ -22,8 +22,10 @@ export default function DatasetModal({
     if (modalRef.current) {
       const firstFocusableElement = modalRef.current.querySelector(
         "button"
-      ) as HTMLElement;
-      firstFocusableElement?.focus();
+      ) as HTMLElement | null;
+      if (firstFocusableElement) {
+        firstFocusableElement.focus();
+      }
     }
     return () => {
       previouslyFocusedElement.current?.focus(); // Return focus to the triggering element when the modal closes
@@ -34,10 +36,11 @@ export default function DatasetModal({
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Tab") {
-        const focusableElements =
+        const focusableElements = Array.from(
           modalRef.current?.querySelectorAll<HTMLElement>(
             "button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])"
-          );
+          ) || []
+        );
         if (focusableElements) {
           const firstElement = focusableElements[0];
           const lastElement = focusableElements[focusableElements.length - 1];
@@ -72,8 +75,19 @@ export default function DatasetModal({
         onClick={onClose}
         aria-hidden="true" // Mark as hidden for screen readers
       />
+
       <div
-          className="absolute min-w-96 bg-white rounded-md flex items-center flex-col p-8 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2">
+          className="absolute min-w-96 bg-white rounded-md flex items-center flex-col p-8 left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2"
+      >
+
+        <button
+          className="absolute top-2 right-2 p-2 text-gray-500 hover:text-black"
+          onClick={onClose}
+          aria-label="Close modal"
+        >
+          ×
+        </button>
+        
         <p id="dataset-model-title" className="text-xl">
           Choose Dataset
         </p>
@@ -93,7 +107,6 @@ export default function DatasetModal({
                       onSelect(dataset);
                       onClose();
                     }}
-                    tabIndex={-1} // Exclude from Tab navigation
                     aria-label={`Select dataset ${dataset.name}`}
                 >
                   {dataset.name}
