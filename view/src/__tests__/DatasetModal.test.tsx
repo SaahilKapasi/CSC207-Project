@@ -1,163 +1,199 @@
-// import React from "react";
-// import { render, screen, fireEvent } from "@testing-library/react";
-// import DatasetModal from "../components/DatasetModal";
-// import { Dataset } from "../types/types";
+import React from "react";
+import { render, fireEvent, screen } from "@testing-library/react";
+import "@testing-library/jest-dom";
+import DatasetModal from "../components/DatasetModal";
+import { Dataset } from "../types/types"; 
 
-// // Mock data for the tests
-// const mockDatasets: Dataset[] = [
-//   { id: "1", name: "Dataset 1" },
-//   { id: "2", name: "Dataset 2" },
-// ];
 
-// // Mock functions for the props
-// const onClose = jest.fn();
-// const onSelect = jest.fn();
-// const onNewDataset = jest.fn();
+// Mock dataset with additional properties
+const mockDatasets: Dataset[] = [
+    {
+      id: "1",
+      name: "Dataset 1",
+      categories: [
+        {
+          name: "Fraud",
+          fprMeanScore: 0.85,
+          fprVarianceScore: 0.02,
+          traits: [
+            { name: "High Risk", fprMean: 0.9, count: 120 },
+            { name: "Verified", fprMean: 0.8, count: 80 },
+          ],
+        },
+        {
+          name: "Non-Fraud",
+          fprMeanScore: 0.15,
+          fprVarianceScore: 0.01,
+          traits: [
+            { name: "Low Risk", fprMean: 0.1, count: 200 },
+          ],
+        },
+      ],
+      score: 0.85,
+    },
+    {
+      id: "2",
+      name: "Dataset 2",
+      categories: [
+        {
+          name: "Fraud",
+          fprMeanScore: 0.9,
+          fprVarianceScore: 0.03,
+          traits: [
+            { name: "High Risk", fprMean: 0.95, count: 150 },
+            { name: "Unverified", fprMean: 0.85, count: 50 },
+          ],
+        },
+      ],
+      score: 0.92,
+    },
+    {
+      id: "3",
+      name: "Dataset 3",
+      categories: [
+        {
+          name: "Non-Fraud",
+          fprMeanScore: 0.1,
+          fprVarianceScore: 0.005,
+          traits: [
+            { name: "Verified", fprMean: 0.05, count: 300 },
+          ],
+        },
+      ],
+      score: 0.78,
+    },
+  ];
+  
+  
+  // Mock callback functions
+  const mockOnClose = jest.fn();
+  const mockOnSelect = jest.fn();
+  const mockOnNewDataset = jest.fn();
+  
+  describe("DatasetModal", () => {
+    test("renders the modal with datasets", () => {
+      render(
+        <DatasetModal
+          datasets={mockDatasets}
+          onClose={mockOnClose}
+          onSelect={mockOnSelect}
+          onNewDataset={mockOnNewDataset}
+        />
+      );
+  
+      expect(screen.getByText("Choose Dataset")).toBeInTheDocument();
+      mockDatasets.forEach((dataset) =>
+        expect(screen.getByText(dataset.name)).toBeInTheDocument()
+      );
+    });
 
-// describe("DatasetModal Component", () => {
-//   beforeEach(() => {
-//     jest.clearAllMocks(); // Reset mocks before each test
-//   });
+  test("handles selecting a dataset", () => {
+    render(
+      <DatasetModal
+        datasets={mockDatasets}
+        onClose={mockOnClose}
+        onSelect={mockOnSelect}
+        onNewDataset={mockOnNewDataset}
+      />
+    );
 
-//   it("renders correctly with datasets", () => {
-//     render(
-//       <DatasetModal
-//         datasets={mockDatasets}
-//         onClose={onClose}
-//         onSelect={onSelect}
-//         onNewDataset={onNewDataset}
-//       />
-//     );
+    const selectButton = screen.getByLabelText("Select dataset Dataset 1");
+    fireEvent.click(selectButton);
 
-//     // Check modal title
-//     expect(screen.getByText(/Choose Dataset/i)).toBeInTheDocument();
+    expect(mockOnSelect).toHaveBeenCalledWith(mockDatasets[0]);
+    expect(mockOnClose).toHaveBeenCalled();
+  });
 
-//     // Check dataset buttons
-//     mockDatasets.forEach((dataset) => {
-//       expect(screen.getByText(dataset.name)).toBeInTheDocument();
-//     });
+  test("handles creating a new dataset", () => {
+    render(
+      <DatasetModal
+        datasets={mockDatasets}
+        onClose={mockOnClose}
+        onSelect={mockOnSelect}
+        onNewDataset={mockOnNewDataset}
+      />
+    );
 
-//     // Check "New Dataset" button
-//     expect(screen.getByText(/New Dataset/i)).toBeInTheDocument();
-//   });
+    const newDatasetButton = screen.getByLabelText("Create new dataset");
+    fireEvent.click(newDatasetButton);
 
-//   it("calls onSelect and onClose when a dataset is selected", () => {
-//     render(
-//       <DatasetModal
-//         datasets={mockDatasets}
-//         onClose={onClose}
-//         onSelect={onSelect}
-//         onNewDataset={onNewDataset}
-//       />
-//     );
+    expect(mockOnNewDataset).toHaveBeenCalled();
+    expect(mockOnClose).toHaveBeenCalled();
+  });
 
-//     // Simulate selecting a dataset
-//     const datasetButton = screen.getByText("Dataset 1");
-//     fireEvent.click(datasetButton);
+  test("handles copying dataset link", () => {
+    Object.assign(navigator, {
+      clipboard: {
+        writeText: jest.fn(),
+      },
+    });
 
-//     expect(onSelect).toHaveBeenCalledWith(mockDatasets[0]);
-//     expect(onClose).toHaveBeenCalled();
-//   });
+    render(
+      <DatasetModal
+        datasets={mockDatasets}
+        onClose={mockOnClose}
+        onSelect={mockOnSelect}
+        onNewDataset={mockOnNewDataset}
+      />
+    );
 
-//   it("copies link and closes modal when 'Copy Link' is clicked", () => {
-//     render(
-//       <DatasetModal
-//         datasets={mockDatasets}
-//         onClose={onClose}
-//         onSelect={onSelect}
-//         onNewDataset={onNewDataset}
-//       />
-//     );
+    const copyLinkButton = screen.getByLabelText("Copy link for dataset Dataset 1");
+    fireEvent.click(copyLinkButton);
 
-//     // Simulate copying the link
-//     const copyLinkButton = screen.getByLabelText("Copy link for dataset Dataset 1");
-//     Object.assign(navigator, {
-//       clipboard: {
-//         writeText: jest.fn(),
-//       },
-//     });
-//     fireEvent.click(copyLinkButton);
+    expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
+      `${window.location.origin}/1`
+    );
+    expect(mockOnClose).toHaveBeenCalled();
+  });
 
-//     expect(navigator.clipboard.writeText).toHaveBeenCalledWith(
-//       `${window.location.origin}/1`
-//     );
-//     expect(onClose).toHaveBeenCalled();
-//   });
+  test("handles keyboard navigation (Tab and Shift+Tab)", () => {
+    render(
+      <DatasetModal
+        datasets={mockDatasets}
+        onClose={mockOnClose}
+        onSelect={mockOnSelect}
+        onNewDataset={mockOnNewDataset}
+      />
+    );
 
-//   it("calls onNewDataset and onClose when 'New Dataset' is clicked", () => {
-//     render(
-//       <DatasetModal
-//         datasets={mockDatasets}
-//         onClose={onClose}
-//         onSelect={onSelect}
-//         onNewDataset={onNewDataset}
-//       />
-//     );
+    const firstButton = screen.getByLabelText("Select dataset Dataset 1");
+    const lastButton = screen.getByLabelText("Create new dataset");
 
-//     // Simulate creating a new dataset
-//     const newDatasetButton = screen.getByText(/New Dataset/i);
-//     fireEvent.click(newDatasetButton);
+    firstButton.focus();
+    expect(document.activeElement).toBe(firstButton);
 
-//     expect(onNewDataset).toHaveBeenCalled();
-//     expect(onClose).toHaveBeenCalled();
-//   });
+    fireEvent.keyDown(document, { key: "Tab" });
+    expect(document.activeElement).toBe(lastButton);
 
-//   it("closes modal when the overlay is clicked", () => {
-//     render(
-//       <DatasetModal
-//         datasets={mockDatasets}
-//         onClose={onClose}
-//         onSelect={onSelect}
-//         onNewDataset={onNewDataset}
-//       />
-//     );
+    fireEvent.keyDown(document, { key: "Tab", shiftKey: true });
+    expect(document.activeElement).toBe(firstButton);
+  });
 
-//     // Simulate clicking the overlay
-//     const overlay = screen.getByLabelText(/Close modal/i);
-//     fireEvent.click(overlay);
+  test("closes the modal on Escape key press", () => {
+    render(
+      <DatasetModal
+        datasets={mockDatasets}
+        onClose={mockOnClose}
+        onSelect={mockOnSelect}
+        onNewDataset={mockOnNewDataset}
+      />
+    );
 
-//     expect(onClose).toHaveBeenCalled();
-//   });
+    fireEvent.keyDown(document, { key: "Escape" });
+    expect(mockOnClose).toHaveBeenCalled();
+  });
 
-//   it("traps focus within the modal", () => {
-//     render(
-//       <DatasetModal
-//         datasets={mockDatasets}
-//         onClose={onClose}
-//         onSelect={onSelect}
-//         onNewDataset={onNewDataset}
-//       />
-//     );
+  test("renders properly with an empty dataset", () => {
+    render(
+      <DatasetModal
+        datasets={[]}
+        onClose={mockOnClose}
+        onSelect={mockOnSelect}
+        onNewDataset={mockOnNewDataset}
+      />
+    );
 
-//     // Get all buttons
-//     const buttons = screen.getAllByRole("button");
-
-//     // Focus the first button
-//     buttons[0].focus();
-//     expect(document.activeElement).toBe(buttons[0]);
-
-//     // Simulate pressing Tab
-//     fireEvent.keyDown(document, { key: "Tab" });
-//     expect(document.activeElement).toBe(buttons[1]);
-
-//     // Simulate pressing Shift + Tab
-//     fireEvent.keyDown(document, { key: "Tab", shiftKey: true });
-//     expect(document.activeElement).toBe(buttons[0]);
-//   });
-
-//   it("closes modal on 'Escape' key press", () => {
-//     render(
-//       <DatasetModal
-//         datasets={mockDatasets}
-//         onClose={onClose}
-//         onSelect={onSelect}
-//         onNewDataset={onNewDataset}
-//       />
-//     );
-
-//     // Simulate pressing Escape
-//     fireEvent.keyDown(document, { key: "Escape" });
-
-//     expect(onClose).toHaveBeenCalled();
-//   });
-// });
+    expect(screen.getByText("Choose Dataset")).toBeInTheDocument();
+    expect(screen.queryByLabelText("Select dataset")).not.toBeInTheDocument();
+  });
+});
