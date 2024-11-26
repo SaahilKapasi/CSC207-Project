@@ -4,106 +4,106 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+    font-weight: 500;
+    color: #646cff;
+    text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+    color: #535bf2;
 }
 
 body {
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-width: 320px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 320px;
 }
 
 h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+    font-size: 3.2em;
+    line-height: 1.1;
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  cursor: pointer;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
 }
 
 button:hover {
-  background-color: #4caf50; /* Green hover effect */
+    background-color: #4caf50; /* Green hover effect */
 }
 
 button:focus,
 [tabindex="0"]:focus {
-  outline: 2px solid blue;
-  outline-offset: 2px;
+    outline: 2px solid blue;
+    outline-offset: 2px;
 }
 
 .skip-link {
-  position: absolute;
-  top: -40px; /* Moves it off-screen */
-  left: 0;
-  background: #000;
-  color: #fff;
-  padding: 8px;
-  z-index: 100;
+    position: absolute;
+    top: -40px; /* Moves it off-screen */
+    left: 0;
+    background: #000;
+    color: #fff;
+    padding: 8px;
+    z-index: 100;
 }
 
 .skip-link:focus {
-  top: 0; /* Brings it back on-screen when focused */
+    top: 0; /* Brings it back on-screen when focused */
 }
 
 /* Navbar Styles */
 .landing-header {
-  display: flex;
-  justify-content: space-between; /* Space between logo and title */
-  align-items: center; /* Align items vertically */
-  width: 100%;
+    display: flex;
+    justify-content: space-between; /* Space between logo and title */
+    align-items: center; /* Align items vertically */
+    width: 100%;
 }
 
 .landing-header .logo {
-  display: flex; /* Flexbox for logo alignment */
+    display: flex; /* Flexbox for logo alignment */
 }
 
 .landing-header .logo img {
-  height: auto; /* Ensure logo scales properly */
+    height: auto; /* Ensure logo scales properly */
 }
 
 /* Hero Section Styles */
 .hero-section {
-  display: flex; /* Flex layout for hero section */
+    display: flex; /* Flex layout for hero section */
 }
 
 .hero-section img {
-  max-width: auto; /* Adjust image size */
+    max-width: auto; /* Adjust image size */
 }
 
 /* Animated Navbar Text Style */
 @keyframes marquee {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(-100%);
-  }
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(-100%);
+    }
 }
 
 .animate-marquee {
-  display: flex; /* Added missing semicolon */
-  overflow: hidden; /* Properly separated property */
-  white-space: nowrap; /* Properly separated property */
-  animation: marquee 10s linear infinite; /* Smooth scrolling animation */
+    display: flex; /* Added missing semicolon */
+    overflow: hidden; /* Properly separated property */
+    white-space: nowrap; /* Properly separated property */
+    animation: marquee 10s linear infinite; /* Smooth scrolling animation */
 }
