@@ -18,18 +18,21 @@ Usage:
     Create a File instance by providing the file path of a CSV dataset.
     Use instance methods to retrieve bias scores for specific categories or an overall score.
 """
-from useCases import bias_calculator, helpers
+from typing import BinaryIO
+
+from backend.entites.protected_classes import PROTECTED_CLASSES
 import pandas as pd
 
+from backend.use_cases.bias_calculators.bias_calculator import BiasCalculator
 
-class File:
+
+class DatasetFile:
     """
     A class for handling and calculating bias scores for a dataset with protected categories.
 
     Attributes:
         df (pd.DataFrame): The DataFrame containing the dataset.
         categories (set): A set of protected categories present in the dataset.
-        score (float): Default overall variance score for the dataset when initialized.
 
     Methods:
         get_category_var_score(category): Get the variance-based bias score for a specific category.
@@ -38,13 +41,29 @@ class File:
     """
     df: pd.DataFrame
     categories: set
-    score: float    # default variance when initialized
+    bias_calculator: BiasCalculator
 
-    def __init__(self, file_address):
-        self.df = pd.read_csv(file_address)
-        self.categories = helpers.get_categories_exist(self.df)
-        self.score = bias_calculator.calculate_overall_score(self.df, self.categories)
+    def __init__(self, file_address: BinaryIO, bias_calculator: BiasCalculator):
+        self.load_file(file_address)
+        self.categories = self.get_present_categories()
+        self.bias_calculator = bias_calculator
 
+    def load_file(self, file_address: BinaryIO):
+        raise NotImplementedError
+
+    def get_present_categories(self) -> set:
+        """
+        Identify protected categories that exist as columns in the DataFrame.
+        Parameters:
+           df (pd.DataFrame): The DataFrame to check for protected categories
+        Returns:
+           set: Set of column names that match protected classes
+       """
+        cats_exist = set()
+        for i in self.df.columns:
+            if i.lower() in PROTECTED_CLASSES:
+                cats_exist.add(i)
+        return cats_exist
 
     def get_category_traits(self, category: str):
         """
@@ -75,7 +94,6 @@ class File:
             result[trait] = count
         return result
 
-
     def get_category_trait_fprs(self, category: str):
         """
         Ex. for race, it would return mean fprs of people that are white, black, etc
@@ -86,9 +104,9 @@ class File:
         Returns:
             dict: {trait: mean fpr}
         """
-        return bias_calculator.obtain_fpr_map(self.df, category)
+        return self.bias_calculator.obtain_fpr_map(self.df, category)
 
-    def get_category_var_score(self, category):
+    def get_category_score(self, category):
         """
         Calculate and return the variance-based bias score for a specific category.
 
@@ -99,20 +117,23 @@ class File:
             float: Variance-based bias score for the specified category, or None if the category is not present.
         """
         if category in self.categories:
-            return bias_calculator.calculate_score_by_variance(self.df, category)
+            return self.bias_calculator.calculate_score(self.df, category)
         return None
 
-    def get_category_mean_score(self, category):
+    def get_overall_score(self):
         """
-        Calculate and return the mean-based bias score for a specific category.
+        Calculate an overall bias score across multiple categories in the dataset.
 
-        Parameters:
-            category (str): The name of the category to calculate the mean score for.
+        The score is calculated by averaging scores for each category based on the specified method.
 
         Returns:
-            float: Mean-based bias score for the specified category, or None if the category is not present.
-        """
-        if category in self.categories:
-            return bias_calculator.calculate_score_by_fpr_mean(self.df, category)
-        return None
+            float: An average score between 0 and 10, where higher values indicate lower bias across categories.
 
+        Notes:
+            - The function averages scores calculated for each category, so `calculate_score_by_variance`
+              and `calculate_score_by_fpr_mean` should be defined separately in `bias_calculator`.
+            - By default, the "variance" method is used. If "accuracy" is selected, it will currently return 0
+              until `calculate_score_by_accuracy` is implemented.
+            - Assumes each scoring method returns a score between 0 and 10.
+        """
+        return self.bias_calculator.calculate_overall_score(self.df, self.categories)

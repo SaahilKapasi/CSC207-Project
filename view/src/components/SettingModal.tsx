@@ -75,7 +75,7 @@ export default function SettingModal({
                   <p>{item.name}</p>
 
                   {/* Warning text based on score */}
-                  <p>{scoreToWarningText((item.fprVarianceScore + item.fprMeanScore) / 2)}</p>
+                  <p>{scoreToWarningText((item.fprScore + item.fprScore) / 2)}</p>
                 </button>
             ))}
           </div>

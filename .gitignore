@@ -64,3 +64,4 @@ typings/
 .yarn-integrity
 
 __pycache__/
+backend/data/
