@@ -1,4 +1,4 @@
-# Bias Calculator Project
+# Bias Visualizer Project
 
 ## Table of Contents 
 - [Background](#background) 
