@@ -8,7 +8,7 @@ def fetch_all_countries():
     Returns:
         pd.DataFrame: A DataFrame containing country names.
     """
-    return pd.read_csv("all_countries.csv")
+    return pd.read_csv("../../data/all_countries.csv")
 
 
 def convert_to_file(df: pd.DataFrame):

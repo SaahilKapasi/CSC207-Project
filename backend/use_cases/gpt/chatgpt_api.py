@@ -12,6 +12,7 @@ export OPENAI_API_KEY='your_openai_api_key'
 in a terminal (for temporary session use)
 """
 
+
 def generate_summary_analysis(filtered_df: pd.DataFrame) -> str:
     """
     Generate a summary analysis from a filtered DataFrame using OpenAI's ChatGPT API.
