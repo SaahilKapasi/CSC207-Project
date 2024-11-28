@@ -84,6 +84,9 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
 
   return (
     <div className="relative flex flex-col items-center text">
+      <h1 id="page-title" className="sr-only">
+        Dataset Bias Visualization
+      </h1>
       <button
         className="absolute top-5 right-5 btn"
         onClick={() => {
@@ -91,11 +94,15 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
             `${window.location.origin}/#${dataset.id}`
           );
         }}
+        aria-label="Copy link to this dataset"
       >
         Copy link
       </button>
       <p className="mb-2 text-lg mt-5">Overall Bias Detected:</p>
-      <BiasProgressBar bias={10 - dataset.score} />
+      <BiasProgressBar 
+      bias={10 - dataset.score} 
+      aria-label={`Overall bias score: ${10 - dataset.score}`}
+      />
       <p className="mt-5 max-w-96 mb-10 text-md whitespace-pre-line">
         {dataset.description}
       </p>
@@ -114,17 +121,31 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
             dataset.categories.find((c) => c.name === category)!
           )
         }
+        aria-label="Graph showing bias scores by category. Use Tab to navigate and Enter to select a category."
       />
       <div className="mt-36" />
       {selectedCategory && (
         <Modal
           content={
-            <div className="mt-0 w-[50rem] max-w-[90vw] flex flex-col items-center">
+            <div 
+            className="mt-0 w-[50rem] max-w-[90vw] flex flex-col items-center"
+            role="dialog"
+            aria-labelledby="modal-title"
+            aria-describedby="modal-description"
+            >
               <p className="mb-2 text-lg">
                 {capitalize(selectedCategory.name)} Bias Detected:
               </p>
-              <BiasProgressBar bias={10 - selectedCategory.fprScore} />
-              <p className="mt-5 max-w-96 mb-10 text-md">
+              <BiasProgressBar 
+              bias={10 - selectedCategory.fprScore} 
+              aria-label={`Bias score for ${selectedCategory.name}: ${
+                10 - selectedCategory.fprScore
+              }`}
+              />
+              <p 
+              id="modal-description" 
+              className="mt-5 max-w-96 mb-10 text-md"
+              >
                 Description TBD. Lorem ipsum dolor sit amet consectetur
                 adipisicing elit. Nesciunt iure unde, harum consectetur ipsa
                 nemo mollitia repellat hic eveniet minima molestiae laborum
@@ -142,6 +163,9 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
                 maxValue={1}
                 maxValueLabel={"100%"}
                 zeroValueLabel="0%"
+                aria-label={`Graph showing false positive rates for ${capitalize(
+                  selectedCategory.name
+                )} traits`}
               />
               <div className="mt-32" />
             </div>

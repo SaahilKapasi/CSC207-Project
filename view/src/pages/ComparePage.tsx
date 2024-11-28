@@ -132,8 +132,8 @@ export default function ComparePage({
             entries={selectedDataset1.categories.map((c, i) => ({
               name: c.name,
               value:
-                selectedDataset2.categories.find((a) => a.name === c.name)!
-                  .fprScore - c.fprScore,
+                c.fprScore - 
+                selectedDataset2.categories.find((a) => a.name === c.name)!.fprScore,
             }))}
             getColor={(value) => (value < 0 ? "green-500" : "red-500")}
             maxValue={10}

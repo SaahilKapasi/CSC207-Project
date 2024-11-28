@@ -64,14 +64,23 @@ export default function Graph({
               height: enableNegative ? `${height / 8}rem` : `${height / 4}rem`,
             }}
           >
-            {entries.map((entry) => (
+            {entries.map((entry, index) => (
               <div
+                key={index}
                 className="h-full flex relative hover:bg-slate-100 hover:cursor-pointer"
                 style={{
                   width: `${barWidth / 4}rem`,
                   alignItems: "flex-end",
                 }}
                 onClick={() => onBarClick && onBarClick(entry.name)}
+                tabIndex={0} // Make the bar focusable
+                role="button" // Treat the bar as a button
+                aria-label={`Bar ${entry.name}, value ${entry.value}`} // Screen reader description
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    onBarClick && onBarClick(entry.name); // Trigger click on Enter or Space
+                  }
+                }}
               >
                 {/* Bar */}
                 <div
