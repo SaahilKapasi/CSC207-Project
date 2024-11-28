@@ -116,9 +116,6 @@ export default function ComparePage({
         <Modal
           content={
             <div className="mt-0 w-[50rem] max-w-[90vw] flex flex-col items-center">
-              <p className="mb-2 text-lg">
-                {capitalize(selectedCategory)} Bias:
-              </p>
               <Graph
                 name={`${capitalize(
                   selectedCategory
