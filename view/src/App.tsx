@@ -7,11 +7,9 @@ import WelcomePage from "./pages/WelcomePage";
 import { Dataset } from "./types/types";
 
 function App() {
-  const [page, setPage] = useState<"welcome" | "graph">("welcome");
+  const [page, setPage] = useState<"welcome" | "graph" | "compare">("welcome");
   const [datasets, setDatasets] = useState<Dataset[]>([]);
-  const [selectedDataset, setSelectedDataset] = useState<Dataset | undefined>(
-    undefined
-  );
+  const [selectedDataset, setSelectedDataset] = useState<Dataset | undefined>();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,7 +28,11 @@ function App() {
 
   useEffect(() => {
     document.title =
-      page === "welcome" ? "Upload Dataset" : "Data Visualization";
+      page === "welcome"
+        ? "Upload Dataset"
+        : page === "compare"
+        ? "Compare"
+        : "Data Visualization";
   }, [page]);
 
   function handleReceiveDataset(newDataset: Dataset) {
@@ -59,6 +61,8 @@ function App() {
         datasets={datasets}
         selectedDataset={selectedDataset}
         onSelectDataset={handleSelectDataset}
+        selectedPage={page}
+        onNewCompare={() => setPage("compare")}
         onNewDataset={handleNewDataset}
       />
       {/* Height of the navbar */}
@@ -77,6 +81,8 @@ function App() {
           />
         ) : page === "graph" && selectedDataset ? (
           <DatasetPage dataset={selectedDataset} />
+        ) : page === "compare" ? (
+          <ComparePage datasets={datasets} />
         ) : (
           <></>
         )}

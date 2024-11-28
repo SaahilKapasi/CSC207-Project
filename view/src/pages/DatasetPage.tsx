@@ -101,7 +101,7 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
         getColor={(value) => getColorByScore(value)}
         maxValue={10}
         maxValueLabel={"High (10)"}
-        minValueLabel="Low (0)"
+        zeroValueLabel="Low (0)"
         onBarClick={(category) =>
           setSelectedCategory(
             dataset.categories.find((c) => c.name === category)!
@@ -135,7 +135,7 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
                 getColor={(value) => "blue-500"}
                 maxValue={1}
                 maxValueLabel={"100%"}
-                minValueLabel="0%"
+                zeroValueLabel="0%"
               />
               <div className="mt-32" />
             </div>

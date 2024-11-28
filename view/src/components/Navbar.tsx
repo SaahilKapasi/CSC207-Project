@@ -4,7 +4,9 @@ import { Dataset } from "../types/types";
 interface NavbarProps {
   onSelectDataset: (dataset: Dataset) => void;
   onNewDataset: () => void;
+  onNewCompare: () => void;
   selectedDataset?: Dataset;
+  selectedPage: "welcome" | "graph" | "compare";
   datasets: Dataset[];
 }
 
@@ -12,6 +14,8 @@ export default function Navbar({
   onSelectDataset,
   selectedDataset,
   onNewDataset,
+  onNewCompare,
+  selectedPage,
   datasets,
 }: NavbarProps): ReactElement {
   const [modalOpen, setModalOpen] = useState(false);
@@ -36,7 +40,9 @@ export default function Navbar({
         {datasets.map((dataset) => (
           <button
             className={`p-2 bg-slate-100 rounded-md border-2 ${
-              dataset.id === selectedDataset?.id ? "border-slate-700" : ""
+              selectedPage === "graph" && dataset.id === selectedDataset?.id
+                ? "border-slate-700"
+                : ""
             }`}
             onClick={() => onSelectDataset(dataset)}
           >
@@ -44,7 +50,17 @@ export default function Navbar({
           </button>
         ))}
         <button
-          className={`p-2 bg-slate-100 rounded-md border-2 border-slate-300`}
+          className={`p-2 bg-slate-100 rounded-md border-2 ${
+            selectedPage === "compare" ? "border-slate-700" : ""
+          }`}
+          onClick={() => onNewCompare()}
+        >
+          <p>Compare</p>
+        </button>
+        <button
+          className={`p-2 bg-slate-100 rounded-md border-2 ${
+            selectedPage === "welcome" ? "border-slate-700" : ""
+          }`}
           onClick={() => onNewDataset()}
         >
           <p>+</p>
