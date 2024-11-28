@@ -1,10 +1,11 @@
-import axios from "axios";
 import { ReactElement, useState } from "react";
 import Graph from "../components/Graph";
 import Modal from "../components/Modal";
-import { API_BASE_URL } from "../consts/consts";
 import { Dataset } from "../types/types";
 import { capitalize } from "../utils/string";
+import CopyComparisonLinkButton from "../components/CopyComparisonLinkButton";
+import DatasetSelector from "../components/DatasetSelector";
+import BiasDifferenceDisplay from "../components/BiasDifferenceDisplay";
 
 interface ComparePageProps {
   datasets: Dataset[];
@@ -30,100 +31,41 @@ export default function ComparePage({
 
   return (
     <div className="relative flex flex-col items-center">
-      <button
-        className="absolute top-5 right-5 btn"
-        onClick={async () => {
-          const response = await axios.post(
-            `${API_BASE_URL}/api/saveComparison`,
-            {
-              data: JSON.stringify({
-                dataset1: selectedDataset1,
-                dataset2: selectedDataset2,
-              }),
-            }
-          );
-          const comparisonId = response.data;
 
-          navigator.clipboard.writeText(
-            `${window.location.origin}/#${comparisonId}`
-          );
-        }}
-      >
-        Copy link
-      </button>
+      {/* Copy Link Button */}
+      <CopyComparisonLinkButton
+        selectedDataset1={selectedDataset1}
+        selectedDataset2={selectedDataset2}
+      />
+
       <p className="text-3xl mt-5">Compare bias detected between datasets</p>
-      {/* Choose buttons */}
+
+      {/* Dataset Selectors */}
       <div className="flex gap-10 mt-10">
-        <div className="flex flex-col">
-          <p>Choose dataset 1</p>
-          <select
-            className="select select-sm select-bordered"
-            onChange={(e) => {
-              setSelectedDataset1(
-                datasets.find((d) => d.id === e.target.value) || undefined
-              );
-            }}
-          >
-            <option disabled selected>
-              Pick dataset 1
-            </option>
-            {datasets.map((dataset) => (
-              <option
-                className="text-lg"
-                key={dataset.id}
-                value={dataset.id}
-                selected={dataset === selectedDataset1}
-              >
-                {dataset.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-col">
-          <p>Choose dataset 2</p>
-          <select
-            className="select select-sm select-bordered"
-            onChange={(e) => {
-              setSelectedDataset2(
-                datasets.find((d) => d.id === e.target.value) || undefined
-              );
-            }}
-          >
-            <option disabled selected>
-              Pick dataset 2
-            </option>
-            {datasets.map((dataset) => (
-              <option
-                className="text-lg"
-                key={dataset.id}
-                value={dataset.id}
-                selected={dataset === selectedDataset2}
-              >
-                {dataset.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <DatasetSelector
+          label="Choose dataset 1"
+          datasets={datasets}
+          selectedDataset={selectedDataset1}
+          setSelectedDataset={setSelectedDataset1}
+        />
+        <DatasetSelector
+          label="Choose dataset 2"
+          datasets={datasets}
+          selectedDataset={selectedDataset2}
+          setSelectedDataset={setSelectedDataset2}
+        />
       </div>
+
+      {/* Bias Difference Display */}
       {difference !== undefined && (
-        <p className={`mt-5 text-lg`}>
-          Overall bias{" "}
-          <span
-            className={`text-${
-              difference < 0
-                ? "green-500"
-                : difference === 0
-                ? "yellow-500"
-                : "red-500"
-            }`}
-          >
-            {difference < 0 ? "decreased" : "increased"} by{" "}
-            {Math.abs(difference).toFixed(1)}/10
-          </span>{" "}
-          from <span className="text-blue-500">{selectedDataset1?.name}</span>{" "}
-          to <span className="text-blue-500">{selectedDataset2?.name}</span>
-        </p>
+        <BiasDifferenceDisplay
+          difference={difference}
+          dataset1={selectedDataset1!}
+          dataset2={selectedDataset2!}
+        />
       )}
+
+      {/* Graph Section */}
       {selectedDataset1 && selectedDataset2 && (
         <div>
           <div className="mt-2" />
@@ -147,6 +89,8 @@ export default function ComparePage({
           />
         </div>
       )}
+
+      {/* Modal Section */}
       {selectedCategory && (
         <Modal
           content={
