@@ -7,13 +7,25 @@ from backend.use_cases.bias_analyzers.simple_analyzer import SimpleAnalyzer
 from backend.use_cases.bias_calculators.variance_calculator import VarianceCalculator
 
 past_datasets = {}
+past_comparisons = {}
 
+async def get_comparison(id: str):
+    if id not in past_comparisons:
+        return None
+    else:
+        return past_comparisons[id]
 
 async def get_dataset(id: str):
     if id not in past_datasets:
         return None
     else:
         return past_datasets[id]
+
+
+async def save_comparison(data):
+    id = str(uuid.uuid4())
+    past_comparisons[id] = data
+    return id
 
 
 async def generate_dataset(file: UploadFile):

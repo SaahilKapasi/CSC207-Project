@@ -15,4 +15,10 @@ export interface Dataset {
   name: string;
   categories: Category[];
   score: number;
+  description: string;
+}
+
+export interface Comparison {
+  dataset1: Dataset;
+  dataset2: Dataset;
 }
