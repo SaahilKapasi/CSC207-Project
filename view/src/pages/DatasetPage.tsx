@@ -83,8 +83,18 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
   );
 
   return (
-    <div className="flex flex-col items-center mt-10 text">
-      <p className="mb-2 text-lg">Overall Bias Detected:</p>
+    <div className="relative flex flex-col items-center text">
+      <button
+        className="absolute top-5 right-5 btn"
+        onClick={() => {
+          navigator.clipboard.writeText(
+            `${window.location.origin}/#${dataset.id}`
+          );
+        }}
+      >
+        Copy link
+      </button>
+      <p className="mb-2 text-lg mt-5">Overall Bias Detected:</p>
       <BiasProgressBar bias={10 - dataset.score} />
       <p className="mt-5 max-w-96 mb-10 text-md">{dataset.description}</p>
       <Graph

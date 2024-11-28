@@ -551,19 +551,39 @@ function App() {
   const [datasets, setDatasets] = useState<Dataset[]>([]);
   const [selectedDataset, setSelectedDataset] = useState<Dataset | undefined>();
   const [loading, setLoading] = useState(true);
+  const [selectedDataset1, setSelectedDataset1] = useState<
+    Dataset | undefined
+  >();
+  const [selectedDataset2, setSelectedDataset2] = useState<
+    Dataset | undefined
+  >();
 
   useEffect(() => {
-    axios
-      .get(
-        `${API_BASE_URL}/api/getDataset?id=${window.location.pathname.slice(1)}`
-      )
-      .then((response) => {
-        if (response.data) {
-          handleReceiveDataset(response.data);
-        }
+    (async () => {
+      const response1 = await axios.get(
+        `${API_BASE_URL}/api/getDataset?id=${window.location.hash.slice(1)}`
+      );
+      if (response1.data) {
+        handleReceiveDataset(response1.data);
         setLoading(false);
-      })
-      .catch(console.error);
+        return;
+      }
+
+      const response2 = await axios.get(
+        `${API_BASE_URL}/api/getComparison?id=${window.location.hash.slice(1)}`
+      );
+      if (response2.data) {
+        const compare = JSON.parse(response2.data);
+        setSelectedDataset1(compare.dataset1);
+        setSelectedDataset2(compare.dataset2);
+        setPage("compare");
+        setDatasets([...datasets, compare.dataset1, compare.dataset2]);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(false);
+    })();
   }, []);
 
   useEffect(() => {
@@ -600,6 +620,7 @@ function App() {
         Skip to main content
       </a>
       <Navbar
+        onLanding={() => setPage("landing")}
         datasets={datasets}
         selectedDataset={selectedDataset}
         onSelectDataset={handleSelectDataset}
@@ -626,7 +647,13 @@ function App() {
         ) : page === "graph" && selectedDataset ? (
           <DatasetPage dataset={selectedDataset} />
         ) : page === "compare" ? (
-          <ComparePage datasets={datasets} />
+          <ComparePage
+            datasets={datasets}
+            selectedDataset1={selectedDataset1}
+            selectedDataset2={selectedDataset2}
+            setSelectedDataset1={setSelectedDataset1}
+            setSelectedDataset2={setSelectedDataset2}
+          />
         ) : (
           <></>
         )}

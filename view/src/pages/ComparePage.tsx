@@ -1,22 +1,26 @@
+import axios from "axios";
 import { ReactElement, useState } from "react";
 import Graph from "../components/Graph";
 import Modal from "../components/Modal";
+import { API_BASE_URL } from "../consts/consts";
 import { Dataset } from "../types/types";
 import { capitalize } from "../utils/string";
 
 interface ComparePageProps {
   datasets: Dataset[];
+  selectedDataset1: Dataset | undefined;
+  selectedDataset2: Dataset | undefined;
+  setSelectedDataset1: (dataset: Dataset | undefined) => void;
+  setSelectedDataset2: (dataset: Dataset | undefined) => void;
 }
 
 export default function ComparePage({
   datasets,
+  selectedDataset1,
+  selectedDataset2,
+  setSelectedDataset1,
+  setSelectedDataset2,
 }: ComparePageProps): ReactElement {
-  const [selectedDataset1, setSelectedDataset1] = useState<Dataset | null>(
-    null
-  );
-  const [selectedDataset2, setSelectedDataset2] = useState<Dataset | null>(
-    null
-  );
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const difference =
@@ -25,7 +29,28 @@ export default function ComparePage({
       : undefined;
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="relative flex flex-col items-center">
+      <button
+        className="absolute top-5 right-5 btn"
+        onClick={async () => {
+          const response = await axios.post(
+            `${API_BASE_URL}/api/saveComparison`,
+            {
+              data: JSON.stringify({
+                dataset1: selectedDataset1,
+                dataset2: selectedDataset2,
+              }),
+            }
+          );
+          const comparisonId = response.data;
+
+          navigator.clipboard.writeText(
+            `${window.location.origin}/#${comparisonId}`
+          );
+        }}
+      >
+        Copy link
+      </button>
       <p className="text-3xl mt-5">Compare bias detected between datasets</p>
       {/* Choose buttons */}
       <div className="flex gap-10 mt-10">
@@ -35,7 +60,7 @@ export default function ComparePage({
             className="select select-sm select-bordered"
             onChange={(e) => {
               setSelectedDataset1(
-                datasets.find((d) => d.id === e.target.value) || null
+                datasets.find((d) => d.id === e.target.value) || undefined
               );
             }}
           >
@@ -43,7 +68,12 @@ export default function ComparePage({
               Pick dataset 1
             </option>
             {datasets.map((dataset) => (
-              <option className="text-lg" key={dataset.id} value={dataset.id}>
+              <option
+                className="text-lg"
+                key={dataset.id}
+                value={dataset.id}
+                selected={dataset === selectedDataset1}
+              >
                 {dataset.name}
               </option>
             ))}
@@ -55,7 +85,7 @@ export default function ComparePage({
             className="select select-sm select-bordered"
             onChange={(e) => {
               setSelectedDataset2(
-                datasets.find((d) => d.id === e.target.value) || null
+                datasets.find((d) => d.id === e.target.value) || undefined
               );
             }}
           >
@@ -63,7 +93,12 @@ export default function ComparePage({
               Pick dataset 2
             </option>
             {datasets.map((dataset) => (
-              <option className="text-lg" key={dataset.id} value={dataset.id}>
+              <option
+                className="text-lg"
+                key={dataset.id}
+                value={dataset.id}
+                selected={dataset === selectedDataset2}
+              >
                 {dataset.name}
               </option>
             ))}

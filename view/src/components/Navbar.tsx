@@ -8,6 +8,7 @@ interface NavbarProps {
   selectedDataset?: Dataset;
   selectedPage: "new" | "landing" | "graph" | "compare";
   datasets: Dataset[];
+  onLanding: () => void;
 }
 
 export default function Navbar({
@@ -17,6 +18,7 @@ export default function Navbar({
   onNewCompare,
   selectedPage,
   datasets,
+  onLanding,
 }: NavbarProps): ReactElement {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -26,7 +28,7 @@ export default function Navbar({
       role="banner" // Adds a semantic role for the navbar
     >
       {/* Left Section: Cash App Logo */}
-      <div className="flex items-center">
+      <div className="flex items-center cursor-pointer" onClick={onLanding}>
         {/* Placeholder for logo */}
         <div
           className="h-8 w-8 bg-green-500 rounded-full mr-3"
