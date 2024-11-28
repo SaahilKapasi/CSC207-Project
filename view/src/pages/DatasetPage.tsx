@@ -96,7 +96,9 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
       </button>
       <p className="mb-2 text-lg mt-5">Overall Bias Detected:</p>
       <BiasProgressBar bias={10 - dataset.score} />
-      <p className="mt-5 max-w-96 mb-10 text-md">{dataset.description}</p>
+      <p className="mt-5 max-w-96 mb-10 text-md whitespace-pre-line">
+        {dataset.description}
+      </p>
       <Graph
         name={"Bias Detected by Category"}
         entries={dataset.categories.map((c) => ({
