@@ -31,9 +31,18 @@ export default function SelectedCategoryModal({
               10 - category.fprScore
             }`}
           />
-          <p id="modal-description" className="mt-5 max-w-96 mb-10 text-md">
-          The False Positive Rate (FPR) for this measures the ratio of transactions are incorrectly flagged as fraudulent. 
-          This metric evaluates the proportion of false positives relative to the total number of transactions that are actually not fraudulent. 
+          <p
+            id="modal-description"
+            className="mt-5 max-w-96 mb-10 text-sm whitespace-pre-line"
+          >
+            The bias is calculated by taking the variance between the false
+            positive rates. The higher the variance between the different false
+            positive rates, the higher the bias.
+            {"\n\n"}
+            The False Positive Rate (FPR) for this measures the ratio of
+            transactions are incorrectly flagged as fraudulent. This metric
+            evaluates the proportion of false positives relative to the total
+            number of transactions that are actually not fraudulent.
           </p>
           <Graph
             name={`${capitalize(category.name)} V.S. False Positive Rate`}
