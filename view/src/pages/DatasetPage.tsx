@@ -1,10 +1,10 @@
 import { useState } from "react";
 import BiasProgressBar from "../components/BiasProgressBar";
 import Graph from "../components/Graph";
-import Modal from "../components/Modal";
 import { Category, Dataset } from "../types/types";
 import { getColorByScore } from "../utils/score";
-import { capitalize } from "../utils/string";
+import CopyLinkButton from "../components/CopyLinkButton";
+import SelectedCategoryModal from "../components/SelectCategoryModal";
 
 const raceData = [
   {
@@ -87,17 +87,10 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
       <h1 id="page-title" className="sr-only">
         Dataset Bias Visualization
       </h1>
-      <button
-        className="absolute top-5 right-5 btn"
-        onClick={() => {
-          navigator.clipboard.writeText(
-            `${window.location.origin}/#${dataset.id}`
-          );
-        }}
-        aria-label="Copy link to this dataset"
-      >
-        Copy link
-      </button>
+      {/* Copy Link Button */}
+      <CopyLinkButton datasetId={dataset.id} />
+
+      {/* Overall Bias Section */}
       <p className="mb-2 text-lg mt-5">Overall Bias Detected:</p>
       <BiasProgressBar 
       bias={10 - dataset.score} 
@@ -106,6 +99,8 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
       <p className="mt-5 max-w-96 mb-10 text-md whitespace-pre-line">
         {dataset.description}
       </p>
+      
+      {/* Graph Section */}
       <Graph
         name={"Bias Detected by Category"}
         entries={dataset.categories.map((c) => ({
@@ -124,55 +119,12 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
         aria-label="Graph showing bias scores by category. Use Tab to navigate and Enter to select a category."
       />
       <div className="mt-36" />
+
+      {/* Modal Section */}
       {selectedCategory && (
-        <Modal
-          content={
-            <div 
-            className="mt-0 w-[50rem] max-w-[90vw] flex flex-col items-center"
-            role="dialog"
-            aria-labelledby="modal-title"
-            aria-describedby="modal-description"
-            >
-              <p className="mb-2 text-lg">
-                {capitalize(selectedCategory.name)} Bias Detected:
-              </p>
-              <BiasProgressBar 
-              bias={10 - selectedCategory.fprScore} 
-              aria-label={`Bias score for ${selectedCategory.name}: ${
-                10 - selectedCategory.fprScore
-              }`}
-              />
-              <p 
-              id="modal-description" 
-              className="mt-5 max-w-96 mb-10 text-md"
-              >
-                Description TBD. Lorem ipsum dolor sit amet consectetur
-                adipisicing elit. Nesciunt iure unde, harum consectetur ipsa
-                nemo mollitia repellat hic eveniet minima molestiae laborum
-                natus ratione deleniti animi sit. Voluptatum, deserunt qui.
-              </p>
-              <Graph
-                name={`${capitalize(
-                  selectedCategory.name
-                )} V.S. False Positive Rate`}
-                entries={selectedCategory.traits.map((t) => ({
-                  name: t.name,
-                  value: t.fprMean,
-                }))}
-                getColor={(value) => "blue-500"}
-                maxValue={1}
-                maxValueLabel={"100%"}
-                zeroValueLabel="0%"
-                aria-label={`Graph showing false positive rates for ${capitalize(
-                  selectedCategory.name
-                )} traits`}
-              />
-              <div className="mt-32" />
-            </div>
-          }
-          onClose={() => {
-            setSelectedCategory(null);
-          }}
+        <SelectedCategoryModal
+          category={selectedCategory}
+          onClose={() => setSelectedCategory(null)}
         />
       )}
     </div>
