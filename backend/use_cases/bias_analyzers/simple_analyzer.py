@@ -17,10 +17,10 @@ class SimpleAnalyzer(BiasAnalyzer):
             result += f" The following categories have extremely high bias and should be addressed soon: {', '.join(high_impact)}."
 
         if medium_impact:
-            result += f" The following categories have extremely medium bias and should be addressed when possible: {', '.join(high_impact)}."
+            result += f" The following categories have extremely medium bias and should be addressed when possible: {', '.join(medium_impact)}."
 
         if low_impact:
-            result += f" The following categories have low bias, if you adjust your model try to keep them low: {', '.join(high_impact)}."
+            result += f" The following categories have low bias, if you adjust your model try to keep them low: {', '.join(low_impact)}."
 
         return result
 
