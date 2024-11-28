@@ -51,7 +51,7 @@ function App() {
   }
 
   return (
-    <div className="">
+    <div className="w-screen">
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
@@ -61,9 +61,11 @@ function App() {
         onSelectDataset={handleSelectDataset}
         onNewDataset={handleNewDataset}
       />
+      {/* Height of the navbar */}
+      <div className="h-16" />
 
       {/* Main Content Area */}
-      <main id="main-content" role="main">
+      <main id="main-content" role="main" className="w-full">
         {loading ? (
           <div className="w-screen flex justify-center">
             <span className="loading loading-spinner text-success w-16 h-16"></span>
@@ -74,7 +76,7 @@ function App() {
             onSubmit={() => setLoading(true)}
           />
         ) : page === "graph" && selectedDataset ? (
-          <GraphPage dataset={selectedDataset} />
+          <DatasetPage dataset={selectedDataset} />
         ) : (
           <></>
         )}
