@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import { API_BASE_URL } from "./consts/consts";
 import ComparePage from "./pages/ComparePage";
 import DatasetPage from "./pages/DatasetPage";
+import LandingPage from "./pages/LandingPage";
 import WelcomePage from "./pages/WelcomePage";
 import { Dataset } from "./types/types";
 
@@ -544,7 +545,9 @@ function App() {
   //   mockDataset
   // );
   // const [loading, setLoading] = useState(false);
-  const [page, setPage] = useState<"welcome" | "graph" | "compare">("welcome");
+  const [page, setPage] = useState<"landing" | "new" | "graph" | "compare">(
+    "landing"
+  );
   const [datasets, setDatasets] = useState<Dataset[]>([]);
   const [selectedDataset, setSelectedDataset] = useState<Dataset | undefined>();
   const [loading, setLoading] = useState(true);
@@ -565,10 +568,12 @@ function App() {
 
   useEffect(() => {
     document.title =
-      page === "welcome"
+      page === "new"
         ? "Upload Dataset"
         : page === "compare"
         ? "Compare"
+        : page === "landing"
+        ? "CashApp Bias Visualizer"
         : "Data Visualization";
   }, [page]);
 
@@ -580,7 +585,7 @@ function App() {
   }
 
   function handleNewDataset() {
-    setPage("welcome");
+    setPage("new");
     setSelectedDataset(undefined);
   }
 
@@ -611,11 +616,13 @@ function App() {
           <div className="w-screen flex justify-center">
             <span className="loading loading-spinner text-success w-16 h-16"></span>
           </div>
-        ) : page === "welcome" ? (
+        ) : page === "new" ? (
           <WelcomePage
             onDataset={handleReceiveDataset}
             onSubmit={() => setLoading(true)}
           />
+        ) : page === "landing" ? (
+          <LandingPage onWelcome={() => setPage("new")} />
         ) : page === "graph" && selectedDataset ? (
           <DatasetPage dataset={selectedDataset} />
         ) : page === "compare" ? (

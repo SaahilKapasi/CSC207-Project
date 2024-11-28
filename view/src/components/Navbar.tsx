@@ -6,7 +6,7 @@ interface NavbarProps {
   onNewDataset: () => void;
   onNewCompare: () => void;
   selectedDataset?: Dataset;
-  selectedPage: "welcome" | "graph" | "compare";
+  selectedPage: "new" | "landing" | "graph" | "compare";
   datasets: Dataset[];
 }
 
@@ -59,7 +59,7 @@ export default function Navbar({
         </button>
         <button
           className={`p-2 bg-slate-100 rounded-md border-2 ${
-            selectedPage === "welcome" ? "border-slate-700" : ""
+            selectedPage === "new" ? "border-slate-700" : ""
           }`}
           onClick={() => onNewDataset()}
         >

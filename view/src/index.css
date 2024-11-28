@@ -58,3 +58,45 @@ button:focus,
 .skip-link:focus {
   top: 0; /* Brings it back on-screen when focused */
 }
+
+/* Navbar Styles */
+.landing-header {
+  display: flex;
+  justify-content: space-between; /* Space between logo and title */
+  align-items: center; /* Align items vertically */
+  width: 100%;
+}
+
+.landing-header .logo {
+  display: flex; /* Flexbox for logo alignment */
+}
+
+.landing-header .logo img {
+  height: auto; /* Ensure logo scales properly */
+}
+
+/* Hero Section Styles */
+.hero-section {
+  display: flex; /* Flex layout for hero section */
+}
+
+.hero-section img {
+  max-width: auto; /* Adjust image size */
+}
+
+/* Animated Navbar Text Style */
+@keyframes marquee {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-marquee {
+  display: flex; /* Added missing semicolon */
+  overflow: hidden; /* Properly separated property */
+  white-space: nowrap; /* Properly separated property */
+  animation: marquee 10s linear infinite; /* Smooth scrolling animation */
+}

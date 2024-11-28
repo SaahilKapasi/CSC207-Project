@@ -117,9 +117,7 @@ export default function ComparePage({
           content={
             <div className="mt-0 w-[50rem] max-w-[90vw] flex flex-col items-center">
               <Graph
-                name={`${capitalize(
-                  selectedCategory
-                )} V.S. False Positive Rate`}
+                name={`Dataset V.S. ${capitalize(selectedCategory)} Bias Score`}
                 entries={[
                   {
                     name: selectedDataset1!.name,
@@ -136,8 +134,8 @@ export default function ComparePage({
                 ]}
                 getColor={(value) => "blue-500"}
                 maxValue={10}
-                maxValueLabel={"100%"}
-                zeroValueLabel="0%"
+                maxValueLabel={"10 (High)"}
+                zeroValueLabel="0 (Low)"
               />
               <div className="mt-32" />
             </div>
