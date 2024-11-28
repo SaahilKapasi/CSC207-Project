@@ -32,10 +32,8 @@ export default function SelectedCategoryModal({
             }`}
           />
           <p id="modal-description" className="mt-5 max-w-96 mb-10 text-md">
-            Description TBD. Lorem ipsum dolor sit amet consectetur adipisicing
-            elit. Nesciunt iure unde, harum consectetur ipsa nemo mollitia
-            repellat hic eveniet minima molestiae laborum natus ratione deleniti
-            animi sit. Voluptatum, deserunt qui.
+          The False Positive Rate (FPR) for this measures the ratio of transactions are incorrectly flagged as fraudulent. 
+          This metric evaluates the proportion of false positives relative to the total number of transactions that are actually not fraudulent. 
           </p>
           <Graph
             name={`${capitalize(category.name)} V.S. False Positive Rate`}
