@@ -85,7 +85,7 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
   return (
     <div className="flex flex-col items-center mt-10 text">
       <p className="mb-2 text-lg">Overall Bias Detected:</p>
-      <BiasProgressBar bias={9} />
+      <BiasProgressBar bias={10 - dataset.score} />
       <p className="mt-5 max-w-96 mb-10 text-md">
         The overall bias detected is high. Lorem ipsum dolor sit amet
         consectetur adipisicing elit. Nesciunt iure unde, harum consectetur ipsa

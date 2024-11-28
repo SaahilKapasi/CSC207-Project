@@ -46,7 +46,7 @@ export default function WelcomePage({
   }
 
   return (
-    <div className="w-screen h-screen flex items-center justify-center bg-white">
+    <div className="w-screen h-[90vh] flex items-center justify-center bg-white">
       <div className="flex flex-col items-center p-6 bg-gray-100 shadow-lg rounded-lg">
         {/* Header */}
         <p className="text-2xl font-semibold mb-6 text-gray-700">

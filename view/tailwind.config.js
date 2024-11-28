@@ -7,7 +7,7 @@ export default {
   safelist: [
     {
       pattern:
-        /(bg|text)-(red|yellow|green)-(100|200|300|400|500|600|700|800|900)/,
+        /(bg|text|border)-(red|yellow|green|slate|blue)-(100|200|300|400|500|600|700|800|900)/,
     },
   ],
   plugins: [require("daisyui")],
