@@ -268,6 +268,7 @@ const mockDataset: Dataset = {
     },
   ],
   score: 5.599239984882843,
+  description: "description of dataset 1",
 };
 
 const mockDataset2 = {
@@ -530,6 +531,7 @@ const mockDataset2 = {
     },
   ],
   score: 6.245190161249685,
+  description: "description of dataset 2",
 };
 
 function App() {
@@ -588,7 +590,7 @@ function App() {
   }
 
   return (
-    <div className="w-screen">
+    <div className="">
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>

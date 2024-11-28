@@ -1,6 +1,8 @@
 import { ReactElement, useState } from "react";
 import Graph from "../components/Graph";
+import Modal from "../components/Modal";
 import { Dataset } from "../types/types";
+import { capitalize } from "../utils/string";
 
 interface ComparePageProps {
   datasets: Dataset[];
@@ -15,10 +17,11 @@ export default function ComparePage({
   const [selectedDataset2, setSelectedDataset2] = useState<Dataset | null>(
     null
   );
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   const difference =
     selectedDataset1 && selectedDataset2
-      ? 10 - selectedDataset2.score - selectedDataset1.score
+      ? 10 - selectedDataset2.score - (10 - selectedDataset1.score)
       : undefined;
 
   return (
@@ -70,7 +73,15 @@ export default function ComparePage({
       {difference !== undefined && (
         <p className={`mt-5 text-lg`}>
           Overall bias{" "}
-          <span className={`text-${difference < 0 ? "green-500" : "red-500"}`}>
+          <span
+            className={`text-${
+              difference < 0
+                ? "green-500"
+                : difference === 0
+                ? "yellow-500"
+                : "red-500"
+            }`}
+          >
             {difference < 0 ? "decreased" : "increased"} by{" "}
             {Math.abs(difference).toFixed(1)}/10
           </span>{" "}
@@ -95,9 +106,49 @@ export default function ComparePage({
             maxValueLabel={"More bias (10)"}
             zeroValueLabel="No change (0)"
             minValueLabel="Less bias (-10)"
-            onBarClick={(category) => {}}
+            onBarClick={(category) => {
+              setSelectedCategory(category);
+            }}
           />
         </div>
+      )}
+      {selectedCategory && (
+        <Modal
+          content={
+            <div className="mt-0 w-[50rem] max-w-[90vw] flex flex-col items-center">
+              <p className="mb-2 text-lg">
+                {capitalize(selectedCategory)} Bias:
+              </p>
+              <Graph
+                name={`${capitalize(
+                  selectedCategory
+                )} V.S. False Positive Rate`}
+                entries={[
+                  {
+                    name: selectedDataset1!.name,
+                    value: selectedDataset1!.categories.find(
+                      (c) => c.name === selectedCategory
+                    )!.fprScore,
+                  },
+                  {
+                    name: selectedDataset2!.name,
+                    value: selectedDataset2!.categories.find(
+                      (c) => c.name === selectedCategory
+                    )!.fprScore,
+                  },
+                ]}
+                getColor={(value) => "blue-500"}
+                maxValue={10}
+                maxValueLabel={"100%"}
+                zeroValueLabel="0%"
+              />
+              <div className="mt-32" />
+            </div>
+          }
+          onClose={() => {
+            setSelectedCategory(null);
+          }}
+        />
       )}
     </div>
   );

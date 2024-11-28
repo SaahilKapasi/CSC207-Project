@@ -15,4 +15,5 @@ export interface Dataset {
   name: string;
   categories: Category[];
   score: number;
+  description: string;
 }
