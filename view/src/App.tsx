@@ -8,7 +8,6 @@ import LandingPage from "./pages/LandingPage";
 import WelcomePage from "./pages/WelcomePage";
 import { Dataset } from "./types/types";
 
-// Todo: age should be strings in backend
 const mockDataset: Dataset = {
   id: "fe157691-8f92-4390-bc85-d211a3a7d31b",
   name: "2021.csv",
@@ -411,52 +410,52 @@ const mockDataset2 = {
       fprScore: 0,
       traits: [
         {
-          name: 33,
+          name: "33",
           count: 1,
           fprMean: 1.0,
         },
         {
-          name: 38,
+          name: "38",
           count: 1,
           fprMean: 0.0,
         },
         {
-          name: 40,
+          name: "40",
           count: 1,
           fprMean: 0.0,
         },
         {
-          name: 45,
+          name: "45",
           count: 1,
           fprMean: 1.0,
         },
         {
-          name: 50,
+          name: "50",
           count: 1,
           fprMean: 1.0,
         },
         {
-          name: 23,
+          name: "23",
           count: 1,
           fprMean: 0.0,
         },
         {
-          name: 55,
+          name: "55",
           count: 1,
           fprMean: 1.0,
         },
         {
-          name: 27,
+          name: "27",
           count: 1,
           fprMean: 1.0,
         },
         {
-          name: 29,
+          name: "29",
           count: 1,
           fprMean: 0.0,
         },
         {
-          name: 31,
+          name: "31",
           count: 1,
           fprMean: 0.0,
         },
