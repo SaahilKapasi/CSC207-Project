@@ -24,6 +24,9 @@ class SimpleAnalyzer(BiasAnalyzer):
 
         return result
 
+    def get_category_analysis(self, category) -> str:
+        ...
+
     def score_to_level(self, category="all") -> str:
         score = self.dataset.get_overall_score() \
             if category == "all" else self.dataset.get_category_score(category)

@@ -10,6 +10,9 @@ class BiasAnalyzer:
     def get_overall_analysis(self) -> str:
         raise NotImplementedError
 
+    def get_category_analysis(self, category) -> str:
+        raise NotImplementedError
+
     def score_to_level(self, category="all") -> str:
         raise NotImplementedError
 

@@ -9,10 +9,32 @@ class GPTAnalyzer(BiasAnalyzer):
     dataset: DatasetFile
 
     def get_overall_analysis(self) -> str:
-        prompt = f"""
-                The following pandas dataframe contains transactions and includes personal traits about people as well as whether an AI model flagged the transaction as fraud or not. Based on the pandas dataframe which was converted to text: {self.dataset.df.to_string()}
-                Please give me back an overall analysis of how biased the dataset is, which groups are affected, any notable outliers, and any important insights. Please give this analysis as if you were reporting this to the executive of a top company.
-                """
+        prompt = f""" The following pandas dataframe contains transactions and includes personal traits about people 
+        as well as whether an AI model flagged the transaction as fraud or not. Based on the pandas dataframe which 
+        was converted to text: {self.dataset.df.to_string()} Please give me back an overall analysis of how biased 
+        the dataset is, which groups are affected, any notable outliers, and any important insights. Please give this 
+        analysis as if you were reporting this to the executive of a top company."""
+        try:
+            response = openai.Completion.create(
+                engine="text-davinci-003",
+                prompt=prompt,
+                max_tokens=200,
+                temperature=0.7
+            )
+
+            summary_analysis = response.choices[0].text.strip()
+            return summary_analysis
+
+        except OpenAIError as error:
+            return str(error)
+
+    def get_category_analysis(self, category) -> str:
+        prompt = f""" The following pandas dataframe contains transactions and includes personal traits about people 
+        as well as whether an AI model flagged the transaction as fraud or not. Based on the pandas dataframe which 
+        was converted to text: {self.dataset.df.to_string()} Please give me back an overall analysis of how much bias 
+        there is within this one category, which specific groups have the most bias against them and the least, 
+        any notable outliers, and any important insights. Please give this analysis as if you were reporting this to 
+        the executive of a top company."""
         try:
             response = openai.Completion.create(
                 engine="text-davinci-003",
