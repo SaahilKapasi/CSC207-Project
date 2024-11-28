@@ -2,7 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
 import { API_BASE_URL } from "./consts/consts";
-import GraphPage from "./pages/GraphPage";
+import ComparePage from "./pages/ComparePage";
+import DatasetPage from "./pages/DatasetPage";
 import WelcomePage from "./pages/WelcomePage";
 import { Dataset } from "./types/types";
 
