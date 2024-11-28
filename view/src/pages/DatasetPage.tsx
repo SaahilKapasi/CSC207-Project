@@ -1,10 +1,10 @@
 import { useState } from "react";
 import BiasProgressBar from "../components/BiasProgressBar";
 import Graph from "../components/Graph";
-import Modal from "../components/Modal";
 import { Category, Dataset } from "../types/types";
 import { getColorByScore } from "../utils/score";
-import { capitalize } from "../utils/string";
+import CopyLinkButton from "../components/CopyLinkButton";
+import SelectedCategoryModal from "../components/SelectCategoryModal";
 
 const raceData = [
   {
@@ -84,21 +84,23 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
 
   return (
     <div className="relative flex flex-col items-center text">
-      <button
-        className="absolute top-5 right-5 btn"
-        onClick={() => {
-          navigator.clipboard.writeText(
-            `${window.location.origin}/#${dataset.id}`
-          );
-        }}
-      >
-        Copy link
-      </button>
+      <h1 id="page-title" className="sr-only">
+        Dataset Bias Visualization
+      </h1>
+      {/* Copy Link Button */}
+      <CopyLinkButton datasetId={dataset.id} />
+
+      {/* Overall Bias Section */}
       <p className="mb-2 text-lg mt-5">Overall Bias Detected:</p>
-      <BiasProgressBar bias={10 - dataset.score} />
+      <BiasProgressBar 
+      bias={10 - dataset.score} 
+      aria-label={`Overall bias score: ${10 - dataset.score}`}
+      />
       <p className="mt-5 max-w-96 mb-10 text-md whitespace-pre-line">
         {dataset.description}
       </p>
+      
+      {/* Graph Section */}
       <Graph
         name={"Bias Detected by Category"}
         entries={dataset.categories.map((c) => ({
@@ -114,41 +116,15 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
             dataset.categories.find((c) => c.name === category)!
           )
         }
+        aria-label="Graph showing bias scores by category. Use Tab to navigate and Enter to select a category."
       />
       <div className="mt-36" />
+
+      {/* Modal Section */}
       {selectedCategory && (
-        <Modal
-          content={
-            <div className="mt-0 w-[50rem] max-w-[90vw] flex flex-col items-center">
-              <p className="mb-2 text-lg">
-                {capitalize(selectedCategory.name)} Bias Detected:
-              </p>
-              <BiasProgressBar bias={10 - selectedCategory.fprScore} />
-              <p className="mt-5 max-w-96 mb-10 text-md">
-                Description TBD. Lorem ipsum dolor sit amet consectetur
-                adipisicing elit. Nesciunt iure unde, harum consectetur ipsa
-                nemo mollitia repellat hic eveniet minima molestiae laborum
-                natus ratione deleniti animi sit. Voluptatum, deserunt qui.
-              </p>
-              <Graph
-                name={`${capitalize(
-                  selectedCategory.name
-                )} V.S. False Positive Rate`}
-                entries={selectedCategory.traits.map((t) => ({
-                  name: t.name,
-                  value: t.fprMean,
-                }))}
-                getColor={(value) => "blue-500"}
-                maxValue={1}
-                maxValueLabel={"100%"}
-                zeroValueLabel="0%"
-              />
-              <div className="mt-32" />
-            </div>
-          }
-          onClose={() => {
-            setSelectedCategory(null);
-          }}
+        <SelectedCategoryModal
+          category={selectedCategory}
+          onClose={() => setSelectedCategory(null)}
         />
       )}
     </div>

@@ -28,7 +28,17 @@ export default function Navbar({
       role="banner" // Adds a semantic role for the navbar
     >
       {/* Left Section: Cash App Logo */}
-      <div className="flex items-center cursor-pointer" onClick={onLanding}>
+      <div 
+      className="flex items-center cursor-pointer" 
+      onClick={onLanding}
+      tabIndex={0} // Makes the div focusable
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          onLanding(); // Triggers the landing page function on Enter or Space
+        }
+      }}
+      aria-label="Go to landing page" // Describes the action for screen readers
+      >
         {/* Placeholder for logo */}
         <div
           className="h-8 w-8 bg-green-500 rounded-full mr-3"
