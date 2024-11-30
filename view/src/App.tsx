@@ -31,21 +31,26 @@ function App() {
     Dataset | undefined
   >();
 
+
+  const axiosInstance = axios.create({
+    baseURL: API_BASE_URL
+  });
+
   useEffect(() => {
     (async () => {
-      const response1 = await axios.get(
-        `${API_BASE_URL}/api/getDataset?id=${window.location.hash.slice(1)}`
+      const response1 = await axiosInstance.get(
+        `/api/getDataset?id=${window.location.hash.slice(1)}`
       );
-      if (response1.data) {
+      if (response1.data && response1.data != "Missing") {
         handleReceiveDataset(response1.data);
         setLoading(false);
         return;
       }
 
-      const response2 = await axios.get(
-        `${API_BASE_URL}/api/getComparison?id=${window.location.hash.slice(1)}`
+      const response2 = await axiosInstance.get(
+        `/api/getComparison?id=${window.location.hash.slice(1)}`
       );
-      if (response2.data) {
+      if (response2.data && response2.data != "Missing") {
         const compare = JSON.parse(response2.data);
         setSelectedDataset1(compare.dataset1);
         setSelectedDataset2(compare.dataset2);
