@@ -29,21 +29,22 @@ export default function Navbar({
     >
       {/* Left Section: Cash App Logo */}
       <div 
-      className="flex items-center cursor-pointer" 
-      onClick={onLanding}
-      tabIndex={0} // Makes the div focusable
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          onLanding(); // Triggers the landing page function on Enter or Space
-        }
-      }}
-      aria-label="Go to landing page" // Describes the action for screen readers
+        className="flex items-center cursor-pointer" 
+        onClick={onLanding}
+        tabIndex={0} // Makes the div focusable
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            onLanding(); // Triggers the landing page function on Enter or Space
+          }
+        }}
+        aria-label="Go to landing page" // Describes the action for screen readers
       >
-        {/* Placeholder for logo */}
-        <div
-          className="h-8 w-8 bg-green-500 rounded-full mr-3"
-          aria-hidden="true" // Hides decorative element from screen readers
-        ></div>
+        <img
+          src="/cash_app.svg" 
+          alt="Cash App Logo"
+          className="h-11 w-11 rounded-full mr-3"
+          aria-hidden="true"
+        />
         <span className="text-xl font-semibold text-gray-800">Cash App</span>
       </div>
 
