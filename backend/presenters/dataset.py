@@ -9,15 +9,17 @@ from backend.use_cases.bias_calculators.variance_calculator import VarianceCalcu
 past_datasets = {}
 past_comparisons = {}
 
+
 async def get_comparison(id: str):
     if id not in past_comparisons:
-        return None
+        return "Missing"
     else:
         return past_comparisons[id]
 
+
 async def get_dataset(id: str):
     if id not in past_datasets:
-        return None
+        return "Missing"
     else:
         return past_datasets[id]
 

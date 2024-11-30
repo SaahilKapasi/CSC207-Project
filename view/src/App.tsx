@@ -33,8 +33,7 @@ function App() {
 
 
   const axiosInstance = axios.create({
-    baseURL: API_BASE_URL,
-    timeout: 10000,
+    baseURL: API_BASE_URL
   });
 
   useEffect(() => {
@@ -42,7 +41,7 @@ function App() {
       const response1 = await axiosInstance.get(
         `/api/getDataset?id=${window.location.hash.slice(1)}`
       );
-      if (response1.data) {
+      if (response1.data && response1.data != "Missing") {
         handleReceiveDataset(response1.data);
         setLoading(false);
         return;
@@ -51,7 +50,7 @@ function App() {
       const response2 = await axiosInstance.get(
         `/api/getComparison?id=${window.location.hash.slice(1)}`
       );
-      if (response2.data) {
+      if (response2.data && response2.data != "Missing") {
         const compare = JSON.parse(response2.data);
         setSelectedDataset1(compare.dataset1);
         setSelectedDataset2(compare.dataset2);
