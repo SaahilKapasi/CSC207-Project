@@ -73,9 +73,7 @@ export default function ComparePage({
             name={"Change in Bias Detected by Category"}
             entries={selectedDataset1.categories.map((c, i) => ({
               name: c.name,
-              value:
-                c.fprScore - 
-                selectedDataset2.categories.find((a) => a.name === c.name)!.fprScore,
+              value: c.fprScore - selectedDataset2.categories.find((a) => a.name === c.name)!.fprScore,
             }))}
             getColor={(value) => (value < 0 ? "green-500" : "red-500")}
             maxValue={10}
@@ -96,17 +94,17 @@ export default function ComparePage({
           content={
             <div className="mt-0 w-[50rem] max-w-[90vw] flex flex-col items-center">
               <Graph
-                name={`Dataset V.S. ${capitalize(selectedCategory)} Bias Score`}
+                name={`${capitalize(selectedCategory)} Bias Score V.S. Dataset`}
                 entries={[
                   {
                     name: selectedDataset1!.name,
-                    value: selectedDataset1!.categories.find(
+                    value: 10 - selectedDataset1!.categories.find(
                       (c) => c.name === selectedCategory
                     )!.fprScore,
                   },
                   {
                     name: selectedDataset2!.name,
-                    value: selectedDataset2!.categories.find(
+                    value: 10- selectedDataset2!.categories.find(
                       (c) => c.name === selectedCategory
                     )!.fprScore,
                   },
