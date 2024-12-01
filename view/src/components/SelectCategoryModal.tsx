@@ -57,6 +57,7 @@ export default function SelectedCategoryModal({
             aria-label={`Graph showing false positive rates for ${capitalize(
               category.name
             )} traits`}
+            keyboardNavigationEnabled={false}
           />
           <div className="mt-32" />
         </div>
