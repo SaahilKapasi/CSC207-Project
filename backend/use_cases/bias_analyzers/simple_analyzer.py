@@ -3,9 +3,36 @@ from backend.use_cases.bias_analyzers.bias_analyzer import BiasAnalyzer
 
 
 class SimpleAnalyzer(BiasAnalyzer):
-    dataset: DatasetFile
+    """
+   A simple analyzer for bias in dataset files.
+
+   This class extends BiasAnalyzer to provide basic analysis of bias in datasets,
+   categorizing bias levels and identifying high, medium, and low impact categories.
+
+   Attributes:
+       dataset (DatasetFile): The dataset file to be analyzed.
+   """
+
+dataset: DatasetFile
 
     def get_overall_analysis(self) -> str:
+        """
+       Generate an overall analysis of bias in the dataset.
+
+       This method provides a comprehensive summary of bias levels across all categories,
+       highlighting high, medium, and low impact areas.
+
+       Returns:
+           str: A formatted string containing the overall bias analysis, including:
+                - The overall bias level
+                - Categories with high bias that need immediate attention
+                - Categories with medium bias that should be addressed
+                - Categories with low bias that should be maintained
+
+       Note:
+           The analysis is based on the bias scores calculated for each category in the dataset.
+       """
+
         level = self.score_to_level()
         high_impact = self.get_impact_categories("high")
         medium_impact = self.get_impact_categories("medium")
@@ -25,6 +52,24 @@ class SimpleAnalyzer(BiasAnalyzer):
         return result
 
     def score_to_level(self, category="all") -> str:
+        """
+       Convert a numerical bias score to a qualitative level.
+
+       This method interprets the bias score for a given category or the overall dataset
+       and returns a corresponding qualitative level.
+
+       Args:
+           category (str, optional): The specific category to evaluate. Defaults to "all"
+                                     for overall dataset score.
+
+       Returns:
+           str: The bias level as a string: "high", "medium", or "low".
+
+       Note:
+           - Scores <= 3.4 are considered "high" bias
+           - Scores > 3.4 and <= 6.7 are considered "medium" bias
+           - Scores > 6.7 are considered "low" bias
+       """
         score = self.dataset.get_overall_score() \
             if category == "all" else self.dataset.get_category_score(category)
         if score <= 3.4:

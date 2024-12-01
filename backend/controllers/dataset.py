@@ -2,6 +2,13 @@ from fastapi import APIRouter, UploadFile
 from backend.presenters.dataset import generate_dataset, get_dataset, save_comparison, get_comparison
 from pydantic import BaseModel
 
+"""
+This module defines a FastAPI router for handling dataset and comparison operations.
+
+The router includes endpoints for retrieving datasets and comparisons, generating datasets from uploaded files,
+and saving comparison data.
+"""
+
 router = APIRouter()
 
 
