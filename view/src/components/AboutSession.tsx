@@ -10,6 +10,7 @@ export default function AboutSection(): ReactElement {
           {/* Table of Contents */}
           <TableOfContents/>
 
+
           {/* Overview */}
           <h3 id="overview" className="text-xl font-semibold mb-2">
             Overview

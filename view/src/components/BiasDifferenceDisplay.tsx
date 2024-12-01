@@ -12,6 +12,7 @@ export default function BiasDifferenceDisplay({
   dataset2,
 }: BiasDifferenceDisplayProps): JSX.Element {
   return (
+
     <p className="mt-5 text-lg">
       Overall bias{" "}
       <span
