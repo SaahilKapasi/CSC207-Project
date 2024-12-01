@@ -3,6 +3,7 @@ import BiasProgressBar from "../components/BiasProgressBar";
 import CategoryInfoModal from "../components/CategoryInfoModal";
 import CopyLinkButton from "../components/CopyLinkButton";
 import Graph from "../components/Graph";
+import Tooltip from "../components/Tooltip";
 import { Category, Dataset } from "../types/types";
 import { getColorByScore } from "../utils/score";
 
@@ -91,7 +92,14 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
       <CopyLinkButton datasetId={dataset.id} />
 
       {/* Overall Bias Section */}
-      <p className="mb-2 text-lg mt-5">Overall Bias Detected:</p>
+      <div className="flex items-center mt-5 mb-2 gap-1">
+        <p className="text-lg">Overall Bias Detected: </p>
+        <Tooltip
+          text={
+            "The overall bias is calculated by taking the mean of all the bias' detected by each category."
+          }
+        />
+      </div>
       <BiasProgressBar
         bias={10 - dataset.score}
         aria-label={`Overall bias score: ${10 - dataset.score}`}
