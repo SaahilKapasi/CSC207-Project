@@ -113,6 +113,7 @@ export default function ComparePage({
                 maxValue={10}
                 maxValueLabel={"10 (High)"}
                 zeroValueLabel="0 (Low)"
+                keyboardNavigationEnabled={false}
               />
               <div className="mt-32" />
             </div>

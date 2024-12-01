@@ -79,13 +79,13 @@ export default function Graph({
                 role={keyboardNavigationEnabled ? "button" : undefined} // Conditional role
                 aria-label={`Bar ${entry.name}, value ${entry.value}`} // Screen reader description
                 onKeyDown={(e) => {
-                  if (
-                    keyboardNavigationEnabled &&
-                    (e.key === "Enter" || e.key === " ")
-                  ) {
-                    onBarClick && onBarClick(entry.name); // Trigger click on Enter or Space
+                if (keyboardNavigationEnabled) {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onBarClick && onBarClick(entry.name); 
                   }
-                }}
+                }
+              }}
               >
                 {/* Bar */}
                 <div
