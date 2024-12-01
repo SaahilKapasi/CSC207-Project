@@ -42,6 +42,7 @@ Dependencies:
 - Uses numpy (`np`) for mean and variance calculations.
 """
 import numpy as np
+import pandas as pd
 
 
 class BiasCalculator:
@@ -194,10 +195,17 @@ class BiasCalculator:
             (df[column] < q1),
             (df[column] >= q1) & (df[column] < q2),
             (df[column] >= q2) & (df[column] < q3),
+            (df[column] >= q3)
         ]
 
-        choices = [f"0-{q1}", f"{q1}-{q2}", f"{q2}-{q3}"]
+        choices = [f"0-{q1}", f"{q1}-{q2}", f"{q2}-{q3}", f"{q3}+"]
 
-        df[column] = np.select(conditions, choices, default=f"{q3}+")
+        df[column] = np.select(conditions, choices)
+
+        df[column] = pd.Categorical(
+            df[column],
+            categories=choices,
+            ordered=True
+        )
 
         return df
