@@ -2,7 +2,7 @@ import uuid
 
 from fastapi import UploadFile
 
-from backend.entites.dataset_files.csv_file import CSVFile
+from backend.entities.dataset_files.csv_file import CSVFile
 from backend.use_cases.bias_analyzers.simple_analyzer import SimpleAnalyzer
 from backend.use_cases.bias_calculators.variance_calculator import VarianceCalculator
 

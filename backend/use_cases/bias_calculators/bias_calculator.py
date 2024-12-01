@@ -42,6 +42,7 @@ Dependencies:
 - Uses numpy (`np`) for mean and variance calculations.
 """
 import numpy as np
+import pandas as pd
 
 
 class BiasCalculator:
@@ -186,19 +187,19 @@ class BiasCalculator:
         Returns:
             pd.DataFrame: DataFrame with new column containing IQR-based categories
         """
-        q1 = df[column].quantile(0.25)
-        q2 = df[column].quantile(0.50)
-        q3 = df[column].quantile(0.75)
+        q1 = round(df[column].quantile(0.25))
+        q2 = round(df[column].quantile(0.50))
+        q3 = round(df[column].quantile(0.75))
 
         conditions = [
             (df[column] < q1),
             (df[column] >= q1) & (df[column] < q2),
             (df[column] >= q2) & (df[column] < q3),
+            (df[column] >= q3)
         ]
 
-        choices = [f"below_{q1}", f"below_{q2}", f"below_{q3}"]
+        choices = [f"0-{q1 - 1}", f"{q1}-{q2 - 1}", f"{q2}-{q3 - 1}", f"{q3}+"]
 
-        new_col_name = f"{column}_categorized_by_iqr"
-        df[new_col_name] = np.select(conditions, choices, default=f"above_{q3}")
+        df[column] = np.select(conditions, choices)
 
         return df
