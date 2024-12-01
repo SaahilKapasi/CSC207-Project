@@ -198,14 +198,8 @@ class BiasCalculator:
             (df[column] >= q3)
         ]
 
-        choices = [f"0-{q1}", f"{q1}-{q2}", f"{q2}-{q3}", f"{q3}+"]
+        choices = [f"0-{q1 - 1}", f"{q1}-{q2 - 1}", f"{q2}-{q3 - 1}", f"{q3}+"]
 
         df[column] = np.select(conditions, choices)
-
-        df[column] = pd.Categorical(
-            df[column],
-            categories=choices,
-            ordered=True
-        )
 
         return df
