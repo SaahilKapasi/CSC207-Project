@@ -20,7 +20,7 @@ Usage:
 """
 from typing import BinaryIO
 
-from backend.entites.protected_classes import PROTECTED_CLASSES
+from backend.entities.protected_classes import PROTECTED_CLASSES
 import pandas as pd
 
 from backend.use_cases.bias_calculators.bias_calculator import BiasCalculator

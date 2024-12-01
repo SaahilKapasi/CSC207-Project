@@ -1,4 +1,4 @@
-from backend.entites.dataset_files.dataset_file import DatasetFile
+from backend.entities.dataset_files.dataset_file import DatasetFile
 
 
 class BiasAnalyzer:

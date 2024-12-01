@@ -1,4 +1,4 @@
-from backend.entites.dataset_files.dataset_file import DatasetFile
+from backend.entities.dataset_files.dataset_file import DatasetFile
 from backend.use_cases.bias_analyzers.bias_analyzer import BiasAnalyzer
 
 
