@@ -13,6 +13,7 @@ export default function AboutSection(): ReactElement {
           {/* Overview */}
           <h3 id="overview" className="text-xl font-semibold mb-2">
             Overview
+
           </h3>
           <p className="mb-4">
             The Bias Visualizer Tool is designed to help CashApp identify and visualize potential biases in its AI
