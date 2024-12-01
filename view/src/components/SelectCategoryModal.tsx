@@ -45,7 +45,7 @@ export default function SelectedCategoryModal({
             number of transactions that are actually not fraudulent.
           </p>
           <Graph
-            name={`${capitalize(category.name)} V.S. False Positive Rate`}
+            name={`False Positive Rate V.S. ${capitalize(category.name)}`}
             entries={category.traits.map((t) => ({
               name: t.name,
               value: t.fprMean,
