@@ -1,10 +1,10 @@
 import { useState } from "react";
 import BiasProgressBar from "../components/BiasProgressBar";
+import CategoryInfoModal from "../components/CategoryInfoModal";
+import CopyLinkButton from "../components/CopyLinkButton";
 import Graph from "../components/Graph";
 import { Category, Dataset } from "../types/types";
 import { getColorByScore } from "../utils/score";
-import CopyLinkButton from "../components/CopyLinkButton";
-import SelectedCategoryModal from "../components/SelectCategoryModal";
 
 const raceData = [
   {
@@ -92,14 +92,14 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
 
       {/* Overall Bias Section */}
       <p className="mb-2 text-lg mt-5">Overall Bias Detected:</p>
-      <BiasProgressBar 
-      bias={10 - dataset.score} 
-      aria-label={`Overall bias score: ${10 - dataset.score}`}
+      <BiasProgressBar
+        bias={10 - dataset.score}
+        aria-label={`Overall bias score: ${10 - dataset.score}`}
       />
       <p className="mt-5 max-w-96 mb-10 text-md whitespace-pre-line">
         {dataset.description}
       </p>
-      
+
       {/* Graph Section */}
       <Graph
         name={"Bias Detected by Category"}
@@ -122,7 +122,7 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
 
       {/* Modal Section */}
       {selectedCategory && (
-        <SelectedCategoryModal
+        <CategoryInfoModal
           category={selectedCategory}
           onClose={() => setSelectedCategory(null)}
         />

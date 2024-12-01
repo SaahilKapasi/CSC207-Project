@@ -1,16 +1,16 @@
 import { Dataset } from "../types/types";
 
 interface BiasDifferenceDisplayProps {
-  difference: number;
   dataset1: Dataset;
   dataset2: Dataset;
 }
 
 export default function BiasDifferenceDisplay({
-  difference,
   dataset1,
   dataset2,
 }: BiasDifferenceDisplayProps): JSX.Element {
+  const difference = 10 - dataset2.score - (10 - dataset1.score);
+
   return (
     <p className="mt-5 text-lg">
       Overall bias{" "}
