@@ -198,7 +198,6 @@ class BiasCalculator:
 
         choices = [f"below_{q1}", f"below_{q2}", f"below_{q3}"]
 
-        new_col_name = f"{column}_categorized_by_iqr"
-        df[new_col_name] = np.select(conditions, choices, default=f"above_{q3}")
+        df[column] = np.select(conditions, choices, default=f"above_{q3}")
 
         return df
