@@ -31,12 +31,10 @@ class CSVFile(DatasetFile):
     Attributes:
         df (pd.DataFrame): The DataFrame containing the dataset.
         categories (set): A set of protected categories present in the dataset.
-        bias_calculator (BiasCalculator): An instance of the BiasCalculator class.
 
     """
     df: pd.DataFrame
     categories: set
-    bias_calculator: BiasCalculator
 
     def load_file(self, file_address: BinaryIO):
         self.df = pd.read_csv(file_address)

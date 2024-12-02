@@ -44,6 +44,8 @@ Dependencies:
 import numpy as np
 import pandas as pd
 
+from backend.entities.dataset_files.dataset_file import DatasetFile
+
 
 class BiasCalculator:
 
@@ -92,6 +94,13 @@ class BiasCalculator:
         """
         raise NotImplementedError
 
+    def process_dataset(self, dataset: DatasetFile) -> None:
+        dataset.score = self.calculate_overall_score(dataset.df, dataset.categories)
+        dataset.category_scores = {category: self.calculate_score(dataset.df, category)
+                                   for category in dataset.categories}
+        dataset.category_fprs = {category: self.obtain_fpr_map(dataset.df, category) for category in dataset.categories}
+        dataset.is_processed = True
+
     def calculate_fpr(self, df):
         """
         Calculate the false positive rate (FPR) for a given subset of infrastructure.
@@ -136,10 +145,8 @@ class BiasCalculator:
               Each entry represents the FPR for one unique kind within the category.
         """
         if np.issubdtype(df[category].dtype, np.number):
-            # Replace helpers reference with direct import
             df = self.update_number_kinds_by_irq(df, category)
 
-        # Replace helpers reference with direct import
         kinds = set(df[category])
         kind_fprs = []
 
