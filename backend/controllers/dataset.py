@@ -6,6 +6,7 @@ from backend.presenters.dataset import (
     get_comparison,
 )
 from pydantic import BaseModel
+import os
 
 router = APIRouter()
 
@@ -27,6 +28,13 @@ async def get_comparison_endpoint(id: str):
 @router.post("/api/generateDataset")
 async def generate_dataset_endpoint(file: UploadFile):
     return await generate_dataset(file)
+
+
+@router.post("/api/generateDatasetLink")
+async def generate_dataset_link_endpoint(file: UploadFile):
+    frontend_url = os.getenv("FRONTEND_URL")
+    dataset = await generate_dataset(file)
+    return f"{frontend_url}/#{dataset['id']}"
 
 
 @router.post("/api/saveComparison")
