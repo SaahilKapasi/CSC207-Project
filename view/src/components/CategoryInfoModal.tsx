@@ -1,7 +1,7 @@
-import BiasProgressBar from "../components/BiasProgressBar";
-import Graph from "../components/Graph";
 import { Category } from "../types/types";
 import { capitalize } from "../utils/string";
+import BiasProgressBar from "./BiasProgressBar";
+import Graph from "./Graph";
 import Modal from "./Modal";
 
 interface SelectedCategoryModalProps {
@@ -9,7 +9,7 @@ interface SelectedCategoryModalProps {
   onClose: () => void;
 }
 
-export default function SelectedCategoryModal({
+export default function CategoryInfoModal({
   category,
   onClose,
 }: SelectedCategoryModalProps): JSX.Element {
@@ -58,6 +58,7 @@ export default function SelectedCategoryModal({
               category.name
             )} traits`}
             keyboardNavigationEnabled={false}
+            valueToText={(value) => `${(value * 100).toFixed(0)}%`}
           />
           <div className="mt-32" />
         </div>

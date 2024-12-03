@@ -20,10 +20,9 @@ Usage:
 """
 from typing import BinaryIO
 
-from backend.entites.protected_classes import PROTECTED_CLASSES
 import pandas as pd
 
-from backend.use_cases.bias_calculators.bias_calculator import BiasCalculator
+from backend.entities.protected_classes import PROTECTED_CLASSES
 
 
 class DatasetFile:
@@ -41,12 +40,18 @@ class DatasetFile:
     """
     df: pd.DataFrame
     categories: set
-    bias_calculator: BiasCalculator
+    score: float
+    category_scores: dict[str, float]
+    category_fprs: dict[str, dict[str, float]]
+    is_processed: bool
 
-    def __init__(self, file_address: BinaryIO, bias_calculator: BiasCalculator):
+    def __init__(self, file_address: BinaryIO):
         self.load_file(file_address)
         self.categories = self.get_present_categories()
-        self.bias_calculator = bias_calculator
+        self.score = 0
+        self.category_scores = {category: 0 for category in self.categories}
+        self.category_scores = {category: 0 for category in self.categories}
+        self.is_processed = False
 
     def load_file(self, file_address: BinaryIO):
         raise NotImplementedError
@@ -104,7 +109,7 @@ class DatasetFile:
         Returns:
             dict: {trait: mean fpr}
         """
-        return self.bias_calculator.obtain_fpr_map(self.df, category)
+        return self.category_fprs[category]
 
     def get_category_score(self, category):
         """
@@ -117,7 +122,7 @@ class DatasetFile:
             float: Variance-based bias score for the specified category, or None if the category is not present.
         """
         if category in self.categories:
-            return self.bias_calculator.calculate_score(self.df, category)
+            return self.category_scores[category]
         return None
 
     def get_overall_score(self):
@@ -136,4 +141,4 @@ class DatasetFile:
               until `calculate_score_by_accuracy` is implemented.
             - Assumes each scoring method returns a score between 0 and 10.
         """
-        return self.bias_calculator.calculate_overall_score(self.df, self.categories)
+        return self.score

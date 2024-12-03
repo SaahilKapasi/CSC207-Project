@@ -1,11 +1,11 @@
 import { ReactElement, useState } from "react";
+import BiasDifferenceDisplay from "../components/BiasDifferenceLabel";
+import CopyComparisonLinkButton from "../components/CopyComparisonLinkButton";
+import DatasetSelector from "../components/DatasetSelector";
 import Graph from "../components/Graph";
 import Modal from "../components/Modal";
 import { Dataset } from "../types/types";
 import { capitalize } from "../utils/string";
-import CopyComparisonLinkButton from "../components/CopyComparisonLinkButton";
-import DatasetSelector from "../components/DatasetSelector";
-import BiasDifferenceDisplay from "../components/BiasDifferenceDisplay";
 
 interface ComparePageProps {
   datasets: Dataset[];
@@ -24,14 +24,8 @@ export default function ComparePage({
 }: ComparePageProps): ReactElement {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const difference =
-    selectedDataset1 && selectedDataset2
-      ? 10 - selectedDataset2.score - (10 - selectedDataset1.score)
-      : undefined;
-
   return (
     <div className="relative flex flex-col items-center">
-
       {/* Copy Link Button */}
       <CopyComparisonLinkButton
         selectedDataset1={selectedDataset1}
@@ -57,9 +51,8 @@ export default function ComparePage({
       </div>
 
       {/* Bias Difference Display */}
-      {difference !== undefined && (
+      {selectedDataset1 && selectedDataset2 && (
         <BiasDifferenceDisplay
-          difference={difference}
           dataset1={selectedDataset1!}
           dataset2={selectedDataset2!}
         />
@@ -71,9 +64,12 @@ export default function ComparePage({
           <div className="mt-2" />
           <Graph
             name={"Change in Bias Detected by Category"}
-            entries={selectedDataset1.categories.map((c, i) => ({
+            entries={selectedDataset1.categories.map((c) => ({
               name: c.name,
-              value: c.fprScore - selectedDataset2.categories.find((a) => a.name === c.name)!.fprScore,
+              value:
+                c.fprScore -
+                selectedDataset2.categories.find((a) => a.name === c.name)!
+                  .fprScore,
             }))}
             getColor={(value) => (value < 0 ? "green-500" : "red-500")}
             maxValue={10}
@@ -98,18 +94,22 @@ export default function ComparePage({
                 entries={[
                   {
                     name: selectedDataset1!.name,
-                    value: 10 - selectedDataset1!.categories.find(
-                      (c) => c.name === selectedCategory
-                    )!.fprScore,
+                    value:
+                      10 -
+                      selectedDataset1!.categories.find(
+                        (c) => c.name === selectedCategory
+                      )!.fprScore,
                   },
                   {
                     name: selectedDataset2!.name,
-                    value: 10- selectedDataset2!.categories.find(
-                      (c) => c.name === selectedCategory
-                    )!.fprScore,
+                    value:
+                      10 -
+                      selectedDataset2!.categories.find(
+                        (c) => c.name === selectedCategory
+                      )!.fprScore,
                   },
                 ]}
-                getColor={(value) => "blue-500"}
+                getColor={() => "blue-500"}
                 maxValue={10}
                 maxValueLabel={"10 (High)"}
                 zeroValueLabel="0 (Low)"

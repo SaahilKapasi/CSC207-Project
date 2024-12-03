@@ -18,7 +18,7 @@ Usage:
     Create a File instance by providing the file path of a CSV dataset.
     Use instance methods to retrieve bias scores for specific categories or an overall score.
 """
-from backend.entites.dataset_files.dataset_file import DatasetFile
+from backend.entities.dataset_files.dataset_file import DatasetFile
 from backend.use_cases.bias_calculators.bias_calculator import BiasCalculator
 from typing import BinaryIO
 import pandas as pd
@@ -31,12 +31,10 @@ class CSVFile(DatasetFile):
     Attributes:
         df (pd.DataFrame): The DataFrame containing the dataset.
         categories (set): A set of protected categories present in the dataset.
-        bias_calculator (BiasCalculator): An instance of the BiasCalculator class.
 
     """
     df: pd.DataFrame
     categories: set
-    bias_calculator: BiasCalculator
 
     def load_file(self, file_address: BinaryIO):
         self.df = pd.read_csv(file_address)

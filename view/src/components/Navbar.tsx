@@ -1,4 +1,4 @@
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import { Dataset } from "../types/types";
 
 interface NavbarProps {
@@ -20,16 +20,14 @@ export default function Navbar({
   datasets,
   onLanding,
 }: NavbarProps): ReactElement {
-  const [modalOpen, setModalOpen] = useState(false);
-
   return (
     <div
       className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-2 bg-white shadow-md"
       role="banner" // Adds a semantic role for the navbar
     >
       {/* Left Section: Cash App Logo */}
-      <div 
-        className="flex items-center cursor-pointer" 
+      <div
+        className="flex items-center cursor-pointer"
         onClick={onLanding}
         tabIndex={0} // Makes the div focusable
         onKeyDown={(e) => {

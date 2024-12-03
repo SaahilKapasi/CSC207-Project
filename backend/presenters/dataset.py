@@ -2,7 +2,7 @@ import uuid
 
 from fastapi import UploadFile
 
-from backend.entites.dataset_files.csv_file import CSVFile
+from backend.entities.dataset_files.csv_file import CSVFile
 from backend.use_cases.bias_analyzers.simple_analyzer import SimpleAnalyzer
 from backend.use_cases.bias_calculators.variance_calculator import VarianceCalculator
 
@@ -32,7 +32,8 @@ async def save_comparison(data):
 
 async def generate_dataset(file: UploadFile):
     calculator = VarianceCalculator()
-    dataset_file = CSVFile(file.file, calculator)
+    dataset_file = CSVFile(file.file)
+    calculator.process_dataset(dataset_file)
     analyzer = SimpleAnalyzer(dataset_file)
     categories = list(
         map(lambda category: {

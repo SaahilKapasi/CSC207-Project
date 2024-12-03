@@ -11,6 +11,7 @@ interface GraphProps {
   minValueLabel?: string;
   getColor: (value: number) => string;
   keyboardNavigationEnabled?: boolean;
+  valueToText?: (value: number) => string;
 }
 
 export default function Graph({
@@ -24,6 +25,7 @@ export default function Graph({
   minValueLabel,
   getColor,
   keyboardNavigationEnabled = true, // Default to enabled
+  valueToText,
 }: GraphProps): ReactElement {
   const barWidth = 10;
   const gap = 2;
@@ -32,7 +34,7 @@ export default function Graph({
 
   return (
     <div className="flex flex-col items-center">
-      <p className="mb-4 text-lg text-center underline">{name}</p>
+      <p className="mb-8 text-lg text-center underline">{name}</p>
       <div className="w-max relative">
         <div
           className="flex"
@@ -69,7 +71,7 @@ export default function Graph({
             {entries.map((entry, index) => (
               <div
                 key={index}
-                className="h-full flex relative hover:bg-slate-100 hover:cursor-pointer"
+                className="h-full flex relative hover:bg-slate-100 hover:cursor-pointer group transition-colors"
                 style={{
                   width: `${barWidth / 4}rem`,
                   alignItems: "flex-end",
@@ -80,23 +82,38 @@ export default function Graph({
                 aria-label={`Bar ${entry.name}, value ${entry.value}`} // Screen reader description
                 onKeyDown={(e) => {
                 if (keyboardNavigationEnabled) {
-                  if (e.key === "Enter" || e.key === " ") {
+                  if ((e.key === "Enter" || e.key === " ") && onBarClick) {
                     e.preventDefault();
-                    onBarClick && onBarClick(entry.name); 
+                    onBarClick(entry.name); 
                   }
                 }
               }}
               >
                 {/* Bar */}
                 <div
-                  className={`bg-${getColor(entry.value)}`}
+                  className={`bg-${getColor(
+                    entry.value
+                  )} relative flex justify-center`}
                   style={{
                     height: `${(Math.abs(entry.value) / maxValue) * 100}%`,
                     width: `${barWidth / 4}rem`,
                     marginTop: entry.value < 0 ? `${height / 8}rem` : 0,
                     alignSelf: entry.value < 0 ? "flex-start" : "flex-end",
                   }}
-                ></div>
+                >
+                  <p
+                    className="transition-opacity opacity-0 group-hover:opacity-100"
+                    style={{
+                      alignSelf: entry.value < 0 ? "flex-end" : "flex-start",
+                      marginTop: entry.value < 0 ? "0rem" : "-1.75rem",
+                      marginBottom: entry.value < 0 ? "-1.75rem" : "0rem",
+                    }}
+                  >
+                    {valueToText
+                      ? valueToText(entry.value)
+                      : entry.value.toFixed(2)}
+                  </p>
+                </div>
                 {/* Label */}
                 <div
                   className="absolute w-max"
