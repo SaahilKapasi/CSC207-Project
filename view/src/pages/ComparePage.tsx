@@ -64,7 +64,7 @@ export default function ComparePage({
           <div className="mt-2" />
           <Graph
             name={"Change in Bias Detected by Category"}
-            entries={selectedDataset1.categories.map((c, i) => ({
+            entries={selectedDataset1.categories.map((c) => ({
               name: c.name,
               value:
                 c.fprScore -
@@ -109,7 +109,7 @@ export default function ComparePage({
                       )!.fprScore,
                   },
                 ]}
-                getColor={(value) => "blue-500"}
+                getColor={() => "blue-500"}
                 maxValue={10}
                 maxValueLabel={"10 (High)"}
                 zeroValueLabel="0 (Low)"

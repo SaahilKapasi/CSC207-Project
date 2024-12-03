@@ -31,9 +31,8 @@ function App() {
     Dataset | undefined
   >();
 
-
   const axiosInstance = axios.create({
-    baseURL: API_BASE_URL
+    baseURL: API_BASE_URL,
   });
 
   useEffect(() => {
@@ -62,6 +61,7 @@ function App() {
 
       setLoading(false);
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
