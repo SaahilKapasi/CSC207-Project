@@ -38,7 +38,7 @@ export default function Navbar({
         aria-label="Go to landing page" // Describes the action for screen readers
       >
         <img
-          src="/cash_app.svg" 
+          src="/cash_app.svg"
           alt="Cash App Logo"
           className="h-11 w-11 rounded-full mr-3"
           aria-hidden="true"
@@ -50,6 +50,7 @@ export default function Navbar({
       <div className="flex gap-2">
         {datasets.map((dataset) => (
           <button
+            key={dataset.id}
             className={`p-2 bg-slate-100 rounded-md border-2 ${
               selectedPage === "graph" && dataset.id === selectedDataset?.id
                 ? "border-slate-700"
