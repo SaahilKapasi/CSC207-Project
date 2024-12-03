@@ -137,7 +137,7 @@ export default function AboutSection(): ReactElement {
             <h3 id="technical-support" className="text-xl font-semibold mb-2">Technical Support</h3>
             <p className="mb-4">
               For technical assistance or inquiries about the Bias Visualizer Tool, please contact our support team
-              at <a href="mailto:aaina.garg@mail.utoronto.ca"
+              at <a href="mailto:hifive@gmail.com"
                     className="text-blue-600 hover:underline">hifive@gmail.com</a>.
             </p>
           </section>
