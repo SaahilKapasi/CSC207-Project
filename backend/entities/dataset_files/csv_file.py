@@ -18,10 +18,11 @@ Usage:
     Create a File instance by providing the file path of a CSV dataset.
     Use instance methods to retrieve bias scores for specific categories or an overall score.
 """
-from backend.entities.dataset_files.dataset_file import DatasetFile
-from backend.use_cases.bias_calculators.bias_calculator import BiasCalculator
 from typing import BinaryIO
+
 import pandas as pd
+
+from backend.entities.dataset_files.dataset_file import DatasetFile
 
 
 class CSVFile(DatasetFile):
