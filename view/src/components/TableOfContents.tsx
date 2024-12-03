@@ -15,13 +15,10 @@ export default function TableOfContents(): ReactElement {
             <a href="#data-requirements">Data Requirements</a>
           </li>
           <li>
-            <a href="#protected-class-attributes">Protected Classes Attributes</a>
-          </li>
-          <li>
             <a href="#analysis-features">Analysis Features</a>
           </li>
           <li>
-            <a href="#interpreting-results">Interpreting Results</a>
+            <a href="#understanding-the-metrics">Understanding the Metrics</a>
           </li>
           <li>
             <a href="#best-practices">Best Practices</a>
