@@ -10,7 +10,6 @@ export default function AboutSection(): ReactElement {
           {/* Table of Contents */}
           <TableOfContents/>
 
-
           {/* Overview */}
           <h3 id="overview" className="text-xl font-semibold mb-2">
             Overview
@@ -21,7 +20,7 @@ export default function AboutSection(): ReactElement {
             models, with a focus on fraud detection algorithms. This tool provides comprehensive insights into model
             fairness and helps in mitigating algorithmic bias.
           </p>
-
+          <br/>
           {/* Getting Started */}
           <section>
             <h3 id="getting-started" className="text-xl font-semibold mb-2">Getting Started</h3>
@@ -32,7 +31,8 @@ export default function AboutSection(): ReactElement {
               <li>Utilize the "Compare" feature in the header for multi-dataset analysis</li>
             </ol>
           </section>
-
+          <br/>
+          
           <section>
             <h3 id="data-requirements" className="text-xl font-semibold mb-2">Data Requirements</h3>
             <p className="mb-2">Your dataset must adhere to the following criteria:</p>
@@ -40,15 +40,15 @@ export default function AboutSection(): ReactElement {
               <li>File format: .csv</li>
               <li>Required columns:
                 <ul className="list-disc pl-5 mt-2">
-                  <li><code className="bg-gray-200 px-2 py-1 rounded">marked</code>: Indicates if a transaction was
+                  <li><code className="bg-gray-200 px-2 py-1 rounded">"marked"</code>: Indicates if a transaction was
                     flagged as fraudulent
                   </li>
-                  <li><code className="bg-gray-200 px-2 py-1 rounded">actual</code>: Indicates if a transaction was
+                  <li><code className="bg-gray-200 px-2 py-1 rounded">"actual"</code>: Indicates if a transaction was
                     actually fraudulent
                   </li>
                 </ul>
               </li>
-              <li>At least one protected class attribute</li>
+              <li>And at least one protected class attribute described below </li>
             </ul>
 
             <h4 className="text-lg font-semibold mb-2">Protected Class Attributes</h4>
@@ -77,7 +77,6 @@ export default function AboutSection(): ReactElement {
           </section>
           <br/>
 
-
           <section>
             <h3 id="analysis-features" className="text-xl font-semibold mb-2">Analysis Features</h3>
             <ul className="list-disc pl-5 mb-4">
@@ -105,7 +104,7 @@ export default function AboutSection(): ReactElement {
               </li>
             </ul>
           </section>
-
+          <br/>
 
           <section>
             <h3 id="interpreting-results" className="text-xl font-semibold mb-2">Interpreting Results</h3>
@@ -121,6 +120,7 @@ export default function AboutSection(): ReactElement {
               </li>
             </ul>
           </section>
+          <br/>
 
           <section>
             <h3 id="best-practices" className="text-xl font-semibold mb-2">Best Practices</h3>
@@ -131,6 +131,7 @@ export default function AboutSection(): ReactElement {
               <li>Combine tool results with domain expertise for comprehensive bias mitigation</li>
             </ul>
           </section>
+          <br/>
 
           <section>
             <h3 id="technical-support" className="text-xl font-semibold mb-2">Technical Support</h3>
