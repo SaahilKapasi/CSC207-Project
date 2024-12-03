@@ -1,7 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import BiasProgressBar from "../components/BiasProgressBar";
 import { getColorByScore } from "../utils/score";
-// @ts-ignore
 
 describe("BiasProgressBar Component", () => {
   test("renders progress bar with correct aria attributes and bias value", () => {

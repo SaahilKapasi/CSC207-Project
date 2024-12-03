@@ -2,20 +2,27 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import ComparePage from "../pages/ComparePage";
 import { Dataset } from "../types/types";
 
+// Mock components with specific types
 jest.mock("../components/CopyComparisonLinkButton", () => () => (
   <div data-testid="copy-link-button">Copy Link Button</div>
 ));
-jest.mock("../components/DatasetSelector", () => ({ label }: { label: string }) => (
-  <div data-testid={`dataset-selector-${label}`}>{label}</div>
+
+jest.mock("../components/DatasetSelector", () => (props: { label: string }) => (
+  <div data-testid={`dataset-selector-${props.label}`}>{props.label}</div>
 ));
-jest.mock("../components/BiasDifferenceDisplay", () => ({ difference }: { difference: number }) => (
-  <div data-testid="bias-difference-display">Difference: {difference}</div>
+
+jest.mock("../components/BiasDifferenceLabel", () => (props: { dataset1: Dataset; dataset2: Dataset }) => (
+  <div data-testid="bias-difference-display">
+    Difference: {(10 - props.dataset2.score - (10 - props.dataset1.score)).toFixed(1)}
+  </div>
 ));
-jest.mock("../components/Graph", () => ({ name }: { name: string }) => (
-  <div data-testid={`graph-${name}`}>{name}</div>
+
+jest.mock("../components/Graph", () => (props: { name: string }) => (
+  <div data-testid={`graph-${props.name}`}>{props.name}</div>
 ));
-jest.mock("../components/Modal", () => ({ content }: { content: any }) => (
-  <div data-testid="modal">{content}</div>
+
+jest.mock("../components/Modal", () => (props: { content: JSX.Element }) => (
+  <div data-testid="modal">{props.content}</div>
 ));
 
 describe("ComparePage Component", () => {
@@ -61,7 +68,6 @@ describe("ComparePage Component", () => {
     expect(screen.queryByTestId("graph-Change in Bias Detected by Category")).not.toBeInTheDocument();
     expect(screen.queryByTestId("modal")).not.toBeInTheDocument();
   });
-  
 
   test("renders the difference and graph when both datasets are selected", () => {
     render(
@@ -75,7 +81,7 @@ describe("ComparePage Component", () => {
     );
 
     expect(screen.getByTestId("bias-difference-display")).toBeInTheDocument();
-    expect(screen.getByText("Difference: -2")).toBeInTheDocument(); // (10 - 5) - (10 - 3)
+    expect(screen.getByText("Difference: -2.0")).toBeInTheDocument();
 
     expect(
       screen.getByTestId("graph-Change in Bias Detected by Category")
@@ -92,12 +98,12 @@ describe("ComparePage Component", () => {
         setSelectedDataset2={mockSetSelectedDataset2}
       />
     );
-  
+
     expect(screen.getByTestId("dataset-selector-Choose dataset 1")).toBeInTheDocument();
     expect(screen.queryByTestId("bias-difference-display")).not.toBeInTheDocument();
     expect(screen.queryByTestId("graph-Change in Bias Detected by Category")).not.toBeInTheDocument();
   });
-  
+
   test("renders correctly when only the second dataset is selected", () => {
     render(
       <ComparePage
@@ -108,28 +114,11 @@ describe("ComparePage Component", () => {
         setSelectedDataset2={mockSetSelectedDataset2}
       />
     );
-  
+
     expect(screen.getByTestId("dataset-selector-Choose dataset 2")).toBeInTheDocument();
     expect(screen.queryByTestId("bias-difference-display")).not.toBeInTheDocument();
     expect(screen.queryByTestId("graph-Change in Bias Detected by Category")).not.toBeInTheDocument();
-  });  
-
-  // the program for now can't handle invalid datasets, uncomment below to check whether the updated version can handle.
-//   test("handles invalid datasets gracefully", () => {
-//     const invalidDataset = null; // or an improperly structured dataset
-//     render(
-//       <ComparePage
-//         datasets={mockDatasets}
-//         selectedDataset1={invalidDataset}
-//         selectedDataset2={mockDatasets[1]}
-//         setSelectedDataset1={mockSetSelectedDataset1}
-//         setSelectedDataset2={mockSetSelectedDataset2}
-//       />
-//     );
-  
-//     // Assertions to check for error messages or fallback UI
-//     expect(screen.getByText("Invalid dataset selected")).toBeInTheDocument();
-//   });  
+  });
 
   test("opens and closes the modal when a graph bar is clicked", () => {
     const { rerender } = render(
@@ -142,9 +131,9 @@ describe("ComparePage Component", () => {
       />
     );
 
-    // Open the modal
     const graph = screen.getByTestId("graph-Change in Bias Detected by Category");
     fireEvent.click(graph);
+
     rerender(
       <ComparePage
         datasets={mockDatasets}
@@ -157,9 +146,9 @@ describe("ComparePage Component", () => {
 
     expect(screen.getByTestId("graph-Change in Bias Detected by Category")).toBeInTheDocument();
 
-    // Close modal
     const modal = screen.getByTestId("graph-Change in Bias Detected by Category");
     fireEvent.click(modal);
+
     rerender(
       <ComparePage
         datasets={mockDatasets}

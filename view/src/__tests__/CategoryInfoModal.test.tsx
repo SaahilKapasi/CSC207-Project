@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import SelectedCategoryModal from "../components/SelectCategoryModal";
+import SelectedCategoryModal from "../components/CategoryInfoModal";
 import { Category } from "../types/types";
 
 describe("SelectedCategoryModal Component", () => {
