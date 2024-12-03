@@ -7,78 +7,11 @@ import Tooltip from "../components/Tooltip";
 import { Category, Dataset } from "../types/types";
 import { getColorByScore } from "../utils/score";
 
-const raceData = [
-  {
-    name: "White",
-    falsePositiveRate: 0.31,
-  },
-  {
-    name: "Black",
-    falsePositiveRate: 0.53,
-  },
-  {
-    name: "Asian",
-    falsePositiveRate: 0.45,
-  },
-  {
-    name: "Hispanic",
-    falsePositiveRate: 0.91,
-  },
-];
-
-const genderData = [
-  {
-    name: "Male",
-    falsePositiveRate: 0.45,
-  },
-  {
-    name: "Female",
-    falsePositiveRate: 0.55,
-  },
-];
-
-function CustomizedAxisTick({ x, y, stroke, payload }: any) {
-  return (
-    <g transform={`translate(${x},${y})`}>
-      <text
-        x={0}
-        y={0}
-        dy={16}
-        textAnchor="end"
-        fill="#666"
-        transform="rotate(-35)"
-      >
-        {payload.value}
-      </text>
-    </g>
-  );
-}
-
-function scoreToColor(score: number) {
-  if (score < 3.3) {
-    return "red-700";
-  } else if (score < 6.6) {
-    return "yellow-500";
-  } else {
-    return "green-700";
-  }
-}
-
-function scoreToText(score: number) {
-  if (score < 3.3) {
-    return "BAD bad BADD!!asdf";
-  } else if (score < 6.6) {
-    return "Okay";
-  } else {
-    return "Good";
-  }
-}
-
-interface GraphPageProps {
+interface DatasetPageProps {
   dataset: Dataset;
 }
 
-export default function DatasetPage({ dataset }: GraphPageProps) {
+export default function DatasetPage({ dataset }: DatasetPageProps) {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null
   );

@@ -79,8 +79,8 @@ export default function Graph({
                 role="button" // Treat the bar as a button
                 aria-label={`Bar ${entry.name}, value ${entry.value}`} // Screen reader description
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    onBarClick && onBarClick(entry.name); // Trigger click on Enter or Space
+                  if ((e.key === "Enter" || e.key === " ") && onBarClick) {
+                    onBarClick(entry.name); // Trigger click on Enter or Space
                   }
                 }}
               >
