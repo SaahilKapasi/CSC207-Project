@@ -18,9 +18,9 @@ Functions:
 - calculate_score_by_accuracy(df, category): Placeholder function for calculating a score based on accuracy.
   Currently not implemented.
 
-- calculate_fpr(df): Calculate the false positive rate (FPR) for a subset of infrastructure within a specific category kind.
-  This function assumes a DataFrame with 'marked' and 'actual' columns, indicating model prediction and true
-  fraud status, respectively.
+- calculate_fpr(df): Calculate the false positive rate (FPR) for a subset of infrastructure within a specific
+category kind. This function assumes a DataFrame with 'marked' and 'actual' columns, indicating model prediction and
+true fraud status, respectively.
 
 - obtain_fpr_set(df, category): Calculate the FPRs for each unique kind within a specified category, returning
   a set of FPRs for use in other scoring functions.
@@ -42,6 +42,8 @@ Dependencies:
 - Uses numpy (`np`) for mean and variance calculations.
 """
 import numpy as np
+
+from backend.entities.dataset_files.dataset_file import DatasetFile
 
 
 class BiasCalculator:
@@ -84,21 +86,27 @@ class BiasCalculator:
         float: A score between 0 and 10, where 10 indicates the lowest possible FPR variance (ideal bias score)
                and 0 indicates the highest possible FPR variance.
 
-        Notes:
-        - This function uses the `get_fprs` function to obtain the FPRs for each unique kind in the specified category.
-        - The score is calculated by inverting and scaling the FPR variance, such that lower variances yield higher scores.
-        - Assumes that FPR values range between 0 and 1, which limits the maximum possible variance to 0.25.
+        Notes: - This function uses the `get_fprs` function to obtain the FPRs for each unique kind in the specified
+        category. - The score is calculated by inverting and scaling the FPR variance, such that lower variances
+        yield higher scores. - Assumes that FPR values range between 0 and 1, which limits the maximum possible
+        variance to 0.25.
         """
         raise NotImplementedError
+
+    def process_dataset(self, dataset: DatasetFile) -> None:
+        dataset.score = self.calculate_overall_score(dataset.df, dataset.categories)
+        dataset.category_scores = {category: self.calculate_score(dataset.df, category)
+                                   for category in dataset.categories}
+        dataset.category_fprs = {category: self.obtain_fpr_map(dataset.df, category) for category in dataset.categories}
+        dataset.is_processed = True
 
     def calculate_fpr(self, df):
         """
         Calculate the false positive rate (FPR) for a given subset of infrastructure.
 
-        Parameters:
-        df (pd.DataFrame): The DataFrame containing infrastructure for a single category kind. The DataFrame must include
-                           two columns: 'marked' (indicating if a machine learning model marked it as fraud)
-                           and 'actual' (indicating if it actually is fraud).
+        Parameters: df (pd.DataFrame): The DataFrame containing infrastructure for a single category kind. The
+        DataFrame must include two columns: 'marked' (indicating if a machine learning model marked it as fraud) and
+        'actual' (indicating if it actually is fraud).
 
         Returns:
         float: The calculated false positive rate, which is the ratio of false positives to the total number
@@ -135,10 +143,8 @@ class BiasCalculator:
               Each entry represents the FPR for one unique kind within the category.
         """
         if np.issubdtype(df[category].dtype, np.number):
-            # Replace helpers reference with direct import
             df = self.update_number_kinds_by_irq(df, category)
 
-        # Replace helpers reference with direct import
         kinds = set(df[category])
         kind_fprs = []
 
@@ -186,19 +192,19 @@ class BiasCalculator:
         Returns:
             pd.DataFrame: DataFrame with new column containing IQR-based categories
         """
-        q1 = df[column].quantile(0.25)
-        q2 = df[column].quantile(0.50)
-        q3 = df[column].quantile(0.75)
+        q1 = round(df[column].quantile(0.25))
+        q2 = round(df[column].quantile(0.50))
+        q3 = round(df[column].quantile(0.75))
 
         conditions = [
             (df[column] < q1),
             (df[column] >= q1) & (df[column] < q2),
             (df[column] >= q2) & (df[column] < q3),
+            (df[column] >= q3)
         ]
 
-        choices = [f"below_{q1}", f"below_{q2}", f"below_{q3}"]
+        choices = [f"0-{q1 - 1}", f"{q1}-{q2 - 1}", f"{q2}-{q3 - 1}", f"{q3}+"]
 
-        new_col_name = f"{column}_categorized_by_iqr"
-        df[new_col_name] = np.select(conditions, choices, default=f"above_{q3}")
+        df[column] = np.select(conditions, choices)
 
         return df

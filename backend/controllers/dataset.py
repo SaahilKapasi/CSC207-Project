@@ -1,6 +1,12 @@
 from fastapi import APIRouter, UploadFile
-from backend.presenters.dataset import generate_dataset, get_dataset, save_comparison, get_comparison
+from backend.presenters.dataset import (
+    generate_dataset,
+    get_dataset,
+    save_comparison,
+    get_comparison,
+)
 from pydantic import BaseModel
+import os
 
 router = APIRouter()
 
@@ -24,6 +30,13 @@ async def generate_dataset_endpoint(file: UploadFile):
     return await generate_dataset(file)
 
 
+@router.post("/api/generateDatasetLink")
+async def generate_dataset_link_endpoint(file: UploadFile):
+    frontend_url = os.getenv("FRONTEND_URL")
+    dataset = await generate_dataset(file)
+    return f"{frontend_url}/#{dataset['id']}"
+
+
 @router.post("/api/saveComparison")
-async def generate_dataset_endpoint(data: Comparison):
+async def save_comparison_endpoint(data: Comparison):
     return await save_comparison(data.data)

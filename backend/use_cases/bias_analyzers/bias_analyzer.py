@@ -1,4 +1,4 @@
-from backend.entites.dataset_files.dataset_file import DatasetFile
+from backend.entities.dataset_files.dataset_file import DatasetFile
 
 
 class BiasAnalyzer:
@@ -6,6 +6,9 @@ class BiasAnalyzer:
 
     def __init__(self, dataset: DatasetFile):
         self.dataset = dataset
+
+        if not self.dataset.is_processed:
+            print("An error has occurred, the analyzer was given an unprocessed dataset.")
 
     def get_overall_analysis(self) -> str:
         raise NotImplementedError
