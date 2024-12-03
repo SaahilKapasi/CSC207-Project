@@ -18,9 +18,9 @@ Functions:
 - calculate_score_by_accuracy(df, category): Placeholder function for calculating a score based on accuracy.
   Currently not implemented.
 
-- calculate_fpr(df): Calculate the false positive rate (FPR) for a subset of infrastructure within a specific category kind.
-  This function assumes a DataFrame with 'marked' and 'actual' columns, indicating model prediction and true
-  fraud status, respectively.
+- calculate_fpr(df): Calculate the false positive rate (FPR) for a subset of infrastructure within a specific
+category kind. This function assumes a DataFrame with 'marked' and 'actual' columns, indicating model prediction and
+true fraud status, respectively.
 
 - obtain_fpr_set(df, category): Calculate the FPRs for each unique kind within a specified category, returning
   a set of FPRs for use in other scoring functions.
@@ -42,7 +42,6 @@ Dependencies:
 - Uses numpy (`np`) for mean and variance calculations.
 """
 import numpy as np
-import pandas as pd
 
 from backend.entities.dataset_files.dataset_file import DatasetFile
 
@@ -87,10 +86,10 @@ class BiasCalculator:
         float: A score between 0 and 10, where 10 indicates the lowest possible FPR variance (ideal bias score)
                and 0 indicates the highest possible FPR variance.
 
-        Notes:
-        - This function uses the `get_fprs` function to obtain the FPRs for each unique kind in the specified category.
-        - The score is calculated by inverting and scaling the FPR variance, such that lower variances yield higher scores.
-        - Assumes that FPR values range between 0 and 1, which limits the maximum possible variance to 0.25.
+        Notes: - This function uses the `get_fprs` function to obtain the FPRs for each unique kind in the specified
+        category. - The score is calculated by inverting and scaling the FPR variance, such that lower variances
+        yield higher scores. - Assumes that FPR values range between 0 and 1, which limits the maximum possible
+        variance to 0.25.
         """
         raise NotImplementedError
 
@@ -105,10 +104,9 @@ class BiasCalculator:
         """
         Calculate the false positive rate (FPR) for a given subset of infrastructure.
 
-        Parameters:
-        df (pd.DataFrame): The DataFrame containing infrastructure for a single category kind. The DataFrame must include
-                           two columns: 'marked' (indicating if a machine learning model marked it as fraud)
-                           and 'actual' (indicating if it actually is fraud).
+        Parameters: df (pd.DataFrame): The DataFrame containing infrastructure for a single category kind. The
+        DataFrame must include two columns: 'marked' (indicating if a machine learning model marked it as fraud) and
+        'actual' (indicating if it actually is fraud).
 
         Returns:
         float: The calculated false positive rate, which is the ratio of false positives to the total number

@@ -18,9 +18,9 @@ Functions:
 - calculate_score_by_accuracy(df, category): Placeholder function for calculating a score based on accuracy.
   Currently not implemented.
 
-- calculate_fpr(df): Calculate the false positive rate (FPR) for a subset of infrastructure within a specific category kind.
-  This function assumes a DataFrame with 'marked' and 'actual' columns, indicating model prediction and true
-  fraud status, respectively.
+- calculate_fpr(df): Calculate the false positive rate (FPR) for a subset of infrastructure within a specific
+category kind. This function assumes a DataFrame with 'marked' and 'actual' columns, indicating model prediction and
+true fraud status, respectively.
 
 - obtain_fpr_set(df, category): Calculate the FPRs for each unique kind within a specified category, returning
   a set of FPRs for use in other scoring functions.
