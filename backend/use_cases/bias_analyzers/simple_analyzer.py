@@ -15,6 +15,7 @@ class SimpleAnalyzer(BiasAnalyzer):
 
 dataset: DatasetFile
 
+
     def get_overall_analysis(self) -> str:
         """
        Generate an overall analysis of bias in the dataset.

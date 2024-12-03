@@ -74,3 +74,5 @@ class BiasAnalyzer:
 
         return [category for category in self.dataset.categories if self.score_to_level(category) == level]
 
+
+

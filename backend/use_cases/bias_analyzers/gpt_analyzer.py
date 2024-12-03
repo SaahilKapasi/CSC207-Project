@@ -99,6 +99,7 @@ class GPTAnalyzer(BiasAnalyzer):
                 temperature=0.7
             )
 
+
             summary_analysis = response.choices[0].text.strip()
             return summary_analysis
 

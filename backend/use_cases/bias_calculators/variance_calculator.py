@@ -53,6 +53,7 @@ class VarianceCalculator(BiasCalculator):
         - The score is calculated by inverting and scaling the FPR variance, with lower variances yielding higher scores.
         - Assumes that FPR values range between 0 and 1, limiting the maximum possible variance to 0.25.
     """
+
         # Step 1: Calculate the variance of FPRs
         kind_fprs = self.obtain_fpr_set(df, category)
         fpr_variance = np.var(kind_fprs)

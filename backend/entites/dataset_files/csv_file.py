@@ -24,6 +24,7 @@ from typing import BinaryIO
 import pandas as pd
 
 
+
 class CSVFile(DatasetFile):
     """
     A class for handling and calculating bias scores for a dataset with protected categories.

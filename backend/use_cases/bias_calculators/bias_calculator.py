@@ -34,6 +34,7 @@ Dependencies:
 import numpy as np
 
 
+
 class BiasCalculator:
 
     def calculate_overall_score(self, df, categories: set):

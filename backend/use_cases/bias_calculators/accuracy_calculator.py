@@ -72,6 +72,7 @@ class AccuracyCalculator(BiasCalculator):
          - Uses the `obtain_fpr_set` method to get FPRs for each unique kind in the specified category.
          - The score is calculated by inverting and scaling the FPR variance.
          - Assumes FPR values range between 0 and 1, limiting the maximum possible variance to 0.25.
+
      """
         # Step 1: Calculate the mean of FPRs
         kind_fprs = self.obtain_fpr_set(df, category)
