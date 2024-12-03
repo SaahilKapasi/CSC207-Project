@@ -1,3 +1,11 @@
+"""
+protected_classes.py
+
+This module defines a constant set of protected classes, which are used to identify
+and categorize sensitive attributes in datasets. These attributes correspond to
+commonly recognized protected classes in anti-discrimination laws and policies.
+"""
+
 PROTECTED_CLASSES = {
     "citizenship",
     "sex",
