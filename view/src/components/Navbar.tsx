@@ -37,11 +37,12 @@ export default function Navbar({
         }}
         aria-label="Go to landing page" // Describes the action for screen readers
       >
-        {/* Placeholder for logo */}
-        <div
-          className="h-8 w-8 bg-green-500 rounded-full mr-3"
-          aria-hidden="true" // Hides decorative element from screen readers
-        ></div>
+        <img
+          src="/cash_app.svg"
+          alt="Cash App Logo"
+          className="h-11 w-11 rounded-full mr-3"
+          aria-hidden="true"
+        />
         <span className="text-xl font-semibold text-gray-800">Cash App</span>
       </div>
 
@@ -49,6 +50,7 @@ export default function Navbar({
       <div className="flex gap-2">
         {datasets.map((dataset) => (
           <button
+            key={dataset.id}
             className={`p-2 bg-slate-100 rounded-md border-2 ${
               selectedPage === "graph" && dataset.id === selectedDataset?.id
                 ? "border-slate-700"

@@ -45,7 +45,7 @@ export default function CategoryInfoModal({
             number of transactions that are actually not fraudulent.
           </p>
           <Graph
-            name={`${capitalize(category.name)} V.S. False Positive Rate`}
+            name={`False Positive Rate V.S. ${capitalize(category.name)}`}
             entries={category.traits.map((t) => ({
               name: t.name,
               value: t.fprMean,
@@ -57,6 +57,7 @@ export default function CategoryInfoModal({
             aria-label={`Graph showing false positive rates for ${capitalize(
               category.name
             )} traits`}
+            keyboardNavigationEnabled={false}
             valueToText={(value) => `${(value * 100).toFixed(0)}%`}
           />
           <div className="mt-32" />

@@ -7,8 +7,15 @@ interface TooltipProps {
 
 export default function Tooltip({ text }: TooltipProps): ReactElement {
   return (
-    <div className="tooltip h-6 w-6 tooltip-bottom" data-tip={text}>
-      <IoMdInformationCircleOutline className="text-blue-500 h-full w-full" />
+    <div 
+    role="tooltip"
+    className="tooltip h-6 w-6 tooltip-bottom" 
+    data-tip={text}
+    aria-label={text}
+    >
+      <IoMdInformationCircleOutline 
+      className="text-blue-500 h-full w-full" 
+      data-testid="tooltip-icon"/>
     </div>
   );
 }

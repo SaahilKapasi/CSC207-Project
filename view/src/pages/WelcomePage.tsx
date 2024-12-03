@@ -44,7 +44,7 @@ export default function WelcomePage({
           setFile={setFile}
           onSubmit={handleFileSubmit}
         />
-        <p aria-live="polite" className="sr-only">
+        <p aria-live="polite" role="status" className="sr-only">
           {uploadStatus}
         </p>
       </div>

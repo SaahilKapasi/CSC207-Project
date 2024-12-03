@@ -10,6 +10,7 @@ interface GraphProps {
   zeroValueLabel: string;
   minValueLabel?: string;
   getColor: (value: number) => string;
+  keyboardNavigationEnabled?: boolean;
   valueToText?: (value: number) => string;
 }
 
@@ -23,6 +24,7 @@ export default function Graph({
   zeroValueLabel,
   minValueLabel,
   getColor,
+  keyboardNavigationEnabled = true, // Default to enabled
   valueToText,
 }: GraphProps): ReactElement {
   const barWidth = 10;
@@ -75,14 +77,17 @@ export default function Graph({
                   alignItems: "flex-end",
                 }}
                 onClick={() => onBarClick && onBarClick(entry.name)}
-                tabIndex={0} // Make the bar focusable
-                role="button" // Treat the bar as a button
+                tabIndex={keyboardNavigationEnabled ? 0 : undefined} // Conditional tabIndex
+                role={keyboardNavigationEnabled ? "button" : undefined} // Conditional role
                 aria-label={`Bar ${entry.name}, value ${entry.value}`} // Screen reader description
                 onKeyDown={(e) => {
+                if (keyboardNavigationEnabled) {
                   if ((e.key === "Enter" || e.key === " ") && onBarClick) {
-                    onBarClick(entry.name); // Trigger click on Enter or Space
+                    e.preventDefault();
+                    onBarClick(entry.name); 
                   }
-                }}
+                }
+              }}
               >
                 {/* Bar */}
                 <div

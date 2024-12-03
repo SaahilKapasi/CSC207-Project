@@ -90,7 +90,7 @@ export default function ComparePage({
           content={
             <div className="mt-0 w-[50rem] max-w-[90vw] flex flex-col items-center">
               <Graph
-                name={`Dataset V.S. ${capitalize(selectedCategory)} Bias Score`}
+                name={`${capitalize(selectedCategory)} Bias Score V.S. Dataset`}
                 entries={[
                   {
                     name: selectedDataset1!.name,
@@ -113,6 +113,7 @@ export default function ComparePage({
                 maxValue={10}
                 maxValueLabel={"10 (High)"}
                 zeroValueLabel="0 (Low)"
+                keyboardNavigationEnabled={false}
               />
               <div className="mt-32" />
             </div>

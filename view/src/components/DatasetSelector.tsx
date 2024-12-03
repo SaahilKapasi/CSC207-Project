@@ -13,10 +13,25 @@ export default function DatasetSelector({
   selectedDataset,
   setSelectedDataset,
 }: DatasetSelectorProps): JSX.Element {
+  const selectId = "dataset-selector";
+
+  function truncateText(text: string, maxLength: number): string {
+    if (text.length > maxLength) {
+      return `${text.slice(0, maxLength)}…`; // Truncate and add ellipsis
+    }
+    return text;
+  }
+
+  
   return (
     <div className="flex flex-col">
-      <p>{label}</p>
+      <label htmlFor={selectId} className="mb-2 text-sm font-medium text-gray-700">
+        {label}
+      </label>
+
+      {/* Select Dropdown */}
       <select
+        id={selectId}
         className="select select-sm select-bordered"
         onChange={(e) => {
           setSelectedDataset(
@@ -24,6 +39,7 @@ export default function DatasetSelector({
           );
         }}
         value={selectedDataset?.id || ""}
+        aria-describedby={`${selectId}-description`}
       >
         <option disabled value="">
           Pick dataset
@@ -34,6 +50,15 @@ export default function DatasetSelector({
           </option>
         ))}
       </select>
+
+      {/* Description for Screen Readers */}
+      <p 
+        id={`${selectId}-description`} 
+        className="mt-1 text-xs text-gray-500"
+      >
+        Use the dropdown to select a dataset. Currently selected:{" "}
+        {selectedDataset ? truncateText(selectedDataset.name, 20) : "none"}.
+      </p>
     </div>
   );
 }
