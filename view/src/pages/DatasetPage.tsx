@@ -93,8 +93,8 @@ export default function DatasetPage({ dataset }: GraphPageProps) {
       {/* Overall Bias Section */}
       <p className="mb-2 text-lg mt-5">Overall Bias Detected:</p>
       <BiasProgressBar 
-      bias={10 - dataset.score} 
-      aria-label={`Overall bias score: ${10 - dataset.score}`}
+        bias={10 - dataset.score} 
+        aria-label={`Overall bias score: ${10 - dataset.score}`}
       />
       <p className="mt-5 max-w-96 mb-10 text-md whitespace-pre-line">
         {dataset.description}

@@ -17,6 +17,7 @@ export default function Modal({ onClose, content }: ModalProps): ReactElement {
     <div className="fixed z-50 w-screen h-screen top-0 left-0">
       {/* Background overlay */}
       <div
+        data-testid="modal-overlay"
         className="bg-black opacity-50 h-full w-full absolute"
         onClick={onClose}
         aria-hidden="true" // Mark as hidden for screen readers

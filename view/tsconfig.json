@@ -4,10 +4,10 @@
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
   ],
-
   /* Resolved by Sam looking at BreakingBias' tsconfig.json. */
   "compilerOptions": {
     "esModuleInterop": true,
+    "types": ["node", "jest", "@testing-library/jest-dom"],
     "jsx": "react-jsx"
   }
 }
