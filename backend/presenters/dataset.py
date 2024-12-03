@@ -32,7 +32,8 @@ async def save_comparison(data):
 
 async def generate_dataset(file: UploadFile):
     calculator = VarianceCalculator()
-    dataset_file = CSVFile(file.file, calculator)
+    dataset_file = CSVFile(file.file)
+    calculator.process_dataset(dataset_file)
     analyzer = SimpleAnalyzer(dataset_file)
     categories = list(
         map(lambda category: {
