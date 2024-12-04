@@ -9,7 +9,7 @@
 - [Project Structure](#project-structure)
 - [Running the Project](#running-the-project)
 - [Feedback](#feedback)
-- [Contribution](#contribution)
+- [Contributing Guidelines](#contributing-guidelines)
 
 ## Authors and contributors
 Aaina, Yimin, Serena, Dany, Saahil
