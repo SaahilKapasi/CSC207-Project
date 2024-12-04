@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.controllers import dataset
+from backend.controllers import controllers
 
 app = FastAPI()
 

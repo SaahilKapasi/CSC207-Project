@@ -59,9 +59,9 @@ class SimpleAnalyzer(BiasAnalyzer):
         Maps a bias score to a qualitative level ("high", "medium", "low").
 
         The mapping is based on the following thresholds:
-        - "low": Score <= 3.4
+        - "high": Score <= 3.4
         - "medium": 3.4 < Score ≤ 6.7
-        - "high": Score > 6.7
+        - "low": Score > 6.7
 
         Args:
             category (str): The category for which to retrieve the level. Defaults to "all"
@@ -73,8 +73,8 @@ class SimpleAnalyzer(BiasAnalyzer):
         score = self.dataset.get_overall_score() \
             if category == "all" else self.dataset.get_category_score(category)
         if score <= 3.4:
-            return "low"
+            return "high"
         elif score <= 6.7:
             return "medium"
         else:
-            return "high"
+            return "low"

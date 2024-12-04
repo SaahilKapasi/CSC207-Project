@@ -1,43 +1,31 @@
 """
-file_analysis.py
+dataset_file.py
 
-This module defines a File class, used to handle a dataset and calculate bias scores based on protected categories.
-The File class provides methods for calculating bias scores using different statistical measures, such as variance
-and mean-based false positive rates (FPRs), across specified protected categories in the dataset.
-
-Classes:
-    File: Represents a dataset, calculates category-specific bias scores, and computes an overall bias score
-          across multiple categories using various scoring methods.
-
-Dependencies:
-    - pandas: For handling infrastructure operations on DataFrames.
-    - helpers: Contains utility functions for identifying protected categories in a DataFrame.
-    - bias_calculator: Contains functions for calculating individual and overall bias scores.
-
-Usage:
-    Create a File instance by providing the file path of a CSV dataset.
-    Use instance methods to retrieve bias scores for specific categories or an overall score.
+This module defines the DatasetFile class, which represents a dataset file and provides
+methods for analyzing its content. The class supports extracting categories, calculating
+trait counts, and fetching scores based on pre-defined categories and attributes.
 """
 from typing import BinaryIO
 
 import pandas as pd
-
 from backend.entities.protected_classes import PROTECTED_CLASSES
 
 
 class DatasetFile:
     """
-    A class for handling and calculating bias scores for a dataset with protected categories.
+    Represents a dataset file and provides methods for analysis, including identifying
+    categories, calculating trait counts, and fetching scores.
 
     Attributes:
-        df (pd.DataFrame): The DataFrame containing the dataset.
-        categories (set): A set of protected categories present in the dataset.
-
-    Methods:
-        get_category_var_score(category): Get the variance-based bias score for a specific category.
-        get_category_mean_score(category): Get the mean-based bias score for a specific category.
-        get_overall_score(method): Calculate the overall bias score across categories based on the specified method.
+        df (pd.DataFrame): The loaded dataset.
+        categories (set): A set of categories present in the dataset.
+        score (float): The overall score for the dataset.
+        category_scores (dict[str, float]): Scores associated with each category.
+        category_fprs (dict[str, dict[str, float]]): False positive rates for each category, calculated using
+            `obtain_fpr_map`.
+        is_processed (bool): Indicates whether the dataset has been processed.
     """
+
     df: pd.DataFrame
     categories: set
     score: float
@@ -45,100 +33,113 @@ class DatasetFile:
     category_fprs: dict[str, dict[str, float]]
     is_processed: bool
 
-    def __init__(self, file_address: BinaryIO):
+    def __init__(self, file_address: str | BinaryIO) -> None:
+        """
+        Initializes a DatasetFile instance by loading a file and extracting categories.
+
+        This method sets the initial values for categories, scores, and FPR-related attributes.
+        It relies on a subclass implementation of `load_file`.
+
+        Args:
+            file_address (BinaryIO): The file object or file-like object to load.
+        """
         self.load_file(file_address)
         self.categories = self.get_present_categories()
         self.score = 0
         self.category_scores = {category: 0 for category in self.categories}
-        self.category_scores = {category: 0 for category in self.categories}
         self.is_processed = False
 
-    def load_file(self, file_address: BinaryIO):
+    def load_file(self, file_address: str | BinaryIO) -> None:
+        """
+        Loads the dataset file into a DataFrame. This method must be implemented by subclasses.
+
+        Args:
+            file_address (BinaryIO): The file object or file-like object to load.
+
+        Raises:
+            NotImplementedError: This method should be implemented by subclasses.
+        """
         raise NotImplementedError
 
     def get_present_categories(self) -> set:
         """
-        Identify protected categories that exist as columns in the DataFrame.
-        Parameters:
-           df (pd.DataFrame): The DataFrame to check for protected categories
+        Identifies the categories present in the dataset based on the column names.
+
+        A category is considered "present" if its column name matches one of the protected classes
+        defined in the `PROTECTED_CLASSES` set.
+
         Returns:
-           set: Set of column names that match protected classes
-       """
+            set: A set of categories that match protected classes.
+        """
         cats_exist = set()
         for i in self.df.columns:
             if i.lower() in PROTECTED_CLASSES:
                 cats_exist.add(i)
         return cats_exist
 
-    def get_category_traits(self, category: str):
+    def get_category_traits(self, category: str) -> set:
         """
-        Ex. for race, it would return white, black, etc
+        Retrieves the unique traits for a specific category.
 
         Args:
-            category: The name of the category
+            category (str): The category for which to retrieve traits.
 
         Returns:
-            set: Ex. for race, it would return white, black, etc
+            set: A set of unique traits in the category.
         """
         return set(self.df[category])
 
-    def get_category_trait_counts(self, category: str):
+    def get_category_trait_counts(self, category: str) -> dict:
         """
-        Ex. for race, it would return number of people that are white, black, etc
+        Counts the occurrences of each trait in a given category.
 
         Args:
-            category: The name of the category
+            category (str): The category for which to count traits.
 
         Returns:
-            dict: {trait: count} Ex. for race, it would return number of people that are white, black, etc
+            dict: A dictionary with traits as keys and their counts as values.
         """
         result = {}
-        traits = set(self.df[category])  # ex. White, black
+        traits = set(self.df[category])
         for trait in traits:
             count = self.df[self.df[category] == trait].shape[0]
             result[trait] = count
         return result
 
-    def get_category_trait_fprs(self, category: str):
+    def get_category_trait_fprs(self, category: str) -> dict:
         """
-        Ex. for race, it would return mean fprs of people that are white, black, etc
+        Retrieves false positive rates (FPRs) for the traits of a given category.
+
+        FPRs are calculated using the `obtain_fpr_map` function, which evaluates the rate for
+        each unique value (or range, for numerical data) in the category column.
 
         Args:
-            category: The name of the category
+            category (str): The category for which to retrieve FPRs.
 
         Returns:
-            dict: {trait: mean fpr}
+            dict: A dictionary of false positive rates for each trait in the category.
         """
         return self.category_fprs[category]
 
-    def get_category_score(self, category):
+    def get_category_score(self, category: str) -> float | None:
         """
-        Calculate and return the variance-based bias score for a specific category.
+        Retrieves the score for a specific category.
 
-        Parameters:
-            category (str): The name of the category to calculate the variance score for.
+        Args:
+            category (str): The category for which to retrieve the score.
 
         Returns:
-            float: Variance-based bias score for the specified category, or None if the category is not present.
+            float | None: The score for the category, or None if the category is not present.
         """
         if category in self.categories:
             return self.category_scores[category]
         return None
 
-    def get_overall_score(self):
+    def get_overall_score(self) -> float:
         """
-        Calculate an overall bias score across multiple categories in the dataset.
-
-        The score is calculated by averaging scores for each category based on the specified method.
+        Retrieves the overall score for the dataset.
 
         Returns:
-            float: An average score between 0 and 10, where higher values indicate lower bias across categories.
-
-        Notes:
-            - The function averages scores calculated for each category, so `calculate_score_by_variance`
-              and `calculate_score_by_fpr_mean` should be defined separately in `bias_calculator`.
-            - By default, the "variance" method is used. If "accuracy" is selected, it will currently return 0
-              until `calculate_score_by_accuracy` is implemented.
-            - Assumes each scoring method returns a score between 0 and 10.
+            float: The overall score.
         """
         return self.score
