@@ -1,6 +1,7 @@
 # Bias Visualizer Project
 
 ## Table of Contents 
+- [Authors and contributors](#authors-and-contributors)
 - [Background](#background) 
 - [Project Goals](#project-goals) 
 - [How Can We Achieve This?](#how-can-we-achieve-this?) 
@@ -8,6 +9,9 @@
 - [Proposed Solution](#proposed-solution)
 - [Project Structure](#project-structure)
 - [Running the Project](#running-the-project)
+
+## Authors and contributors
+Aaina, Yimin, Serena, Dany, Saahil
 
 ## Background
 
