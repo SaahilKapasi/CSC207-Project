@@ -7,9 +7,9 @@
 - [Project Goals](#project-goals) 
 - [How Can We Achieve This?](#how-can-we-achieve-this) 
 - [Project Structure](#project-structure)
+- [Running the Project](#running-the-project)
 - [Feedback](#feedback)
 - [Contribution](#contribution)
-- [Running the Project](#running-the-project)
 
 ## Authors and contributors
 Aaina, Yimin, Serena, Dany, Saahil
@@ -18,18 +18,19 @@ Aaina, Yimin, Serena, Dany, Saahil
 ### Getting Started
 Follow these simple steps to begin using the Bias Visualizer dashboard and uncover insights about bias in your datasets:
 
-**Open the Dashboard**: Access the Bias Visualizer dashboard by clicking the Get Started button on this page.
-**Upload Your Dataset**: Click the CHOOSE FILE button to browse and select your "correctly formatted" dataset file from your computer.
-**Submit the Dataset**: After selecting your file, click the Submit button to upload it to the dashboard.
-**Analyze and Compare**: Use the interactive graphs and visualizations to explore bias within your dataset. For multi-dataset comparisons, click the Compare button in the header.
+1. **Open the Dashboard**: Access the Bias Visualizer dashboard by clicking the Get Started button on this page.
+2. **Upload Your Dataset**: Click the CHOOSE FILE button to browse and select your "correctly formatted" dataset file from your computer.
+3. **Submit the Dataset**: After selecting your file, click the Submit button to upload it to the dashboard.
+4. **Analyze and Compare**: Use the interactive graphs and visualizations to explore bias within your dataset. For multi-dataset comparisons, click the Compare button in the header.
 
 ### Data Requirements
 Your dataset must adhere to the following criteria:
-**File format**: `.csv`
-**Required columns**:
-`marked`: Indicates if a transaction was flagged as fraudulent
-`actual`: Indicates if a transaction was actually fraudulent
-**At least one protected class attribute described below**: (the intended protected class column names in your dataset should match exactly to below attributes)
+- **File format**: `.csv`
+- **Required columns**:
+   - `marked`: Indicates if a transaction was flagged as fraudulent
+   - `actual`: Indicates if a transaction was actually fraudulent
+- **At least one protected class attribute described below**: _(the intended protected class column names in your dataset should match exactly to below attributes)_
+
 `citizenship`, `sex`, `pregnancy`, `race`, `family status`, `place of origin`, `marital status`, `ethnic origin`, `sexual orientation`, `color`, `gender identity`, `ancestry`, `gender expression`, `disability`, `receipt of public assistance (in housing)`, `age`, `record of offenses (in employment)`, `creed`
 
 ---
@@ -107,72 +108,6 @@ By integrating these metrics and stats into the web application:
 ##### **Compliance**
 - Meets legal requirements by auditing the model for adherence to anti-discrimination standards.
 
----
-
-## Feedback  
-To provide feedback, please create an issue in the project repository by following these steps:  
-1. Navigate to the project's [GitHub issues page](https://github.com/SaahilKapasi/CSC207-Project/issues/new).  
-2. Clearly describe the issue or improvement you're suggesting.  
-
-### Guidelines for Submitting Feedback  
-- **Title:** Use a concise and descriptive title that summarizes your feedback (e.g., "Feature Request: Add Dark Mode" or "Bug: Login Button Not Responding").  
-- **Description:** Provide a clear and detailed explanation of your feedback.  
-  - If it's a bug, include steps to reproduce it, the expected behavior, and what actually happened.  
-  - If it's a feature request, explain why the feature is important and how it will enhance the project.  
-- **Additional Details:** Add screenshots, error messages, or links if applicable.  
-- **Labels:** If you have permissions, consider tagging the issue with relevant labels like `bug`, `enhancement`, or `question` to help with categorization.  
-
-Feel free to refer to the [issue guidelines](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) for more tips on crafting effective feedback.
-
----
-
-## Contributing Guidelines  
-
-We welcome your contributions! To submit a high-quality pull request, follow these steps:  
-
-### Steps to Contribute  
-
-1. **Fork & Clone**  
-   - Fork the repository and clone it locally.  
-   - Create a new branch for your feature or fix:  
-     ```bash
-     git checkout -b feature/your-feature-name
-     ```  
-
-2. **Make Changes**  
-   - Write clean, purposeful code that adheres to the project's style guide.  
-   - Update documentation, comments, or README files as needed to reflect your changes.  
-
-3. **Test**  
-   - Add tests for your changes, ensuring they cover relevant scenarios.  
-   - Run all tests to confirm your changes work as expected and do not introduce any bugs.  
-
-4. **Commit**  
-   - Use clear, descriptive commit messages to explain your changes:  
-     ```bash
-     git commit -m "Describe your change"
-     ```  
-
-5. **Push & PR**  
-   - Push your branch to your forked repository:  
-     ```bash
-     git push origin feature/your-feature-name
-     ```  
-   - Open a pull request (PR) in the main repository. Provide a descriptive title and a detailed explanation of your changes.  
-
-6. **Address Feedback**  
-   - Be available to discuss and refine your pull request based on feedback from maintainers.  
-
-### Additional Guidelines  
-
-- **Style Guide:** Ensure your code aligns with the project's formatting and conventions with ESLint and Flake8. If unsure, review the existing codebase for examples.  
-- **Documentation:** Update any relevant documentation to help others understand your changes.  
-- **Tests:** Prioritize robust test coverage to maintain the project's stability and reliability.  
-- **Respect Deadlines:** Be responsive to feedback to help streamline the review process.  
-
-Thank you for contributing to the project! Your efforts are greatly appreciated.  
-
-
 --- 
 
 ## Running the Project
@@ -202,5 +137,62 @@ If you want to run this project on your local machine, make sure you have the fo
   ```bash
   npm run dev
   ```
+
+---
+
+## Feedback  
+To provide feedback, please create an issue in the project repository by following these steps:  
+1. Navigate to the project's [GitHub issues page](https://github.com/SaahilKapasi/CSC207-Project/issues/new).  
+2. Clearly describe the issue or improvement you're suggesting.  
+
+### Guidelines for Submitting Feedback  
+- **Title:** Use a concise and descriptive title that summarizes your feedback (e.g., "Feature Request: Add Dark Mode" or "Bug: Login Button Not Responding").  
+- **Description:** Provide a clear and detailed explanation of your feedback.  
+  - If it's a bug, include steps to reproduce it, the expected behavior, and what actually happened.  
+  - If it's a feature request, explain why the feature is important and how it will enhance the project.  
+- **Additional Details:** Add screenshots, error messages, or links if applicable.  
+- **Labels:** If you have permissions, consider tagging the issue with relevant labels like `bug`, `enhancement`, or `question` to help with categorization.  
+
+Feel free to refer to the [issue guidelines](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) for more tips on crafting effective feedback.
+
+---
+
+## Contributing Guidelines  
+We welcome your contributions! To submit a high-quality pull request, follow these steps:  
+
+### Steps to Contribute  
+1. **Fork & Clone**  
+   - Fork the repository and clone it locally.  
+   - Create a new branch for your feature or fix:  
+     ```bash
+     git checkout -b feature/your-feature-name
+     ```  
+2. **Make Changes**  
+   - Write clean, purposeful code that adheres to the project's style guide.  
+   - Update documentation, comments, or README files as needed to reflect your changes.  
+3. **Test**  
+   - Add tests for your changes, ensuring they cover relevant scenarios.  
+   - Run all tests to confirm your changes work as expected and do not introduce any bugs.  
+4. **Commit**  
+   - Use clear, descriptive commit messages to explain your changes:  
+     ```bash
+     git commit -m "Describe your change"
+     ```  
+5. **Push & PR**  
+   - Push your branch to your forked repository:  
+     ```bash
+     git push origin feature/your-feature-name
+     ```  
+   - Open a pull request (PR) in the main repository. Provide a descriptive title and a detailed explanation of your changes.  
+6. **Address Feedback**  
+   - Be available to discuss and refine your pull request based on feedback from maintainers.  
+
+### Additional Guidelines  
+- **Style Guide:** Ensure your code aligns with the project's formatting and conventions with ESLint and Flake8. If unsure, review the existing codebase for examples.  
+- **Documentation:** Update any relevant documentation to help others understand your changes.  
+- **Tests:** Prioritize robust test coverage to maintain the project's stability and reliability.  
+- **Respect Deadlines:** Be responsive to feedback to help streamline the review process.  
+
+Thank you for contributing to the project! Your efforts are greatly appreciated.  
 
 
