@@ -29,4 +29,3 @@ def test_obtain_fpr_map(test_dataset, test_calculator):
 def test_update_number_kinds_by_irq(test_dataset, test_calculator):
     assert (test_calculator.update_number_kinds_by_irq(test_dataset.df, "age")["age"].tolist()
             == ['0-16', '39+', '0-16', '17-25', '17-25', '26-38', '39+', '39+', '0-16', '39+'])
-
