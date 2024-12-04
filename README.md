@@ -1,4 +1,4 @@
-# Bias Visualizer Project
+[# Bias Visualizer Project](https://cashapp-dashboard.netlify.app/)
 
 ## Table of Contents 
 - [Authors and contributors](#authors-and-contributors)
@@ -109,28 +109,41 @@ By integrating these metrics and stats into the web application:
 
 ---
 
-## Feedback
-Create an issue detailing your feedback at https://github.com/SaahilKapasi/CSC207-Project/issues/new
+## Feedback  
+To provide feedback, please create an issue in the project repository by following these steps:  
+1. Navigate to the project's [GitHub issues page](https://github.com/SaahilKapasi/CSC207-Project/issues/new).  
+2. Clearly describe the issue or improvement you're suggesting.  
+
+### Guidelines for Submitting Feedback  
+- **Title:** Use a concise and descriptive title that summarizes your feedback (e.g., "Feature Request: Add Dark Mode" or "Bug: Login Button Not Responding").  
+- **Description:** Provide a clear and detailed explanation of your feedback.  
+  - If it's a bug, include steps to reproduce it, the expected behavior, and what actually happened.  
+  - If it's a feature request, explain why the feature is important and how it will enhance the project.  
+- **Additional Details:** Add screenshots, error messages, or links if applicable.  
+- **Labels:** If you have permissions, consider tagging the issue with relevant labels like `bug`, `enhancement`, or `question` to help with categorization.  
+
+Feel free to refer to the [issue guidelines](https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue) for more tips on crafting effective feedback.
 
 ---
 
 ## Contribution
 We welcome your contributions! To submit a high-quality pull request:
-1. Fork & Clone: Fork the repo, clone it locally, and create a new branch:
+1. **Fork & Clone**: Fork the repo, clone it locally, and create a new branch:
 `git checkout -b feature/your-feature-name`
-2. Make Changes: Write clean, purposeful code following the project’s style guide. Update documentation and comments as needed.
-3. Test: Add and run tests to ensure your changes work and don’t break anything.
-4. Commit: Use clear, descriptive commit messages:
+2. **Make Changes**: Write clean, purposeful code following the project’s style guide. Update documentation and comments as needed.
+3. **Test**: Add and run tests to ensure your changes work and don’t break anything.
+4. **Commit**: Use clear, descriptive commit messages:
 `git commit -m "Describe your change"`
-5. Push & PR: Push your branch and open a pull request with a descriptive title and explanation of your changes.
-6. Address Feedback: Be available to discuss and refine your PR as needed.
+5. **Push & PR**: Push your branch and open a pull request with a descriptive title and explanation of your changes.
+6. **Address Feedback**: Be available to discuss and refine your PR as needed.
+
 Thank you for contributing!
 
 --- 
 
 ## Running the Project
 ### Prerequisites
-Make sure you have the following installed:
+If you want to run this project on your local machine, make sure you have the following installed:
 - **Python** (version 3.8 or higher)
 - **Node.js** (for the frontend)
 
