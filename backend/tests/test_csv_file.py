@@ -6,7 +6,7 @@ from backend.entities.dataset_files.csv_file import CSVFile
 @pytest.fixture
 def dataset():
     # Load the dataset once for reuse in tests
-    return CSVFile("test_data.csv")
+    return CSVFile("backend/tests/test_data.csv")
 
 
 def test_load_file_has_citizenship_column(dataset):

@@ -66,9 +66,9 @@
 #         Maps a bias score to a qualitative level ("high", "medium", "low") using OpenAI's GPT model.
 #
 #         For the overall dataset score:
-#         - "low": Score < 3.3
+#         - "high": Score < 3.3
 #         - "medium": 3.3 ≤ Score < 6.6
-#         - "high": Score ≥ 6.6
+#         - "low": Score ≥ 6.6
 #
 #         For individual category scores, GPT is used to evaluate scores relative to other categories.
 #
@@ -81,11 +81,11 @@
 #         if category == "all":
 #             score = self.dataset.get_overall_score()
 #             if score < 3.3:
-#                 return "low"
+#                 return "high"
 #             elif score < 6.6:
 #                 return "medium"
 #             else:
-#                 return "high"
+#                 return "low"
 #
 #         categories = {cat: self.dataset.get_category_score(cat) for cat in self.dataset.categories}
 #         prompt = f"""

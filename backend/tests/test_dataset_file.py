@@ -5,7 +5,7 @@ from backend.entities.dataset_files.csv_file import CSVFile
 
 @pytest.fixture
 def test_dataset():
-    return CSVFile("test_data.csv")
+    return CSVFile("backend/tests/test_data.csv")
 
 
 def test_get_present_categories(test_dataset):

@@ -6,7 +6,7 @@ from backend.use_cases.bias_calculators.variance_calculator import VarianceCalcu
 
 @pytest.fixture
 def test_dataset():
-    return CSVFile("test_data.csv")
+    return CSVFile("backend/tests/test_data.csv")
 
 
 @pytest.fixture
