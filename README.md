@@ -126,18 +126,52 @@ Feel free to refer to the [issue guidelines](https://docs.github.com/en/issues/t
 
 ---
 
-## Contribution
-We welcome your contributions! To submit a high-quality pull request:
-1. **Fork & Clone**: Fork the repo, clone it locally, and create a new branch:
-`git checkout -b feature/your-feature-name`
-2. **Make Changes**: Write clean, purposeful code following the project’s style guide. Update documentation and comments as needed.
-3. **Test**: Add and run tests to ensure your changes work and don’t break anything.
-4. **Commit**: Use clear, descriptive commit messages:
-`git commit -m "Describe your change"`
-5. **Push & PR**: Push your branch and open a pull request with a descriptive title and explanation of your changes.
-6. **Address Feedback**: Be available to discuss and refine your PR as needed.
+## Contributing Guidelines  
 
-Thank you for contributing!
+We welcome your contributions! To submit a high-quality pull request, follow these steps:  
+
+### Steps to Contribute  
+
+1. **Fork & Clone**  
+   - Fork the repository and clone it locally.  
+   - Create a new branch for your feature or fix:  
+     ```bash
+     git checkout -b feature/your-feature-name
+     ```  
+
+2. **Make Changes**  
+   - Write clean, purposeful code that adheres to the project's style guide.  
+   - Update documentation, comments, or README files as needed to reflect your changes.  
+
+3. **Test**  
+   - Add tests for your changes, ensuring they cover relevant scenarios.  
+   - Run all tests to confirm your changes work as expected and do not introduce any bugs.  
+
+4. **Commit**  
+   - Use clear, descriptive commit messages to explain your changes:  
+     ```bash
+     git commit -m "Describe your change"
+     ```  
+
+5. **Push & PR**  
+   - Push your branch to your forked repository:  
+     ```bash
+     git push origin feature/your-feature-name
+     ```  
+   - Open a pull request (PR) in the main repository. Provide a descriptive title and a detailed explanation of your changes.  
+
+6. **Address Feedback**  
+   - Be available to discuss and refine your pull request based on feedback from maintainers.  
+
+### Additional Guidelines  
+
+- **Style Guide:** Ensure your code aligns with the project's formatting and conventions with ESLint and Flake8. If unsure, review the existing codebase for examples.  
+- **Documentation:** Update any relevant documentation to help others understand your changes.  
+- **Tests:** Prioritize robust test coverage to maintain the project's stability and reliability.  
+- **Respect Deadlines:** Be responsive to feedback to help streamline the review process.  
+
+Thank you for contributing to the project! Your efforts are greatly appreciated.  
+
 
 --- 
 
