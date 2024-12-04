@@ -1,4 +1,4 @@
-[# Bias Visualizer Project](https://cashapp-dashboard.netlify.app/)
+# [Bias Visualizer Project](https://cashapp-dashboard.netlify.app/)
 
 ## Table of Contents 
 - [Authors and contributors](#authors-and-contributors)
